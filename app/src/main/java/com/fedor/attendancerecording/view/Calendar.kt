@@ -56,19 +56,6 @@ public fun Calendar() {
 }
 
 @Composable
-internal fun DateLabel() {
-    Row() {
-        Box(
-            contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = "ноябрь.2023", fontSize = 32.sp
-            )
-        }
-    }
-}
-
-@Composable
 internal fun NextPreviousButtons() {
     Row() {
         Column(
