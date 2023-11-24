@@ -2,13 +2,14 @@ package com.fedor.attendancerecording.model.entity
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import androidx.room.Relation
 import java.sql.Date
 
-@Entity
+@Entity(tableName = "non_working_day", indices = [Index(value = ["date"], unique = true)])
 data class NonWorkingDay (
-    @PrimaryKey(autoGenerate = true) val idNotWorkingDay: Int,
-    @ColumnInfo() val date: Date,
-    @ColumnInfo() val dayType: String
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id_nw_day") val idNotWorkingDay: Int,
+    @ColumnInfo(name = "date") val date: Date,
+    @ColumnInfo(name = "day_type") val dayType: String
 )

@@ -6,11 +6,11 @@ import androidx.room.PrimaryKey
 import androidx.room.Relation
 import java.sql.Date
 
-@Entity
+@Entity(tableName = "record")
 data class Record(
-    @PrimaryKey(autoGenerate = true) val idRecord: Int,
-    @ColumnInfo() val idMarker: Int,
-    @ColumnInfo() val idStudent: Int,
-    @ColumnInfo() val pairNum: Int,
-    @ColumnInfo() val date: Date
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id_record") val idRecord: Int,
+    @ColumnInfo(name = "id_marker") val idMarker: Int,
+    @ColumnInfo(name = "id_student") val idStudent: Int,
+    @ColumnInfo(name = "pair_num") val pairNum: Int,
+    @ColumnInfo(name = "date") val date: Date
 )

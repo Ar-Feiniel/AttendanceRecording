@@ -4,10 +4,10 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "student")
 data class Student(
-    @PrimaryKey(autoGenerate = true) val idStudent: Int,
-    @ColumnInfo() val name: String,
-    @ColumnInfo() val surname: String,
-    @ColumnInfo() val patronymic: String?
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id_student") val idStudent: Int,
+    @ColumnInfo(name = "name") val name: String,
+    @ColumnInfo(name = "surname") val surname: String,
+    @ColumnInfo(name = "patronymic") val patronymic: String?
 )
