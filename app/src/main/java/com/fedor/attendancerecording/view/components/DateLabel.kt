@@ -10,13 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 
 @Composable
-public fun DateLabel() {
+public fun DateLabel(date: String = "ноябрь.2023") {
     Row() {
         Box(
             contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = "ноябрь.2023", fontSize = 32.sp
+                text = date, fontSize = 32.sp
             )
         }
     }

@@ -46,7 +46,6 @@ public fun Calendar() {
         Column(modifier = Modifier.fillMaxWidth()) {
             BurgerMenuButton()
             Spacer(modifier = Modifier.height(25.dp))
-            DateLabel()
             Spacer(modifier = Modifier.height(25.dp))
             NextPreviousButtons()
             Spacer(modifier = Modifier.height(50.dp))
@@ -56,7 +55,7 @@ public fun Calendar() {
 }
 
 @Composable
-internal fun NextPreviousButtons() {
+private fun NextPreviousButtons() {
     Row() {
         Column(
             modifier = Modifier

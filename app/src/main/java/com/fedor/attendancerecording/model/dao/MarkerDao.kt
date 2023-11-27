@@ -16,8 +16,8 @@ interface MarkerDao {
     @Query("select * from markertype")
     fun getMarkerType(): List<MarkerTypeWithMarkers>
 
-            @Insert
-    fun intertOne(marker: Marker)
+    @Insert
+    fun insertOne(marker: Marker)
 
     @Delete
     fun delete(marker: Marker)

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
@@ -45,6 +46,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.fedor.attendancerecording.ui.theme.AttendanceRecordingTheme
 import com.fedor.attendancerecording.view.components.BurgerMenuButton
 import com.fedor.attendancerecording.view.components.DateLabel
 
@@ -52,20 +54,23 @@ import com.fedor.attendancerecording.view.components.DateLabel
 @Composable
 public fun Recording()
 {
-
-    Column {
-        BurgerMenuButton()
-        Spacer(modifier = Modifier.height(12.dp))
-        //PairTabRow()
-        DateLabel()
-        Spacer(modifier = Modifier.height(12.dp))
-        PairTabRow2()
-        Spacer(modifier = Modifier.height(12.dp))
-        StudentsList()
+    AttendanceRecordingTheme {
+        Column {
+            BurgerMenuButton()
+            Spacer(modifier = Modifier.height(12.dp))
+            DateLabel("26.ноябрь.2023")
+            Row( modifier = Modifier.align(Alignment.CenterHorizontally)){
+                Text(text = "Пара")
+            }
+            Spacer(modifier = Modifier.height(12.dp))
+            PairTabRow()
+            Spacer(modifier = Modifier.height(12.dp))
+            StudentsList()
+        }
     }
 }
 @Composable
-internal fun PairTabRow2(){
+internal fun PairTabRow(){
     var tabIndex by remember { mutableStateOf<Int>(0) }
     val tabs = listOf("1", "2", "3", "4", "5")
     Box(contentAlignment = Alignment.TopCenter,
@@ -99,10 +104,17 @@ internal fun PairTabRow2(){
 
 @Composable
 internal fun StudentsList(){
-    val students: List<String> = listOf("1", "2", "3", "4")
+    val students: List<String> = listOf("Хрюшев Хрюш Хрюшыч1"
+        , "Хрюшев Хрюш Хрюшыч2"
+        , "Хрюшев Хрюш Хрюшыч3"
+        , "Хрюшев Хрюш Хрюшыч4"
+        , "Хрюшев Хрюш Хрюшыч5"
+        , "Хрюшев Хрюш Хрюшыч6"
+        , "Хрюшев Хрюш Хрюшыч7")
     val markers: List<String> = listOf("2у", "2", "1")
     Column() {
         students.forEach {string ->
+            Spacer(modifier = Modifier.height(10.dp))
             Row(){
                 Column(modifier = Modifier.fillMaxWidth(0.5f)) {
                     Text(text = string)
@@ -120,7 +132,10 @@ internal fun StudentsList(){
 @Composable
 internal fun MarkersComboBox(markers: List<String>){
     var expanded by remember { mutableStateOf(false) }
-    Button(onClick = { expanded = !expanded}) {
+    Button(shape = RoundedCornerShape(10.dp)
+        , modifier = Modifier.width(100.dp)
+                            .height(30.dp)
+        , onClick = { expanded = !expanded}) {
         Text(text = "marker")
     }
     DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
@@ -129,7 +144,6 @@ internal fun MarkersComboBox(markers: List<String>){
         }
     }
 }
-class Student(val Name: String, val Sname: String, val Pat: String) {}
 //
 //@OptIn(ExperimentalMaterial3Api::class)
 //@Composable
