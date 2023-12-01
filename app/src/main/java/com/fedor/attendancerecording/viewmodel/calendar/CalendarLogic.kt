@@ -1,38 +1,32 @@
-package com.fedor.attendancerecording.viewmodel.mainpage
+package com.fedor.attendancerecording.viewmodel.calendar
 
 import java.time.LocalDate
 
-class MainSelector {
-    public fun getMonthArray(year: Int, month: Int): Array<Array<Int>> {
-        val calendar: Array<Array<Int>> = Array(getWeeksCount(year, month)) { Array(7) { 0 } }
-        for(i in getFirstDayNum(year, month)-2 downTo  0){
-            calendar[0][i] = -1;
-        }
+class CalendarLogic {
+    public fun getMonthArray(year: Int, month: Int): Array<Array<CalendarItem?>> {
+        val calendar: Array<Array<CalendarItem?>> = Array(getWeeksCount(year, month)) { Array(7) { null } }
         var weeksCounter: Int = 0;
         var daysCounter: Int = 1;
         while(weeksCounter < getWeeksCount(year, month)){
             if(weeksCounter == 0){
                 for(i in getFirstDayNum(year, month)-1..6){
-                    calendar[0][i] = daysCounter;
+                    calendar[0][i] = CalendarItem(year, month, daysCounter);
                     daysCounter++;
                 }
             }
             else if(weeksCounter == calendar.size-1){
                 for(i in 0..getLastDayNum(year, month)-1){
-                    calendar[calendar.size-1][i] = daysCounter;
+                    calendar[calendar.size-1][i] = CalendarItem(year, month, daysCounter);
                     daysCounter++;
                 }
             }
             else{
                 for(i in 0..6){
-                    calendar[weeksCounter][i]=daysCounter;
+                    calendar[weeksCounter][i] = CalendarItem(year, month, daysCounter);
                     daysCounter++;
                 }
             }
             weeksCounter++;
-        }
-        for(i in getLastDayNum(year, month)..6){
-            calendar[calendar.size-1][i] = -1;
         }
         return calendar
     }
@@ -67,12 +61,11 @@ class MainSelector {
         return weeksCount
     }
 
-    private fun getDayName(year: Int, month: Int, day: Int): String {
-        return LocalDate.of(year, month, day).dayOfWeek.name
+    companion object{
+        public fun getDayName(year: Int, month: Int, day: Int): String {
+            return LocalDate.of(year, month, day).dayOfWeek.name
+        }
     }
-    /*
-    * Возвращает номер номер дня в неделе для первого дня в месяце
-    * */
     private fun getFirstDayNum(year: Int, month: Int): Int {
         return LocalDate.of(year, month, 1).dayOfWeek.value
     }

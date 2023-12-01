@@ -46,13 +46,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.fedor.attendancerecording.ui.theme.AttendanceRecordingTheme
 import com.fedor.attendancerecording.view.components.BurgerMenuButton
 import com.fedor.attendancerecording.view.components.DateLabel
 
-@Preview
 @Composable
-public fun Recording()
+public fun Recording(navController: NavController, selectedDate: String?)
 {
     AttendanceRecordingTheme {
         Column {
@@ -144,53 +144,6 @@ internal fun MarkersComboBox(markers: List<String>){
         }
     }
 }
-//
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun Demo_ExposedDropdownMenuBox() {
-//    val context = LocalContext.current
-//    val coffeeDrinks = arrayOf("Americano", "Cappuccino", "Espresso", "Latte", "Mocha")
-//    var expanded by remember { mutableStateOf(false) }
-//    var selectedText by remember { mutableStateOf(coffeeDrinks[0]) }
-//
-//    Box(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(32.dp)
-//    ) {
-//        ExposedDropdownMenuBox(
-//            expanded = expanded,
-//            onExpandedChange = {
-//                expanded = !expanded
-//            }
-//        ) {
-//            TextField(
-//                value = selectedText,
-//                onValueChange = {},
-//                readOnly = true,
-//                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-//                modifier = Modifier.menuAnchor()
-//            )
-//
-//            ExposedDropdownMenu(
-//                expanded = expanded,
-//                onDismissRequest = { expanded = false }
-//            ) {
-//                coffeeDrinks.forEach { item ->
-//                    DropdownMenuItem(
-//                        text = { Text(text = item) },
-//                        onClick = {
-//                            selectedText = item
-//                            expanded = false
-//                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
-//                        }
-//                    )
-//                }
-//            }
-//        }
-//    }
-//}
-
 @Composable
 internal fun drop2(){
     var expanded by remember { mutableStateOf(false) }
