@@ -22,26 +22,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.fedor.attendancerecording.ui.theme.AttendanceRecordingTheme
-import com.fedor.attendancerecording.viewmodel.calendar.CalendarLogic
+import androidx.navigation.NavController
 import com.fedor.attendancerecording.view.components.*
 import com.fedor.attendancerecording.viewmodel.calendar.CalendarItem
 import com.fedor.attendancerecording.viewmodel.calendar.CalendarViewModel
 
 @Composable
-public fun Calendar() {
+public fun Calendar(navController: NavController) {
     val viewModel: CalendarViewModel = CalendarViewModel()
     val calendarArray = viewModel.calendarLogic.getMonthArray(2023, 12)
-    AttendanceRecordingTheme {
-        Column(modifier = Modifier.fillMaxWidth()) {
-            BurgerMenuButton()
-            Spacer(modifier = Modifier.height(25.dp))
-            DateLabel("26.ноябрь.2023")
-            Spacer(modifier = Modifier.height(25.dp))
-            NextPreviousButtons()
-            Spacer(modifier = Modifier.height(50.dp))
-            Calendar(calendarArray)
-        }
+    Column(modifier = Modifier.fillMaxWidth()) {
+        BurgerMenuButton(navController)
+        Spacer(modifier = Modifier.height(25.dp))
+        DateLabel("26.ноябрь.2023")
+        Spacer(modifier = Modifier.height(25.dp))
+        NextPreviousButtons()
+        Spacer(modifier = Modifier.height(50.dp))
+        Calendar(calendarArray)
     }
 }
 
@@ -86,39 +83,37 @@ internal fun CalendarNavigationButton(type: String = "next") {
 
 @Composable
 internal fun Calendar(calendar: Array<Array<CalendarItem?>>) {
-    AttendanceRecordingTheme {
-        Box(
-            contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()
-        ) {
-            Column {
-                for (row in calendar) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        for (cell in row) {
-                            Column(
-                                modifier = Modifier.defaultMinSize(53.dp, 53.dp),
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                if (cell != null) {
-                                    Button(colors = ButtonDefaults.buttonColors(
-                                        containerColor = Color(153, 153, 255),
-                                        contentColor = Color(255, 255, 255)
-                                    ),
-                                        shape = RoundedCornerShape(100.dp),
-                                        border = when(cell.isCurrent){
-                                            true -> BorderStroke(2.dp, Color.Black)
-                                            false -> null
-                                        },
-                                        contentPadding = PaddingValues(0.dp),
-                                        modifier = Modifier
-                                            .height(45.dp)
-                                            .width(45.dp),
-                                        onClick = { /*TODO*/ }) {
-                                        Text(
-                                            text = "${cell.day}",
-                                            fontSize = 24.sp,
-                                            textAlign = TextAlign.Center
-                                        )
-                                    }
+    Box(
+        contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()
+    ) {
+        Column {
+            for (row in calendar) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    for (cell in row) {
+                        Column(
+                            modifier = Modifier.defaultMinSize(53.dp, 53.dp),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            if (cell != null) {
+                                Button(colors = ButtonDefaults.buttonColors(
+                                    containerColor = Color(153, 153, 255),
+                                    contentColor = Color(255, 255, 255)
+                                ),
+                                    shape = RoundedCornerShape(100.dp),
+                                    border = when(cell.isCurrent){
+                                        true -> BorderStroke(2.dp, Color.Black)
+                                        false -> null
+                                    },
+                                    contentPadding = PaddingValues(0.dp),
+                                    modifier = Modifier
+                                        .height(45.dp)
+                                        .width(45.dp),
+                                    onClick = { /*TODO*/ }) {
+                                    Text(
+                                        text = "${cell.day}",
+                                        fontSize = 24.sp,
+                                        textAlign = TextAlign.Center
+                                    )
                                 }
                             }
                         }

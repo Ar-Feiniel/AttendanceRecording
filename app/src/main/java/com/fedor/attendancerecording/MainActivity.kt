@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import com.fedor.attendancerecording.ui.theme.AttendanceRecordingTheme
 import com.fedor.attendancerecording.view.Calendar
 
 class MainActivity : ComponentActivity() {
@@ -17,14 +16,7 @@ class MainActivity : ComponentActivity() {
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
 
             }
-            AttendanceRecordingTheme {
-                Surface(
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    navigation()
-                }
-            }
+
         }
     }
 }
-

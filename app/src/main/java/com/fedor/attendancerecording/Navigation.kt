@@ -13,7 +13,7 @@ public fun navigation() {
 
     NavHost(navController = navController, startDestination = Screens.CALENDAR.route) {
         composable(route = Screens.CALENDAR.route) {
-            com.fedor.attendancerecording.view.Calendar()
+            com.fedor.attendancerecording.view.Calendar(navController = navController)
         }
         composable(route = Screens.RECORDING.route
             , arguments = listOf(navArgument("selected_date") {type = NavType.Companion.StringType})) {backStackEntry ->

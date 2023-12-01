@@ -16,9 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 
 @Composable
-public fun BurgerMenuButton() {
+public fun BurgerMenuButton(navController: NavController) {
+
     Row() {
         IconButton(colors = IconButtonDefaults.iconButtonColors(
             containerColor = Color.Transparent,
