@@ -1,15 +1,14 @@
 package com.fedor.attendancerecording
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,8 +25,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavController
-import androidx.navigation.NavHost
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -43,32 +43,39 @@ import com.fedor.attendancerecording.view.Recording
 @Composable
 public fun attendanceRecordingApp(){
     val navController: NavHostController = rememberNavController()
-    val navScreens: List<Screens> = listOf(Screens.CALENDAR, Screens.MARKERS, Screens.WORKDAYS)
-    var selectedScreen: Screens by remember { mutableStateOf(Screens.CALENDAR) }
+    val navScreens: List<Screens> = listOf(Screens.CALENDAR, Screens.STUDENTS, Screens.MARKERS, Screens.WORKDAYS)
+    var selectedScreen: String by remember { mutableStateOf(Screens.CALENDAR.designation) }
 
     MaterialTheme{
         Surface{
             Scaffold(
                 topBar = {
                     TopAppBar(title = {
-                        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
-                            Row(){
-                                navScreens.forEach { value ->
-                                    IconButton(onClick = { selectedScreen = value; navController.navigate(value.route) }) {
-                                        Icon(value.icon, contentDescription = null)
-                                    }
-                                }
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                                Text(text = "$selectedScreen")
                             }
-                            Box(modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentSize(Alignment.Center)) {
-                                    Text(text = "$selectedScreen")
-                                }
+                    }, modifier = Modifier.padding(5.dp))
+                },
+                bottomBar = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                        , horizontalArrangement = Arrangement.SpaceEvenly
+                        , verticalAlignment = Alignment.CenterVertically
+                    ){
+                        navScreens.forEach { value ->
+                            IconButton(onClick = { selectedScreen = value.designation; navController.navigate(value.route) }) {
+                                value.icon(height = 42.dp, width = 42.dp)
+                            }
                         }
-                    })
+                    }
                 }
             ){ paddingValues ->
-                Column(modifier = Modifier.padding(paddingValues)) {
+                Column(modifier = Modifier.padding(paddingValues),
+                    verticalArrangement = Arrangement.Center) {
                     navigation(navController = navController)
                 }
             }
@@ -86,8 +93,11 @@ internal fun navigation(navController: NavHostController) {
             Calendar(navController = navController)
         }
         composable(route = Screens.RECORDING.route
-            , arguments = listOf(navArgument("selected_date") {type = NavType.StringType})) { backStackEntry ->
+            , arguments = listOf(navArgument("selected_date") { type = NavType.StringType })) { backStackEntry ->
             Recording(navController = navController, backStackEntry.arguments?.getString("selected_date"))
+        }
+        composable(route = Screens.STUDENTS.route) {
+            Markers()
         }
         composable(route = Screens.MARKERS.route) {
             Markers()
@@ -98,9 +108,20 @@ internal fun navigation(navController: NavHostController) {
     }
 }
 
-internal enum class Screens(val route: String, name: String = "no", val icon: ImageVector = Icons.Default.Info) {
-    CALENDAR(route = "calendar", name = "Календарь", icon = Icons.Default.DateRange),
+internal enum class Screens(val route: String
+                            , val designation: String = "no"
+                            , val icon: @Composable (height: Dp, width: Dp) -> Unit = { height, width -> Icon( Icons.Default.Info,  null, Modifier.height(height).width(width))}) {
+    CALENDAR(route = "calendar"
+        , designation = "Календарь"
+        , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.calendar_month), null, Modifier.height(height = height).width(width), ) }),
     RECORDING(route = "recording/{selected_date}"),
-    MARKERS(route = "markers", name = "Маркеры", icon = Icons.Default.Star),
-    WORKDAYS(route = "workdays", name = "Рабочие дни", icon = Icons.Default.DateRange)
+    STUDENTS(route = "students"
+        , designation = "Группа"
+        , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.group), null, Modifier.height(height).width(width)) }),
+    MARKERS(route = "markers"
+        , designation = "Маркеры"
+        , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.stars), null, Modifier.height(height).width(width)) }),
+    WORKDAYS(route = "workdays"
+        , designation = "Рабочие дни"
+        , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.edit_calendar), null, Modifier.height(height).width(width)) })
 }
