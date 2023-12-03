@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.fedor.attendancerecording.view.components.BurgerMenuButton
@@ -39,7 +40,6 @@ import com.fedor.attendancerecording.view.components.DateLabel
 public fun Recording(navController: NavController, selectedDate: String?)
 {
     Column {
-        BurgerMenuButton(navController = navController)
         Spacer(modifier = Modifier.height(12.dp))
         DateLabel("26.ноябрь.2023")
         Row( modifier = Modifier.align(Alignment.CenterHorizontally)){
@@ -51,6 +51,7 @@ public fun Recording(navController: NavController, selectedDate: String?)
         StudentsList()
     }
 }
+@Preview
 @Composable
 internal fun PairTabRow(){
     var tabIndex by remember { mutableStateOf<Int>(0) }

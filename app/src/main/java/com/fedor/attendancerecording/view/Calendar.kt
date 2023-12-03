@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,14 +32,15 @@ import com.fedor.attendancerecording.viewmodel.calendar.CalendarViewModel
 public fun Calendar(navController: NavController) {
     val viewModel: CalendarViewModel = CalendarViewModel()
     val calendarArray = viewModel.calendarLogic.getMonthArray(2023, 12)
+
     Column(modifier = Modifier.fillMaxWidth()) {
-        BurgerMenuButton(navController)
         Spacer(modifier = Modifier.height(25.dp))
         DateLabel("26.ноябрь.2023")
         Spacer(modifier = Modifier.height(25.dp))
         NextPreviousButtons()
         Spacer(modifier = Modifier.height(50.dp))
         Calendar(calendarArray)
+        Spacer(modifier = Modifier.fillMaxHeight())
     }
 }
 
