@@ -1,5 +1,6 @@
 package com.fedor.attendancerecording.viewmodel.calendar
 
+import android.util.Log
 import java.time.LocalDate
 
 class CalendarLogic {
@@ -27,6 +28,14 @@ class CalendarLogic {
                 }
             }
             weeksCounter++;
+        }
+        return calendar
+    }
+    public fun getMonthList(year: Int, month: Int): List<CalendarItem?> {
+        val calendar: MutableList<CalendarItem?> = MutableList(getWeeksCount(year, month)*7, { null })
+        val firstDayIndex: Int = getFirstDayNum(year, month)-1
+        for (dayNum in 1..getDaysCount(year, month)){
+            calendar[dayNum-1+firstDayIndex] = CalendarItem(year, month, dayNum)
         }
         return calendar
     }

@@ -90,7 +90,7 @@ internal fun navigation(navController: NavHostController) {
 
     NavHost(navController = navController, startDestination = Screens.CALENDAR.route) {
         composable(route = Screens.CALENDAR.route) {
-            Calendar(navController = navController)
+            Calendar()
         }
         composable(route = Screens.RECORDING.route
             , arguments = listOf(navArgument("selected_date") { type = NavType.StringType })) { backStackEntry ->
