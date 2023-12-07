@@ -38,6 +38,7 @@ import com.fedor.attendancerecording.view.Calendar
 import com.fedor.attendancerecording.view.Markers
 import com.fedor.attendancerecording.view.NonWorkingDays
 import com.fedor.attendancerecording.view.Recording
+import com.fedor.attendancerecording.view.components.listtest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -88,7 +89,10 @@ public fun attendanceRecordingApp(){
 internal fun navigation(navController: NavHostController) {
 
 
-    NavHost(navController = navController, startDestination = Screens.CALENDAR.route) {
+    NavHost(navController = navController, startDestination = Screens.STUDENTS.route) {
+        /*composable(route = "screenTest"){
+            listtest()
+        }*/
         composable(route = Screens.CALENDAR.route) {
             Calendar()
         }
@@ -97,7 +101,7 @@ internal fun navigation(navController: NavHostController) {
             Recording(navController = navController, backStackEntry.arguments?.getString("selected_date"))
         }
         composable(route = Screens.STUDENTS.route) {
-            Markers()
+            listtest()
         }
         composable(route = Screens.MARKERS.route) {
             Markers()

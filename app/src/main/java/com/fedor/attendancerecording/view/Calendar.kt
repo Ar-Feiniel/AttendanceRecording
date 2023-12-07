@@ -4,6 +4,8 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -34,6 +36,7 @@ import com.fedor.attendancerecording.view.components.DateLabel
 import com.fedor.attendancerecording.viewmodel.calendar.CalendarItem
 import com.fedor.attendancerecording.viewmodel.calendar.CalendarViewModel
 
+@OptIn(ExperimentalLayoutApi::class)
 @Preview
 @Composable
 public fun Calendar() {
@@ -168,5 +171,28 @@ internal fun Calendar2(calendar: List<CalendarItem?>) {
                     }
                 }
         })
+    }
+}
+@ExperimentalLayoutApi
+@Composable
+internal fun Calendar3(calendar: List<CalendarItem?>) {
+    Box(
+        contentAlignment = Alignment.Center, modifier = Modifier.padding(start = 12.dp, end = 12.dp)
+    ) {
+        FlowRow (maxItemsInEachRow = 7,
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically) {
+            calendar.forEach(){it ->
+                if(it != null){
+                    Button(onClick = { /*TODO*/ }) {
+
+                    }
+                } else {
+                    Box(){
+
+                    }
+                }
+            }
+        }
     }
 }
