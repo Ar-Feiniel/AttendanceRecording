@@ -1,6 +1,7 @@
-package com.fedor.attendancerecording.viewmodel.calendar
+package com.fedor.attendancerecording.viewmodel.screens.maincalendar
 
 import java.time.LocalDate
+import java.util.Date
 
 class CalendarItem(val year: Int, private val _month: Int, private val _day: Int) {
     public val day: String
@@ -17,11 +18,14 @@ class CalendarItem(val year: Int, private val _month: Int, private val _day: Int
                 false -> "${_month}"
             }
         }
-
+    public val date: Date
+        get(){
+            return Date(year, _month, _day)
+        }
     public val isWorkingDay: Boolean;
     public val isCurrent: Boolean;
     init {
         isCurrent = LocalDate.now().toString() == "${year}-${month}-${day}"
-        isWorkingDay = CalendarLogic.getDayName(year, _month, _day) in arrayOf<String>("SUNDAY")
+        isWorkingDay = MainCalendarViewModel.getDayName(year, _month, _day) in arrayOf<String>("SUNDAY")
     }
 }

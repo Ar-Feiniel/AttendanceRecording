@@ -1,14 +1,13 @@
 package com.fedor.attendancerecording.view.components
 
 import com.fedor.attendancerecording.model.entity.Marker
-//import com.fedor.attendancerecording.model.entity.Student
+import com.fedor.attendancerecording.model.entity.Student
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -18,32 +17,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.fedor.attendancerecording.R
-import kotlin.reflect.KClass
-
-@Preview
-@Composable
-public fun listtest() {
-    ActionList<Student>(onEditClick = {}
-        , onDeleteClick = {}
-        , onAddClick = {}
-        , addIconFun = @Composable {}
-        , itemsList = listOf<Student>(
-            Student(1, "name1")
-            , Student(2, "name2")
-            , Student(3, "name3")
-            , Student(4, "name4")
-            , Student(5, "name5")
-            , Student(6, "name6")
-            , Student(7, "name7")
-            , Student(8, "name8")
-            , Student(9, "name9")
-        )
-    )
-}
-data class Student(
-    val id: Int,
-    val name: String
-)
 
 @Composable
 public fun <T: Any> ActionList(
@@ -58,38 +31,18 @@ public fun <T: Any> ActionList(
                 when(it::class)
                 {
                     Student::class -> {
-                        val item = (it as Student);
-                        Box(modifier = Modifier.fillMaxWidth(0.5f)){
-                            Text(text="${item.name}")
-                        }
-                        Row(modifier = Modifier.fillMaxWidth()
-                            , horizontalArrangement = Arrangement.SpaceEvenly){
-                            //edit
-                            IconButton(onClick = { onEditClick(item.id) }) {
-                                Icon(ImageVector.vectorResource(R.drawable.delete), contentDescription = null)
-                            }
-                            //delete
-                            IconButton(onClick = { onDeleteClick(item.id) }) {
-                                Icon(ImageVector.vectorResource(R.drawable.edit), contentDescription = null)
-                            }
-                        }
+                        val student = (it as Student)
+                        ListItem(text = "${student.name} ${student.surname} ${student.patronymic}",
+                            id = student.idStudent,
+                            onEditClick = onEditClick,
+                            onDeleteClick = onDeleteClick)
                     }
                     Marker::class -> {
                         val marker = (it as Marker);
-                        Box(modifier = Modifier.fillMaxWidth(0.5f)){
-                            Text(text="${marker.name}")
-                        }
-                        Row(modifier = Modifier.fillMaxWidth()
-                            , horizontalArrangement = Arrangement.SpaceEvenly){
-                            //edit
-                            IconButton(onClick = { onEditClick(marker.id) }) {
-                                Icon(ImageVector.vectorResource(R.drawable.delete), contentDescription = null)
-                            }
-                            //delete
-                            IconButton(onClick = { onDeleteClick(marker.id) }) {
-                                Icon(ImageVector.vectorResource(R.drawable.edit), contentDescription = null)
-                            }
-                        }
+                        ListItem(text = marker.name,
+                            id = marker.idMarker,
+                            onEditClick = onEditClick,
+                            onDeleteClick = onDeleteClick)
                     }
                     else -> {
                         Text(text = "fuck u")
@@ -101,7 +54,26 @@ public fun <T: Any> ActionList(
 }
 
 @Composable
-fun ListItem(){
-
+fun ListItem(
+    text: String,
+    id: Int,
+    onEditClick: (id: Int) -> Unit,
+    onDeleteClick: (id: Int) -> Unit,
+){
+    Row(){
+        Box(modifier = Modifier.fillMaxWidth(0.5f)){
+            Text(text = text)
+        }
+        Row(modifier = Modifier.fillMaxWidth()
+            , horizontalArrangement = Arrangement.SpaceEvenly){
+            //edit
+            IconButton(onClick = { onEditClick(id) }) {
+                Icon(ImageVector.vectorResource(R.drawable.delete), contentDescription = null)
+            }
+            //delete
+            IconButton(onClick = { onDeleteClick(id) }) {
+                Icon(ImageVector.vectorResource(R.drawable.edit), contentDescription = null)
+            }
+        }
+    }
 }
-

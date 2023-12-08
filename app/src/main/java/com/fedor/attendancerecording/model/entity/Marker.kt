@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "marker", indices = [Index(value = ["name"], unique = true)])
 data class Marker(
-    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id_marker") val id: Int,
+    @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id_marker") val idMarker: Int,
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "id_marker_type") val idMarkerType: Int
 )

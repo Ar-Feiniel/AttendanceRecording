@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AttendanceRecording</string>
+    <string name="calendar">Calendar</string>
+    <string name="students">Students</string>
+    <string name="markers">Markers</string>
+    <string name="working_days">Working days</string>
 </resources>

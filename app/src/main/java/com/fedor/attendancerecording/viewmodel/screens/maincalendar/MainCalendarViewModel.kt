@@ -1,9 +1,11 @@
-package com.fedor.attendancerecording.viewmodel.calendar
+package com.fedor.attendancerecording.viewmodel.screens.maincalendar
 
-import android.util.Log
+import androidx.lifecycle.ViewModel
 import java.time.LocalDate
+import java.util.Date
 
-class CalendarLogic {
+class MainCalendarViewModel : ViewModel() {
+    private var _currentDate: LocalDate = LocalDate.now()
     public fun getMonthArray(year: Int, month: Int): Array<Array<CalendarItem?>> {
         val calendar: Array<Array<CalendarItem?>> = Array(getWeeksCount(year, month)) { Array(7) { null } }
         var weeksCounter: Int = 0;
@@ -39,7 +41,15 @@ class CalendarLogic {
         }
         return calendar
     }
-
+    public fun getMonthList(date: Date): List<CalendarItem?> {
+        return getMonthList(date.year, date.month)
+    }
+    public fun getMonthList(): List<CalendarItem?> {
+        return getMonthList(_currentDate.year, _currentDate.month.value)
+    }
+    public fun getGracefulDateText(): String {
+        return "${_currentDate.dayOfMonth} ${_currentDate.month.name} ${_currentDate.year}"
+    }
     private fun getDaysCount(year: Int, month: Int): Int {
         val daysInMonth: Array<Int> = arrayOf(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
         return when (month == 2 && ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)) {
@@ -47,7 +57,6 @@ class CalendarLogic {
             false -> daysInMonth[month - 1]
         }
     }
-
     private fun getWeeksCount(year: Int, month: Int): Int {
         val weeks: Array<Array<String>> = Array(6) { Array(2) { "" } }
         var currentWeek: Int = 0;
@@ -69,7 +78,6 @@ class CalendarLogic {
         }
         return weeksCount
     }
-
     companion object{
         public fun getDayName(year: Int, month: Int, day: Int): String {
             return LocalDate.of(year, month, day).dayOfWeek.name
@@ -80,5 +88,8 @@ class CalendarLogic {
     }
     private fun getLastDayNum(year: Int, month: Int): Int {
         return LocalDate.of(year, month, getDaysCount(year, month)).dayOfWeek.value
+    }
+    private fun updateDateNow(){
+        _currentDate = LocalDate.now()
     }
 }

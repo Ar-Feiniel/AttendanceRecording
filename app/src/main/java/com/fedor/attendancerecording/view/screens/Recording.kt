@@ -1,4 +1,4 @@
-package com.fedor.attendancerecording.view
+package com.fedor.attendancerecording.view.screens
 
 import android.widget.Toast
 import androidx.compose.foundation.background
@@ -33,7 +33,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.fedor.attendancerecording.view.components.BurgerMenuButton
 import com.fedor.attendancerecording.view.components.DateLabel
 
 @Composable
