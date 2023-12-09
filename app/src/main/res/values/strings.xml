@@ -4,4 +4,6 @@
     <string name="students">Students</string>
     <string name="markers">Markers</string>
     <string name="working_days">Working days</string>
+    <string name="export">Export</string>
+    <string name="settings">Settings</string>
 </resources>

@@ -5,4 +5,6 @@
     <string name="students">Студенты</string>
     <string name="markers">Маркеры</string>
     <string name="working_days">Рабочие дни</string>
+    <string name="export">Экспорт</string>
+    <string name="settings">Настройки</string>
 </resources>

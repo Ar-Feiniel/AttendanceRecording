@@ -1,4 +1,7 @@
 package com.fedor.attendancerecording.viewmodel.screens
 
-class RecordingViewModel {
+import androidx.lifecycle.ViewModel
+
+public final class RecordingViewModel : ViewModel() {
+
 }

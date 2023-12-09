@@ -1,4 +1,8 @@
 package com.fedor.attendancerecording.viewmodel.screens
 
-class MarkersViewModel {
+import androidx.lifecycle.ViewModel
+import com.fedor.attendancerecording.viewmodel.ActionListable
+
+public final class MarkersViewModel : ViewModel(), ActionListable {
+
 }

@@ -37,10 +37,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.fedor.attendancerecording.view.screens.Export
 import com.fedor.attendancerecording.view.screens.MainCalendar
 import com.fedor.attendancerecording.view.screens.Markers
 import com.fedor.attendancerecording.view.screens.NonWorkingDays
 import com.fedor.attendancerecording.view.screens.Recording
+import com.fedor.attendancerecording.view.screens.Settings
 import com.fedor.attendancerecording.view.screens.Students
 
 @Preview
@@ -50,8 +52,10 @@ public fun attendanceRecordingApp(){
     val startScreen: Screens = Screens.CALENDAR
 
     val navController: NavHostController = rememberNavController()
-    val navScreens: List<Screens> = listOf(Screens.CALENDAR, Screens.STUDENTS, Screens.MARKERS, Screens.WORKDAYS)
-    var selectedScreen: @Composable () -> Unit by remember { mutableStateOf({Text( text = stringResource(startScreen.screenNameResId) )}) }
+    val navScreens: List<Screens> = listOf(Screens.CALENDAR, Screens.WORKDAYS,
+                                            Screens.MARKERS, Screens.STUDENTS,
+                                            Screens.EXPORT, Screens.SETTINGS)
+    var selectedScreen: @Composable () -> Unit by remember { mutableStateOf( { Text( text = stringResource(startScreen.screenNameResId)) }) }
 
     MaterialTheme{
         Surface{
@@ -94,9 +98,6 @@ public fun attendanceRecordingApp(){
 internal fun navigation(navController: NavHostController, startScreen: Screens) {
 
     NavHost(navController = navController, startDestination = startScreen.route) {
-        /*composable(route = "screenTest"){
-            listtest()
-        }*/
         composable(route = Screens.CALENDAR.route) {
             MainCalendar()
         }
@@ -112,6 +113,12 @@ internal fun navigation(navController: NavHostController, startScreen: Screens) 
         }
         composable(route = Screens.WORKDAYS.route) {
             NonWorkingDays()
+        }
+        composable(route = Screens.EXPORT.route) {
+            Export()
+        }
+        composable(route = Screens.SETTINGS.route) {
+            Settings()
         }
     }
 }
@@ -137,13 +144,25 @@ internal enum class Screens(val route: String
                 .width(width)) }),
     MARKERS(route = "markers"
         , screenNameResId = R.string.markers
-        , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.stars), null,
+        , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.marker), null,
             Modifier
                 .height(height)
                 .width(width)) }),
     WORKDAYS(route = "workdays"
         , screenNameResId = R.string.working_days
         , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.edit_calendar), null,
+            Modifier
+                .height(height)
+                .width(width)) }),
+    EXPORT(route = "export"
+            , screenNameResId = R.string.export
+            , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.export), null,
+            Modifier
+                .height(height)
+                .width(width)) }),
+    SETTINGS(route = "export"
+        , screenNameResId = R.string.settings
+        , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.settings), null,
             Modifier
                 .height(height)
                 .width(width)) })

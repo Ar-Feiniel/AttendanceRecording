@@ -1,11 +1,13 @@
-package com.fedor.attendancerecording.viewmodel.screens.maincalendar
+package com.fedor.attendancerecording.viewmodel
 
 import androidx.lifecycle.ViewModel
 import java.time.LocalDate
 import java.util.Date
 
-class MainCalendarViewModel : ViewModel() {
+public abstract class CalendarViewModel : ViewModel() {
     private var _currentDate: LocalDate = LocalDate.now()
+    public var selectedDate: LocalDate = _currentDate
+    public var calendarList: List<CalendarItem?> = getMonthList(selectedDate)
     public fun getMonthArray(year: Int, month: Int): Array<Array<CalendarItem?>> {
         val calendar: Array<Array<CalendarItem?>> = Array(getWeeksCount(year, month)) { Array(7) { null } }
         var weeksCounter: Int = 0;
@@ -41,8 +43,8 @@ class MainCalendarViewModel : ViewModel() {
         }
         return calendar
     }
-    public fun getMonthList(date: Date): List<CalendarItem?> {
-        return getMonthList(date.year, date.month)
+    public fun getMonthList(localDate: LocalDate): List<CalendarItem?> {
+        return getMonthList(localDate.year, localDate.monthValue)
     }
     public fun getMonthList(): List<CalendarItem?> {
         return getMonthList(_currentDate.year, _currentDate.month.value)
@@ -91,5 +93,43 @@ class MainCalendarViewModel : ViewModel() {
     }
     private fun updateDateNow(){
         _currentDate = LocalDate.now()
+    }
+}
+enum class DaysOfWeek() {
+    MONDAY(),
+    TUESDAY(),
+    WEDNESDAY(),
+    THURSDAY(),
+    FRIDAY(),
+    SATURDAY(),
+    SUNDAY()
+}
+enum class DateTypes{
+    HOLIDAY, WORKDAY
+}
+class CalendarItem(val year: Int, private val _month: Int, private val _day: Int) {
+    public val day: String
+        get() {
+            return when (_day in 1..9) {
+                true -> "0${_day}"
+                false -> "${_day}"
+            }
+        }
+    public val month: String
+        get() {
+            return when (_month in 1..9) {
+                true -> "0${_month}"
+                false -> "${_month}"
+            }
+        }
+    public val date: Date
+        get(){
+            return Date(year, _month, _day)
+        }
+    public val isWorkingDay: Boolean;
+    public val isCurrent: Boolean;
+    init {
+        isCurrent = LocalDate.now().toString() == "${year}-${month}-${day}"
+        isWorkingDay = CalendarViewModel.getDayName(year, _month, _day) in arrayOf<String>("SUNDAY")
     }
 }

@@ -1,4 +1,8 @@
 package com.fedor.attendancerecording.viewmodel.screens
 
-class StudentsViewModel {
+import androidx.lifecycle.ViewModel
+import com.fedor.attendancerecording.viewmodel.ActionListable
+
+public final class StudentsViewModel : ViewModel(), ActionListable {
+
 }

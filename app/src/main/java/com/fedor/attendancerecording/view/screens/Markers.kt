@@ -1,10 +1,14 @@
 package com.fedor.attendancerecording.view.screens
 
+import androidx.compose.material3.Icon
 import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
 import com.fedor.attendancerecording.model.entity.Marker
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.fedor.attendancerecording.R
 import com.fedor.attendancerecording.view.components.ActionList
 
 @Preview
@@ -15,7 +19,7 @@ fun Markers(){
     ActionList<Marker>(onEditClick = {}
         , onDeleteClick = {}
         , onAddClick = {}
-        , addIconFun = @Composable {}
+        , addIconCompose = @Composable {modifier ->  Icon( ImageVector.vectorResource(R.drawable.marker_add), null, modifier = modifier)}
         , itemsList = listOf<Marker>(
             Marker(1, "name1", 1)
             , Marker(2, "name2", 1)

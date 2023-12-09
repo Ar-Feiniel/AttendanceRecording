@@ -1,7 +1,6 @@
 package com.fedor.attendancerecording.view.screens
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -22,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fedor.attendancerecording.view.components.DateLabel
 import com.fedor.attendancerecording.view.components.Calendar
-import com.fedor.attendancerecording.viewmodel.screens.maincalendar.MainCalendarViewModel
+import com.fedor.attendancerecording.viewmodel.screens.MainCalendarViewModel
 
 @Preview
 @Composable
@@ -34,7 +33,7 @@ public fun MainCalendar() {
         DateLabel(viewModel.getGracefulDateText())
         Spacer(modifier = Modifier.height(25.dp))
         NextPreviousButtons()
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(25.dp))
         Calendar(calendarList, onItemClick = {})
         Spacer(modifier = Modifier.fillMaxHeight())
     }
