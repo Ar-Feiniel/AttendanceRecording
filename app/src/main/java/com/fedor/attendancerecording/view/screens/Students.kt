@@ -17,6 +17,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fedor.attendancerecording.R
 import com.fedor.attendancerecording.view.components.ActionList
 
@@ -24,10 +25,9 @@ import com.fedor.attendancerecording.view.components.ActionList
 internal const val MaterialIconDimension = 128f
 @Preview
 @Composable
-public fun Students(){
-    val context = LocalContext.current
-    val viewModel: StudentsViewModel = StudentsViewModel()
-
+public fun Students(
+    viewModel: StudentsViewModel = viewModel(factory = AppViewModelProvider.Factory)
+){
     ActionList<Student>(onEditClick = {}
         , onDeleteClick = {}
         , onAddClick = {  }

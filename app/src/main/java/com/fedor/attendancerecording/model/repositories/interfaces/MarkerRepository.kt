@@ -10,11 +10,7 @@ interface MarkerRepository: Repositoryable<Marker> {
 
     override suspend fun updateItem(item: Marker)
 
-    override suspend fun deleteItem(item: Marker) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun deleteItem(item: Marker)
 
-    override suspend fun insertItem(item: Marker) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun insertItem(item: Marker)
 }
