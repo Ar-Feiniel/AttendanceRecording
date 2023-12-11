@@ -1,10 +1,11 @@
 package com.fedor.attendancerecording.model.repositories
 
-import androidx.lifecycle.LiveData
-import com.fedor.attendancerecording.model.entity.Record
+import kotlinx.coroutines.flow.Flow
 
 interface Repositoryable<T> {
-    public val readAllData: LiveData<List<T>>
-    suspend fun addItem(item: T)
+    public fun getAllDataStream(): Flow<List<T>>
+    public fun getOneItemStream(id: Int): Flow<T?>
+    suspend fun insertItem(item: T)
+    suspend fun updateItem(item: T)
     suspend fun deleteItem(item: T)
 }

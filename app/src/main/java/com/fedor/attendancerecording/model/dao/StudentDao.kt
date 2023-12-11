@@ -9,17 +9,18 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.fedor.attendancerecording.model.entity.Record
 import com.fedor.attendancerecording.model.entity.Student
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface StudentDao: DataAccessObjectable<Student> {
     @Query("select * from student order by id_student ASC")
-    override fun getAll(): LiveData<List<Student>>
+    override fun getAll(): Flow<List<Student>>
 
     @Transaction
     @Insert(onConflict  = OnConflictStrategy.ABORT)
-    override fun insertOne(student: Student)
+    override suspend fun insertOne(student: Student)
 
     @Transaction
     @Delete
-    override fun delete(student: Student)
+    override suspend fun delete(student: Student)
 }

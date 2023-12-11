@@ -14,17 +14,17 @@ import com.fedor.attendancerecording.model.entity.*
 abstract class RecordsDB : RoomDatabase() {
 
     abstract fun studentDao(): StudentDao
-    abstract fun MarkerDao(): MarkerDao
-    abstract fun RecordDao(): RecordDao
-    abstract fun MarkerTypeDao(): MarkerTypeDao
-    abstract fun NonWorkingDayDao(): NonWorkingDayDao
+    abstract fun markerDao(): MarkerDao
+    abstract fun recordDao(): RecordDao
+    abstract fun markerTypeDao(): MarkerTypeDao
+    abstract fun nonWorkingDayDao(): NonWorkingDayDao
 
     companion object {
         // db singleton
         @Volatile
         private var instance: RecordsDB? = null
 
-        private fun getDataBase(context: Context): RecordsDB{
+        public fun getDataBase(context: Context): RecordsDB{
             val tempInstance = instance
             if (tempInstance != null){
                 return tempInstance

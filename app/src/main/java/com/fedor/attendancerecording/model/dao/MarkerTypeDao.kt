@@ -10,17 +10,18 @@ import androidx.room.Transaction
 import com.fedor.attendancerecording.model.entity.Marker
 import com.fedor.attendancerecording.model.entity.MarkerType
 import com.fedor.attendancerecording.model.entity.MarkerTypeWithMarkers
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MarkerTypeDao: DataAccessObjectable<MarkerType> {
     @Query("select * from marker_type order by id_marker_type ASC")
-    override fun getAll(): LiveData<List<MarkerType>>
+    override fun getAll(): Flow<List<MarkerType>>
 
     @Transaction
     @Insert(onConflict  = OnConflictStrategy.ABORT)
-    override fun insertOne(markerType: MarkerType)
+    override suspend fun insertOne(markerType: MarkerType)
 
     @Transaction
     @Delete
-    override fun delete(markerType: MarkerType)
+    override suspend fun delete(markerType: MarkerType)
 }

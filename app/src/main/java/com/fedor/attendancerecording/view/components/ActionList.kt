@@ -29,7 +29,7 @@ import com.fedor.attendancerecording.R
 public fun <T: Any> ActionList(
                         onEditClick: (id: Int) -> Unit,
                         onDeleteClick: (id: Int) -> Unit,
-                        onAddClick: (id: Int) -> Unit,
+                        onAddClick: (item: Any) -> Unit,
                         addIconCompose: @Composable (modifier: Modifier) -> Unit,
                         itemsList: List<T>){
     Column(Modifier.padding(start = 10.dp, end = 10.dp),
@@ -37,7 +37,7 @@ public fun <T: Any> ActionList(
         Box(contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxWidth()
         ){
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {}) {
                 addIconCompose(modifier = Modifier.size(128.dp))
             }
         }
