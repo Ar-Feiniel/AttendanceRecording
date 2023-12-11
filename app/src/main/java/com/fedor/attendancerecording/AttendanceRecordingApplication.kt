@@ -20,7 +20,7 @@ import android.app.Application
 import com.fedor.attendancerecording.model.ApplicationContainer
 import com.fedor.attendancerecording.model.ApplicationDataContainer
 
-class AttendanceRecordingApp : Application() {
+class AttendanceRecordingApplication : Application() {
     //appContainer instance used by the rest of classes to obtain dependencies
     lateinit var container: ApplicationContainer
     override fun onCreate() {

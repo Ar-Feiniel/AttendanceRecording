@@ -22,7 +22,7 @@ import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.fedor.attendancerecording.AttendanceRecordingApp
+import com.fedor.attendancerecording.AttendanceRecordingApplication
 import com.fedor.attendancerecording.viewmodel.screens.StudentsViewModel
 
 /**
@@ -42,7 +42,7 @@ object AppViewModelProvider {
 
 /**
  * Extension function to queries for [Application] object and returns an instance of
- * [AttendanceRecordingApp].
+ * [AttendanceRecordingApplication].
  */
-fun CreationExtras.attendanceRecordingApplication(): AttendanceRecordingApp =
-    (this[AndroidViewModelFactory.APPLICATION_KEY] as AttendanceRecordingApp)
+fun CreationExtras.attendanceRecordingApplication(): AttendanceRecordingApplication =
+    (this[AndroidViewModelFactory.APPLICATION_KEY] as AttendanceRecordingApplication)
