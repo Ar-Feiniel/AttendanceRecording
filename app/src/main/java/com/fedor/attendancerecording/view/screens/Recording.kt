@@ -86,13 +86,13 @@ internal fun PairTabRow(){
 
 @Composable
 internal fun StudentsList(){
-    val students: List<String> = listOf("Хрюшев Хрюш Хрюшыч1"
-        , "Хрюшев Хрюш Хрюшыч2"
-        , "Хрюшев Хрюш Хрюшыч3"
-        , "Хрюшев Хрюш Хрюшыч4"
-        , "Хрюшев Хрюш Хрюшыч5"
-        , "Хрюшев Хрюш Хрюшыч6"
-        , "Хрюшев Хрюш Хрюшыч7")
+    val students: List<String> = listOf("name surname partonymic1"
+        , "name surname partonymi2"
+        , "name surname partonymi3"
+        , "name surname partonymi4"
+        , "name surname partonymi5"
+        , "name surname partonymi6"
+        , "name surname partonymi7")
     val markers: List<String> = listOf("2у", "2", "1")
     Column() {
         students.forEach {string ->

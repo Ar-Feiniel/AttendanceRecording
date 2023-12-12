@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.fedor.attendancerecording.view.screens
+package com.fedor.attendancerecording.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
