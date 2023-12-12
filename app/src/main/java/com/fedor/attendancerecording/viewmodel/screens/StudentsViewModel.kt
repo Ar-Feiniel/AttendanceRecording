@@ -24,7 +24,7 @@ public final class StudentsViewModel(
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
                 initialValue = StudentsUiState()
             )
-    fun addData(){
+    fun addData(student: Student){
         viewModelScope.launch {
             studentRepository.insertItem(
                 Student(

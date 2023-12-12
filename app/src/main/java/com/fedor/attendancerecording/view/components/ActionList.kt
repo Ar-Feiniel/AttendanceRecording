@@ -1,5 +1,6 @@
 package com.fedor.attendancerecording.view.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import com.fedor.attendancerecording.model.entity.Marker
@@ -29,7 +30,7 @@ import com.fedor.attendancerecording.R
 public fun <T: Any> ActionList(
                         onEditClick: (id: Int) -> Unit,
                         onDeleteClick: (id: Int) -> Unit,
-                        onAddClick: (item: Any) -> Unit,
+                        onAddClick: (item: T) -> Unit,
                         addIconCompose: @Composable (modifier: Modifier) -> Unit,
                         itemsList: List<T>){
     Column(Modifier.padding(start = 10.dp, end = 10.dp),
@@ -75,6 +76,7 @@ fun ListItem(
     onEditClick: (id: Int) -> Unit,
     onDeleteClick: (id: Int) -> Unit,
 ){
+    Log.i("Action_Listable_Item", "ActionListableItemCreate")
     val iconModifier : Modifier = Modifier.size(64.dp)
     Row(){
         Box(modifier = Modifier.fillMaxWidth(0.5f)){

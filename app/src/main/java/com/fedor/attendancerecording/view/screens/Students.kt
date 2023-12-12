@@ -1,5 +1,6 @@
 package com.fedor.attendancerecording.view.screens
 
+import android.util.Log
 import androidx.compose.material3.Icon
 import com.fedor.attendancerecording.viewmodel.screens.StudentsViewModel
 
@@ -22,12 +23,12 @@ internal const val MaterialIconDimension = 128f
 public fun Students(
     viewModel: StudentsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
+    Log.i("Students_Screen", "StudentsScreenComposing...")
     val studentsUiState by viewModel.studentsUiState.collectAsState()
 
-    viewModel.addData()
     ActionList<Student>(onEditClick = {}
         , onDeleteClick = {}
-        , onAddClick = {  }
+        , onAddClick = viewModel::addData
         , addIconCompose = @Composable {modifier ->  Icon( ImageVector.vectorResource(R.drawable.student_add), null, modifier = modifier)}
         , itemsList = studentsUiState.studentList
     )
