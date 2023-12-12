@@ -28,6 +28,7 @@ internal const val MaterialIconDimension = 128f
 public fun Students(
     viewModel: StudentsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
+    viewModel.addData()
     ActionList<Student>(onEditClick = {}
         , onDeleteClick = {}
         , onAddClick = {  }

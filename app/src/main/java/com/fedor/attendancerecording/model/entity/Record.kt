@@ -12,5 +12,5 @@ data class Record(
     @ColumnInfo(name = "id_marker") val idMarker: Int,
     @ColumnInfo(name = "id_student") val idStudent: Int,
     @ColumnInfo(name = "pair_num") val pairNum: Int,
-    @ColumnInfo(name = "date") val date: Date
+    @ColumnInfo(name = "date") val date: String
 )

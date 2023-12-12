@@ -33,7 +33,7 @@ abstract class RecordsDB : RoomDatabase() {
                 val newInstance = Room.databaseBuilder(
                     context.applicationContext,
                     RecordsDB::class.java,
-                    "records.db"
+                    "records_db"
                 ).build()
                 instance = newInstance
                 return newInstance
