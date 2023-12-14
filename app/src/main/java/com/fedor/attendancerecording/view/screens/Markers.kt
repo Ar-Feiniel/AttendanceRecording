@@ -16,7 +16,9 @@ import com.fedor.attendancerecording.view.components.ActionList
 fun Markers(){
     val viewModel: MarkersViewModel = MarkersViewModel()
 
-    ActionList<Marker>(onEditClick = {}
+    ActionList<Marker>(
+        action_class = Marker::class
+        , onEditClick = {}
         , onDeleteClick = {}
         , onAddClick = {}
         , addIconCompose = @Composable {modifier ->  Icon( ImageVector.vectorResource(R.drawable.marker_add), null, modifier = modifier)}

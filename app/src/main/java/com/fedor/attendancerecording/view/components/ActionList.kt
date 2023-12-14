@@ -25,12 +25,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.fedor.attendancerecording.R
+import kotlin.reflect.KClass
 
 @Composable
 public fun <T: Any> ActionList(
+                        action_class: KClass<T>,
                         onEditClick: (id: Int) -> Unit,
-                        onDeleteClick: (id: Int) -> Unit,
-                        onAddClick: (item: T) -> Unit,
+                        onDeleteClick: (item: Any) -> Unit,
+                        onAddClick: (item: Any) -> Unit,
                         addIconCompose: @Composable (modifier: Modifier) -> Unit,
                         itemsList: List<T>){
     Column(Modifier.padding(start = 10.dp, end = 10.dp),
@@ -38,8 +40,12 @@ public fun <T: Any> ActionList(
         Box(contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxWidth()
         ){
-            IconButton(onClick = {}) {
-                addIconCompose(modifier = Modifier.size(128.dp))
+            when(action_class){
+                Student::class ->{
+                    IconButton(onClick = {onAddClick(Student(0, "123", "123", "13"))}) {
+                        addIconCompose(modifier = Modifier.size(128.dp))
+                    }
+                }
             }
         }
         itemsList.forEach{it ->
@@ -51,14 +57,14 @@ public fun <T: Any> ActionList(
                         ListItem(text = "${student.name} ${student.surname} ${student.patronymic}",
                             id = student.idStudent,
                             onEditClick = onEditClick,
-                            onDeleteClick = onDeleteClick)
+                            onDeleteClick = { onDeleteClick(it) })
                     }
                     Marker::class -> {
                         val marker = (it as Marker);
                         ListItem(text = marker.name,
                             id = marker.idMarker,
                             onEditClick = onEditClick,
-                            onDeleteClick = onDeleteClick)
+                            onDeleteClick = { onDeleteClick(it) })
                     }
                     else -> {
                         Text(text = "fuck u")
@@ -74,7 +80,7 @@ fun ListItem(
     text: String,
     id: Int,
     onEditClick: (id: Int) -> Unit,
-    onDeleteClick: (id: Int) -> Unit,
+    onDeleteClick: () -> Unit,
 ){
     Log.i("Action_Listable_Item", "ActionListableItemCreate")
     val iconModifier : Modifier = Modifier.size(64.dp)
@@ -89,7 +95,7 @@ fun ListItem(
                 Icon(ImageVector.vectorResource(R.drawable.edit), contentDescription = null, modifier = iconModifier)
             }
             //delete
-            IconButton(onClick = { onDeleteClick(id) }) {
+            IconButton(onClick = { onDeleteClick() }) {
                 Icon(ImageVector.vectorResource(R.drawable.delete), contentDescription = null, modifier = iconModifier)
             }
         }

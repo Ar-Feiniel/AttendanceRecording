@@ -26,9 +26,11 @@ public fun Students(
     Log.i("Students_Screen", "StudentsScreenComposing...")
     val studentsUiState by viewModel.studentsUiState.collectAsState()
 
-    ActionList<Student>(onEditClick = {}
-        , onDeleteClick = {}
-        , onAddClick = viewModel::addData
+    ActionList<Student>(
+        action_class = Student::class
+        , onEditClick = {}
+        , onDeleteClick = viewModel::deleteStudent
+        , onAddClick = viewModel::addStudent
         , addIconCompose = @Composable {modifier ->  Icon( ImageVector.vectorResource(R.drawable.student_add), null, modifier = modifier)}
         , itemsList = studentsUiState.studentList
     )

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fedor.attendancerecording.model.entity.Student
 import com.fedor.attendancerecording.model.repositories.interfaces.StudentRepository
-import com.fedor.attendancerecording.view.screens.Students
 import com.fedor.attendancerecording.viewmodel.ActionListable
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -24,15 +23,18 @@ public final class StudentsViewModel(
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
                 initialValue = StudentsUiState()
             )
-    fun addData(student: Student){
+    fun addStudent(student: Any){
         viewModelScope.launch {
             studentRepository.insertItem(
-                Student(
-                    idStudent = 0,
-                    name = "name",
-                    surname = "surn",
-                    patronymic = null
-                )
+                student as Student
+            )
+        }
+    }
+
+    fun deleteStudent(student: Any){
+        viewModelScope.launch {
+            studentRepository.deleteItem(
+                student as Student
             )
         }
     }
