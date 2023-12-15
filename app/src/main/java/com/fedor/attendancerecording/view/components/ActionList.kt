@@ -24,6 +24,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.fedor.attendancerecording.R
+import java.time.LocalDate
+import java.time.LocalDateTime
 import kotlin.reflect.KClass
 
 @Composable
@@ -44,7 +46,7 @@ public fun <T: Any> ActionList(
         ) {
             when (actionClass) {
                 Student::class -> {
-                    IconButton(onClick = { onAddClick(Student(0, "1234", "123", "13")) }) {
+                    IconButton(onClick = { onAddClick(Student(0, LocalDateTime.now().second.toString(), "123", "13")) }) {
                         addIconCompose(modifier = Modifier.size(128.dp))
                     }
                 }
@@ -56,10 +58,11 @@ public fun <T: Any> ActionList(
                 }
             }
         }
-        Row() {
-            when (actionClass) {
-                Student::class -> {
-                    itemsList.forEach { it ->
+
+        when (actionClass) {
+            Student::class -> {
+                itemsList.forEach { it ->
+                    Row() {
                         val student = (it as Student)
                         ListItem(text = "${student.name} ${student.surname} ${student.patronymic}",
                             id = student.idStudent,
@@ -67,9 +70,11 @@ public fun <T: Any> ActionList(
                             onDeleteClick = { onDeleteClick(it) })
                     }
                 }
+            }
 
-                Marker::class -> {
-                    itemsList.forEach { it ->
+            Marker::class -> {
+                itemsList.forEach { it ->
+                    Row() {
                         val marker = (it as Marker);
                         ListItem(text = marker.name,
                             id = marker.idMarker,
@@ -77,14 +82,15 @@ public fun <T: Any> ActionList(
                             onDeleteClick = { onDeleteClick(it) })
                     }
                 }
+            }
 
-                else -> {
-                    Text(text = "what?")
-                }
+            else -> {
+                Text(text = "what?")
             }
         }
     }
 }
+
 
 @Composable
 fun ListItem(
@@ -93,8 +99,8 @@ fun ListItem(
     onEditClick: (id: Int) -> Unit,
     onDeleteClick: () -> Unit,
 ) {
-//    var isDialogOpen: MutableState<Boolean> = remember { mutableStateOf(false) }
-
+    var isDialogOpen: MutableState<Boolean> = remember { mutableStateOf(false) }
+    val revertDialogState: () -> Unit = { isDialogOpen.value = !isDialogOpen.value }
     Log.i("Action_Listable_Item", "ActionListableItemCreate")
     val iconModifier: Modifier = Modifier.size(64.dp)
     Row() {
@@ -114,16 +120,22 @@ fun ListItem(
             }
 
             //delete
-            IconButton(onClick ={} /*{ isDialogOpen.value = !isDialogOpen.value }*/) {
+            IconButton(onClick = revertDialogState) {
                 Icon(
                     ImageVector.vectorResource(R.drawable.delete),
                     contentDescription = null,
                     modifier = iconModifier
                 )
             }
-//            if(isDialogOpen.value){
-//                DeleteConfirmationDialog(deleteObjectStringDescription = text, onDeleteConfirm = {  }, onDeleteCancel = {})
-//            }
+
+            if (isDialogOpen.value) {
+                DeleteConfirmationDialog(
+                    deleteObjectStringDescription = text,
+                    onDeleteConfirm = { onDeleteClick(); revertDialogState() },
+                    onDeleteCancel = revertDialogState
+                )
+            }
+
         }
     }
 }

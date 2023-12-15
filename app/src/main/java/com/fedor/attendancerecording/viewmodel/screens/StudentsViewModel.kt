@@ -54,15 +54,13 @@ public final class StudentsViewModel(
         private const val TIMEOUT_MILLIS = 5_000L
     }
 
-    public data class StudentsUiState(val studentList: List<Student> = listOf())
-
     public data class StudentsParamsUiState(val studentParamsList: List<StudentParams> = listOf())
 
     public fun Student.toStudentParams(): StudentParams = StudentParams( idStudent, name, surname, patronymic )
 
     public fun StudentParams.toStudent(): Student = Student( id, name, surname, patronymic )
 }
-
+public data class StudentsUiState(val studentList: List<Student> = listOf())
 public data class StudentParams(val id: Int = 0,
                                 val name: String = "",
                                 val surname: String = "",

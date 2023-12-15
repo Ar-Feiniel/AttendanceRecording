@@ -2,10 +2,14 @@ package com.fedor.attendancerecording.view.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import com.fedor.attendancerecording.R
 
 @Composable
@@ -23,14 +27,14 @@ public fun DeleteConfirmationDialog(
                    Text(text = deleteObjectStringDescription)
                }
         },
-        dismissButton = {
-            TextButton(onClick = onDeleteCancel) {
-                Text(text = stringResource(id = R.string.no))
+        confirmButton = {
+            IconButton(onClick = onDeleteConfirm) {
+                Icon(ImageVector.vectorResource(id = R.drawable.check,), contentDescription = "enter")
             }
         },
-        confirmButton = {
-            TextButton(onClick = onDeleteConfirm) {
-                Text(text = stringResource(id = R.string.yes))
+        dismissButton = {
+            IconButton(onClick = onDeleteCancel) {
+                Icon(ImageVector.vectorResource(id = R.drawable.close,), contentDescription = "close")
             }
         },
     )
