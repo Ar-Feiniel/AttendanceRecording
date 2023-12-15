@@ -30,20 +30,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.fedor.attendancerecording.view.screens.Export
-import com.fedor.attendancerecording.view.screens.MainCalendar
-import com.fedor.attendancerecording.view.screens.Markers
-import com.fedor.attendancerecording.view.screens.NonWorkingDays
-import com.fedor.attendancerecording.view.screens.Recording
-import com.fedor.attendancerecording.view.screens.Settings
-import com.fedor.attendancerecording.view.screens.Students
 
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
@@ -88,41 +77,12 @@ public fun attendanceRecordingApp(){
             ){ paddingValues ->
                 Column(modifier = Modifier.padding(paddingValues),
                     verticalArrangement = Arrangement.Center) {
-                    navigation(navController = navController, startScreen = startScreen)
+                    ApplicationNavHost(navController = navController, startScreen = startScreen)
                 }
             }
         }
     }
 }
-@Composable
-internal fun navigation(navController: NavHostController, startScreen: Screens) {
-
-    NavHost(navController = navController, startDestination = startScreen.route) {
-        composable(route = Screens.CALENDAR.route) {
-            MainCalendar()
-        }
-        composable(route = Screens.RECORDING.route
-            , arguments = listOf(navArgument("selected_date") { type = NavType.StringType })) { backStackEntry ->
-            Recording(navController = navController, backStackEntry.arguments?.getString("selected_date"))
-        }
-        composable(route = Screens.STUDENTS.route) {
-            Students()
-        }
-        composable(route = Screens.MARKERS.route) {
-            Markers()
-        }
-        composable(route = Screens.WORKDAYS.route) {
-            NonWorkingDays()
-        }
-        composable(route = Screens.EXPORT.route) {
-            Export()
-        }
-        composable(route = Screens.SETTINGS.route) {
-            Settings()
-        }
-    }
-}
-
 internal enum class Screens(val route: String
                             , @StringRes val screenNameResId: Int = 0
                             , val icon: @Composable (height: Dp, width: Dp) -> Unit = { height, width -> Icon( Icons.Default.Info,  null,
@@ -134,7 +94,7 @@ internal enum class Screens(val route: String
         , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.calendar_month), null,
             Modifier
                 .height(height = height)
-                .width(width), ) }),
+                .width(width) ) }),
     RECORDING(route = "recording/{selected_date}"),
     STUDENTS(route = "students"
         , screenNameResId = R.string.students
