@@ -27,7 +27,7 @@ public fun Students(
     val studentsUiState by viewModel.studentsUiState.collectAsState()
 
     ActionList<Student>(
-        action_class = Student::class
+        actionClass = Student::class
         , onEditClick = {}
         , onDeleteClick = viewModel::deleteStudent
         , onAddClick = viewModel::addStudent

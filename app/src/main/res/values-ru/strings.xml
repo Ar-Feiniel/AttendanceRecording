@@ -7,4 +7,8 @@
     <string name="working_days">Рабочие дни</string>
     <string name="export">Экспорт</string>
     <string name="settings">Настройки</string>
+    <string name="attention">Внимание!</string>
+    <string name="deleteConfirmation">Вы уверены, что хотите удалить?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
 </resources>

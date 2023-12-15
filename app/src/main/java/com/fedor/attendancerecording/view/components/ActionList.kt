@@ -8,17 +8,16 @@ import com.fedor.attendancerecording.model.entity.Student
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -29,46 +28,58 @@ import kotlin.reflect.KClass
 
 @Composable
 public fun <T: Any> ActionList(
-                        action_class: KClass<T>,
-                        onEditClick: (id: Int) -> Unit,
-                        onDeleteClick: (item: Any) -> Unit,
-                        onAddClick: (item: Any) -> Unit,
-                        addIconCompose: @Composable (modifier: Modifier) -> Unit,
-                        itemsList: List<T>){
-    Column(Modifier.padding(start = 10.dp, end = 10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally){
-        Box(contentAlignment = Alignment.Center,
+    actionClass: KClass<T>,
+    onEditClick: (id: Int) -> Unit,
+    onDeleteClick: (item: Any) -> Unit,
+    onAddClick: (item: Any) -> Unit,
+    addIconCompose: @Composable (modifier: Modifier) -> Unit,
+    itemsList: List<T>) {
+    Column(
+        Modifier.padding(start = 10.dp, end = 10.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxWidth()
-        ){
-            when(action_class){
-                Student::class ->{
-                    IconButton(onClick = {onAddClick(Student(0, "123", "123", "13"))}) {
+        ) {
+            when (actionClass) {
+                Student::class -> {
+                    IconButton(onClick = { onAddClick(Student(0, "1234", "123", "13")) }) {
+                        addIconCompose(modifier = Modifier.size(128.dp))
+                    }
+                }
+
+                Marker::class -> {
+                    IconButton(onClick = { onAddClick(Marker(0, "n", 0)) }) {
                         addIconCompose(modifier = Modifier.size(128.dp))
                     }
                 }
             }
         }
-        itemsList.forEach{it ->
-            Row(){
-                when(it::class)
-                {
-                    Student::class -> {
+        Row() {
+            when (actionClass) {
+                Student::class -> {
+                    itemsList.forEach { it ->
                         val student = (it as Student)
                         ListItem(text = "${student.name} ${student.surname} ${student.patronymic}",
                             id = student.idStudent,
                             onEditClick = onEditClick,
                             onDeleteClick = { onDeleteClick(it) })
                     }
-                    Marker::class -> {
+                }
+
+                Marker::class -> {
+                    itemsList.forEach { it ->
                         val marker = (it as Marker);
                         ListItem(text = marker.name,
                             id = marker.idMarker,
                             onEditClick = onEditClick,
                             onDeleteClick = { onDeleteClick(it) })
                     }
-                    else -> {
-                        Text(text = "fuck u")
-                    }
+                }
+
+                else -> {
+                    Text(text = "what?")
                 }
             }
         }
@@ -81,23 +92,38 @@ fun ListItem(
     id: Int,
     onEditClick: (id: Int) -> Unit,
     onDeleteClick: () -> Unit,
-){
+) {
+//    var isDialogOpen: MutableState<Boolean> = remember { mutableStateOf(false) }
+
     Log.i("Action_Listable_Item", "ActionListableItemCreate")
-    val iconModifier : Modifier = Modifier.size(64.dp)
-    Row(){
-        Box(modifier = Modifier.fillMaxWidth(0.5f)){
+    val iconModifier: Modifier = Modifier.size(64.dp)
+    Row() {
+        Box(modifier = Modifier.fillMaxWidth(0.5f)) {
             Text(text = text)
         }
-        Row(modifier = Modifier.fillMaxWidth()
-            , horizontalArrangement = Arrangement.SpaceEvenly){
+        Row(
+            modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
             //edit
             IconButton(onClick = { onEditClick(id) }) {
-                Icon(ImageVector.vectorResource(R.drawable.edit), contentDescription = null, modifier = iconModifier)
+                Icon(
+                    ImageVector.vectorResource(R.drawable.edit),
+                    contentDescription = null,
+                    modifier = iconModifier
+                )
             }
+
             //delete
-            IconButton(onClick = { onDeleteClick() }) {
-                Icon(ImageVector.vectorResource(R.drawable.delete), contentDescription = null, modifier = iconModifier)
+            IconButton(onClick ={} /*{ isDialogOpen.value = !isDialogOpen.value }*/) {
+                Icon(
+                    ImageVector.vectorResource(R.drawable.delete),
+                    contentDescription = null,
+                    modifier = iconModifier
+                )
             }
+//            if(isDialogOpen.value){
+//                DeleteConfirmationDialog(deleteObjectStringDescription = text, onDeleteConfirm = {  }, onDeleteCancel = {})
+//            }
         }
     }
 }

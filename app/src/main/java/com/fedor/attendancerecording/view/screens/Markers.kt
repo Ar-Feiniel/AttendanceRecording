@@ -17,7 +17,7 @@ fun Markers(){
     val viewModel: MarkersViewModel = MarkersViewModel()
 
     ActionList<Marker>(
-        action_class = Marker::class
+        actionClass = Marker::class
         , onEditClick = {}
         , onDeleteClick = {}
         , onAddClick = {}
