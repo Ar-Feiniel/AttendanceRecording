@@ -36,7 +36,7 @@ import androidx.navigation.NavController
 import com.fedor.attendancerecording.view.components.DateLabel
 
 @Composable
-public fun Recording(navController: NavController, selectedDate: String?)
+public fun Recording(selectedDate: String)
 {
     Column {
         Spacer(modifier = Modifier.height(12.dp))

@@ -23,9 +23,10 @@ import com.fedor.attendancerecording.view.components.DateLabel
 import com.fedor.attendancerecording.view.components.Calendar
 import com.fedor.attendancerecording.viewmodel.screens.MainCalendarViewModel
 
-@Preview
 @Composable
-public fun MainCalendar() {
+public fun MainCalendar(
+    onDayClick: (date: String) -> Unit
+) {
     val viewModel: MainCalendarViewModel = MainCalendarViewModel()
     val calendarList = viewModel.getMonthList()
 

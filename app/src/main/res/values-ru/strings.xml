@@ -11,4 +11,6 @@
     <string name="deleteConfirmation">Вы уверены, что хотите удалить?</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
+    <string name="edit_student">Изменение студента</string>
+    <string name="edit_marker">Изменение маркера</string>
 </resources>

@@ -32,6 +32,16 @@ object StudentsDestination : ApplicationDestination{
     override val screenNameResId = R.string.students
 
 }
+object EditStudentDestination : ApplicationDestination{
+    override val route = "edit_student"
+    override val iconResId = null
+    override val screenNameResId = R.string.edit_student
+    val navArgumentName: String = "student_id"
+    val routeWithArguments: String = "${route}/{${navArgumentName}}"
+    val arguments = listOf(
+        navArgument(navArgumentName) { type = NavType.IntType}
+    )
+}
 object MarkersDestination : ApplicationDestination{
     override val route = "markers"
     override val iconResId = R.drawable.marker

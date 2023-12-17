@@ -18,9 +18,9 @@ import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 
 @PublishedApi
 internal const val MaterialIconDimension = 128f
-@Preview
 @Composable
 public fun Students(
+    onEditStudentClick: (idStudent: Int) -> Unit,
     viewModel: StudentsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
     Log.i("Students_Screen", "StudentsScreenComposing...")
@@ -28,20 +28,24 @@ public fun Students(
 
     ActionList<Student>(
         actionClass = Student::class
-        , onEditClick = {}
+        , onEditClick = onEditStudentClick
         , onDeleteClick = viewModel::deleteStudent
-        , onAddClick = viewModel::addStudent
+        , onAddClick = {}
         , addIconCompose = @Composable {modifier ->  Icon( ImageVector.vectorResource(R.drawable.student_add), null, modifier = modifier)}
         , itemsList = studentsUiState.studentList
     )
 }
 
-@Composable
-internal fun addPopUp(){
+internal fun onAddClick(){
 
 }
 
 @Composable
-internal fun deletePopUp(){
+internal fun onAddPopUp(){
+
+}
+
+@Composable
+internal fun onDeletePopUp(){
 
 }

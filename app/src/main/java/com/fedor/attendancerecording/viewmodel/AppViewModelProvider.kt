@@ -23,6 +23,7 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.fedor.attendancerecording.AttendanceRecordingApplication
+import com.fedor.attendancerecording.viewmodel.screens.EditStudentViewModel
 import com.fedor.attendancerecording.viewmodel.screens.StudentsViewModel
 
 /**
@@ -33,6 +34,13 @@ object AppViewModelProvider {
         // Initializer for StudentsViewModel
         initializer {
             StudentsViewModel(
+                this.createSavedStateHandle(),
+                attendanceRecordingApplication().container.studentRepository
+            )
+        }
+        // Initializer for EditStudentViewModel
+        initializer {
+            EditStudentViewModel(
                 this.createSavedStateHandle(),
                 attendanceRecordingApplication().container.studentRepository
             )

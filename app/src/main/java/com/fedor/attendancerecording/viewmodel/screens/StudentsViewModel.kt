@@ -26,14 +26,14 @@ public final class StudentsViewModel(
                 started = SharingStarted.WhileSubscribed(TIMEOUT_MILLIS),
                 initialValue = StudentsUiState()
             )
-    fun addStudent(student: Any){
-        viewModelScope.launch {
-            studentRepository.insertItem(
-                student as Student
-            )
-            Log.i("Students_View_Model", "Studend_Added")
-        }
-    }
+//    fun addStudent(student: Any){
+//        viewModelScope.launch {
+//            studentRepository.insertItem(
+//                student as Student
+//            )
+//            Log.i("Students_View_Model", "Studend_Added")
+//        }
+//    }
 
     fun deleteStudent(student: Any){
         viewModelScope.launch {

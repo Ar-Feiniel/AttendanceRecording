@@ -33,17 +33,24 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.fedor.attendancerecording.view.screens.Export
 
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun attendanceRecordingApp(){
-    val startScreen: Screens = Screens.CALENDAR
+    //val startScreen: Screens = Screens.CALENDAR
+    val startScreen: ApplicationDestination = MainCalendarDestination
 
     val navController: NavHostController = rememberNavController()
-    val navScreens: List<Screens> = listOf(Screens.CALENDAR, Screens.WORKDAYS,
-                                            Screens.MARKERS, Screens.STUDENTS,
-                                            Screens.EXPORT, Screens.SETTINGS)
+//    val navScreens: List<Screens> = listOf(Screens.CALENDAR, Screens.WORKDAYS,
+//                                            Screens.MARKERS, Screens.STUDENTS,
+//                                            Screens.EXPORT, Screens.SETTINGS)
+
+    val navScreens: List<ApplicationDestination> = listOf(MainCalendarDestination, ScheduleDestination,
+                                                            MarkersDestination, StudentsDestination,
+                                                            ExportDestination, SettingsDestination)
+
     var selectedScreen: @Composable () -> Unit by remember { mutableStateOf( { Text( text = stringResource(startScreen.screenNameResId)) }) }
 
     MaterialTheme{
@@ -69,7 +76,10 @@ public fun attendanceRecordingApp(){
                         navScreens.forEach { value ->
                             IconButton(onClick = {  selectedScreen = { Text(text = stringResource(value.screenNameResId))  }
                                                     navController.navigate(value.route) }) {
-                                value.icon(height = 42.dp, width = 42.dp)
+                                Icon(imageVector = ImageVector.vectorResource(value.iconResId!!),
+                                    contentDescription = null,
+                                    modifier = Modifier.height(42.dp).width(42.dp)
+                                )
                             }
                         }
                     }

@@ -10,4 +10,6 @@
     <string name="deleteConfirmation">Are you sure you want to delete?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="edit_student">Student Editor</string>
+    <string name="edit_marker">Marker Editor</string>
 </resources>
