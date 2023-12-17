@@ -3,8 +3,6 @@ package com.fedor.attendancerecording
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
 
-val applicationBottomBarScreens = listOf(MainCalendarDestination, StudentsDestination, MarkersDestination, ScheduleDestination)
-
 interface ApplicationDestination {
     val route: String
     val iconResId: Int?
@@ -47,6 +45,16 @@ object MarkersDestination : ApplicationDestination{
     override val iconResId = R.drawable.marker
     override val screenNameResId = R.string.markers
 
+}
+object EditMarkerDestination : ApplicationDestination{
+    override val route = "edit_marker"
+    override val iconResId = null
+    override val screenNameResId = R.string.edit_marker
+    val navArgumentName: String = "marker_id"
+    val routeWithArguments: String = "${route}/{${navArgumentName}}"
+    val arguments = listOf(
+        navArgument(navArgumentName) { type = NavType.IntType}
+    )
 }
 object ScheduleDestination : ApplicationDestination{
     override val route = "schedule"

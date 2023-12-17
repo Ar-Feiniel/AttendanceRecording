@@ -7,10 +7,8 @@ import com.fedor.attendancerecording.model.repositories.interfaces.StudentReposi
 import kotlinx.coroutines.flow.Flow
 
 class OfflineStudentRepository(private val studentDao: StudentDao) : StudentRepository {
-    public override fun getAllDataStream(): Flow<List<Student>> = studentDao.getAll()
-    override fun getOneItemStream(id: Int): Flow<Student?>{
-        TODO("Not yet implemented")
-    }
+    override fun getAllDataStream(): Flow<List<Student>> = studentDao.getAll()
+    override fun getOneItemStream(id: Int): Flow<Student?> = studentDao.getById(id)
 
     override suspend fun updateItem(student: Student) {
         TODO("Not yet implemented")

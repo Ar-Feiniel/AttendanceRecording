@@ -23,7 +23,9 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.fedor.attendancerecording.AttendanceRecordingApplication
+import com.fedor.attendancerecording.viewmodel.screens.EditMarkerViewModel
 import com.fedor.attendancerecording.viewmodel.screens.EditStudentViewModel
+import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
 import com.fedor.attendancerecording.viewmodel.screens.StudentsViewModel
 
 /**
@@ -31,6 +33,9 @@ import com.fedor.attendancerecording.viewmodel.screens.StudentsViewModel
  */
 object AppViewModelProvider {
     val Factory = viewModelFactory {
+        /*
+        * students action
+        */
         // Initializer for StudentsViewModel
         initializer {
             StudentsViewModel(
@@ -45,6 +50,26 @@ object AppViewModelProvider {
                 attendanceRecordingApplication().container.studentRepository
             )
         }
+
+
+        /*
+        * markers action (no reaction)
+        */
+        // MarkersViewModel
+        initializer {
+            MarkersViewModel(
+                this.createSavedStateHandle(),
+                attendanceRecordingApplication().container.markerRepository
+            )
+        }
+        // EditMarkerViewModel
+        initializer {
+            EditMarkerViewModel(
+                this.createSavedStateHandle(),
+                attendanceRecordingApplication().container.markerRepository
+            )
+        }
+
     }
 }
 

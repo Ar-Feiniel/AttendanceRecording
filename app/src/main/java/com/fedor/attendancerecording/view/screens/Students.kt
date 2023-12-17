@@ -16,8 +16,6 @@ import com.fedor.attendancerecording.R
 import com.fedor.attendancerecording.view.components.ActionList
 import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 
-@PublishedApi
-internal const val MaterialIconDimension = 128f
 @Composable
 public fun Students(
     onEditStudentClick: (idStudent: Int) -> Unit,
@@ -48,4 +46,10 @@ internal fun onAddPopUp(){
 @Composable
 internal fun onDeletePopUp(){
 
+}
+
+@Preview
+@Composable
+fun StudentsPreview(){
+    Markers({})
 }

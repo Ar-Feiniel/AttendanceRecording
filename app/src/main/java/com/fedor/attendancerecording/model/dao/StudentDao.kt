@@ -16,6 +16,9 @@ interface StudentDao: DataAccessObjectable<Student> {
     @Query("select * from student order by id_student ASC")
     override fun getAll(): Flow<List<Student>>
 
+    @Query("select * from student where id_student = :id")
+    fun getById(id: Int): Flow<Student>
+
     @Transaction
     @Insert(onConflict  = OnConflictStrategy.ABORT)
     override suspend fun insertOne(student: Student)

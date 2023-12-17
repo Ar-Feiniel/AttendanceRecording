@@ -5,33 +5,36 @@ import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
 import com.fedor.attendancerecording.model.entity.Marker
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fedor.attendancerecording.R
 import com.fedor.attendancerecording.view.components.ActionList
+import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 
-@Preview
 @Composable
-fun Markers(){
-    val viewModel: MarkersViewModel = MarkersViewModel()
+fun Markers(
+    onEditMarkerClick: (idMarker: Int) -> Unit,
+    viewModel: MarkersViewModel = viewModel(factory = AppViewModelProvider.Factory)
+){
+    val markerUiState by viewModel.markersUiState.collectAsState()
 
     ActionList<Marker>(
         actionClass = Marker::class
-        , onEditClick = {}
-        , onDeleteClick = {}
+        , onEditClick = onEditMarkerClick
+        , onDeleteClick = viewModel::deleteMarker
         , onAddClick = {}
         , addIconCompose = @Composable {modifier ->  Icon( ImageVector.vectorResource(R.drawable.marker_add), null, modifier = modifier)}
-        , itemsList = listOf<Marker>(
-            Marker(1, "name1", 1)
-            , Marker(2, "name2", 1)
-            , Marker(3, "name3", 1)
-            , Marker(4, "name4", 1)
-            , Marker(5, "name5", 1)
-            , Marker(6, "name6", 1)
-            , Marker(7, "name7", 1)
-            , Marker(8, "name8", 1)
-            , Marker(9, "name9", 1)
-        )
+        , itemsList = markerUiState.markerList
     )
+}
+
+
+@Preview
+@Composable
+fun MarkersPreview(){
+    Markers({})
 }
