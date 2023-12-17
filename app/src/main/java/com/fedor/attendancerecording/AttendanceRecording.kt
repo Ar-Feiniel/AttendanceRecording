@@ -109,7 +109,7 @@ internal enum class Screens(val route: String
                 .height(height)
                 .width(width)) }),
     WORKDAYS(route = "workdays"
-        , screenNameResId = R.string.working_days
+        , screenNameResId = R.string.schedule
         , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.edit_calendar), null,
             Modifier
                 .height(height)
@@ -120,7 +120,7 @@ internal enum class Screens(val route: String
             Modifier
                 .height(height)
                 .width(width)) }),
-    SETTINGS(route = "export"
+    SETTINGS(route = "settings"
         , screenNameResId = R.string.settings
         , icon = { height, width -> Icon( ImageVector.vectorResource(R.drawable.settings), null,
             Modifier
