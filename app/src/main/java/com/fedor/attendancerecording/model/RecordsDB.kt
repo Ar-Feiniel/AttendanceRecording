@@ -20,7 +20,7 @@ abstract class RecordsDB : RoomDatabase() {
     abstract fun markerDao(): MarkerDao
     abstract fun recordDao(): RecordDao
     abstract fun markerTypeDao(): MarkerTypeDao
-    abstract fun nonWorkingDayDao(): NonWorkingDayDao
+    abstract fun nonWorkingDayDao(): ScheduleDao
 
     companion object {
         // db singleton
@@ -57,8 +57,6 @@ abstract class RecordsDB : RoomDatabase() {
                                 Marker(0, "1б", 1)
                             )
                         }
-
-
                     }
                 }).build()
                 instance = newInstance

@@ -73,12 +73,12 @@ public class EditMarkerViewModel(
     private fun Marker.toMarkerDetails(): MarkerDetails = MarkerDetails(
         idMarker = idMarker,
         name = name,
-        markerType = markerTypeRepository.getOneItemById(idMarkerType).name
+        markerType ="" //markerTypeRepository.getOneItemById(idMarkerType).name
     )
 
     private fun MarkerDetails.toMarker(): Marker = Marker(
         idMarker = idMarker,
         name = name,
-        idMarkerType = markerTypeRepository.getOneItemByName(markerType).idMarkerType
+        idMarkerType = 1 //markerTypeRepository.getOneItemByName(markerType).idMarkerType
     )
 }
