@@ -13,4 +13,6 @@
     <string name="no">Нет</string>
     <string name="edit_student">Изменение студента</string>
     <string name="edit_marker">Изменение маркера</string>
+    <string name="add">Добавить</string>
+    <string name="save_changes">Сохранить изменения</string>
 </resources>

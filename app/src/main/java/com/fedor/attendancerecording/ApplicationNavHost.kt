@@ -3,16 +3,14 @@ package com.fedor.attendancerecording
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
 import com.fedor.attendancerecording.view.screens.EditMarker
 import com.fedor.attendancerecording.view.screens.EditStudent
 import com.fedor.attendancerecording.view.screens.Export
 import com.fedor.attendancerecording.view.screens.MainCalendar
 import com.fedor.attendancerecording.view.screens.Markers
-import com.fedor.attendancerecording.view.screens.NonWorkingDays
+import com.fedor.attendancerecording.view.screens.Schedule
 import com.fedor.attendancerecording.view.screens.Recording
 import com.fedor.attendancerecording.view.screens.Settings
 import com.fedor.attendancerecording.view.screens.Students
@@ -64,7 +62,7 @@ internal fun ApplicationNavHost(navController: NavHostController, startScreen: A
 
         // other action
         composable(route = ScheduleDestination.route) {
-            NonWorkingDays()
+            Schedule()
         }
         composable(route = ExportDestination.route) {
             Export()

@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface StudentDao: DataAccessObjectable<Student> {
+
     @Query("select * from student order by id_student ASC")
     override fun getAll(): Flow<List<Student>>
 

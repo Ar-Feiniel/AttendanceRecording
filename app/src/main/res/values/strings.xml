@@ -12,4 +12,6 @@
     <string name="no">No</string>
     <string name="edit_student">Student Editor</string>
     <string name="edit_marker">Marker Editor</string>
+    <string name="add">Add</string>
+    <string name="save_changes">Save changes</string>
 </resources>

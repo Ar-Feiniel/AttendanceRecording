@@ -14,8 +14,12 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MarkerDao : DataAccessObjectable<Marker> {
+
     @Query("select * from marker order by id_marker ASC")
     override fun getAll(): Flow<List<Marker>>
+
+    @Query("select * from marker where id_marker = :id")
+    fun getById(id: Int): Flow<Marker>
 
     @Transaction
     @Insert(onConflict  = ABORT)

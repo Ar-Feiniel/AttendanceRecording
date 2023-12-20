@@ -13,7 +13,7 @@ import com.fedor.attendancerecording.view.components.DateLabel
 import com.fedor.attendancerecording.viewmodel.screens.NotWorkingDaysViewModel
 
 @Composable
-fun NonWorkingDays(){
+fun Schedule(){
     val viewModel = NotWorkingDaysViewModel()
     val calendarList = viewModel.getMonthList()
 

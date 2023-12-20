@@ -21,11 +21,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fedor.attendancerecording.viewmodel.CalendarItem
+import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 @Composable
-internal fun Calendar(calendar: List<CalendarItem?>,
-                      onItemClick: (date: Date) -> Unit) {
+internal fun Calendar(
+    calendar: List<CalendarItem?>,
+    onItemClick: (date: Date) -> Unit) {
     Box(
         contentAlignment = Alignment.Center
         , modifier = Modifier.padding(start = 12.dp, end=12.dp)

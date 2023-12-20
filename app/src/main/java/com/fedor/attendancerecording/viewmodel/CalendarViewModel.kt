@@ -1,13 +1,19 @@
 package com.fedor.attendancerecording.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDate
 import java.util.Date
+import kotlin.math.abs
+import kotlin.math.ceil
 
 public abstract class CalendarViewModel : ViewModel() {
-    private var _currentDate: LocalDate = LocalDate.now()
+    private var _currentDate: LocalDate = LocalDate.of(2023, 1, 12)
     public var selectedDate: LocalDate = _currentDate
     public var calendarList: List<CalendarItem?> = getMonthList(selectedDate)
+    public var monthList: Flow<List<CalendarItem?>> = flowOf(getMonthList())
     public fun getMonthArray(year: Int, month: Int): Array<Array<CalendarItem?>> {
         val calendar: Array<Array<CalendarItem?>> = Array(getWeeksCount(year, month)) { Array(7) { null } }
         var weeksCounter: Int = 0;
@@ -43,16 +49,53 @@ public abstract class CalendarViewModel : ViewModel() {
         }
         return calendar
     }
+    private fun getYearsInMonthNum(monthNum: Int) : Int{
+        var yearCount: Int = 0
+        if(monthNum > 0){
+            while (true){
+                if(monthNum - 12 > 0){
+                    monthNum - 12
+                    yearCount++
+                }
+                else{
+                    break
+                }
+            }
+        }
+        if(monthNum < 0){
+            while (true){
+                if(monthNum + 12 < 0){
+                    monthNum + 12
+                    yearCount++
+                }
+                else{
+                    break
+                }
+            }
+        }
+        return yearCount
+    }
+    public fun getMonthList(date: Date): List<CalendarItem?> {
+        return getMonthList(date.year, date.month)
+    }
     public fun getMonthList(localDate: LocalDate): List<CalendarItem?> {
         return getMonthList(localDate.year, localDate.monthValue)
     }
     public fun getMonthList(): List<CalendarItem?> {
-        return getMonthList(_currentDate.year, _currentDate.month.value)
+        return getMonthList(selectedDate.year, selectedDate.month.value)
     }
     public fun getGracefulDateText(): String {
-        return "${_currentDate.dayOfMonth} ${_currentDate.month.name} ${_currentDate.year}"
+        //return "${_currentDate.dayOfMonth} ${_currentDate.month.name} ${_currentDate.year}"
+        val month: String = when (selectedDate.month.value in 1..9) {
+            true -> "0${selectedDate.month.value}"
+            false -> "${selectedDate.month.value}"
+        }
+        // TODO: Вынести в отдельную функцию форматирвоания (и из класса с кнопками)
+        return "${month}.${selectedDate.year}"
+
     }
     private fun getDaysCount(year: Int, month: Int): Int {
+        Log.i("CalendarViewModel", "DaysCount = ${month}/${year}")
         val daysInMonth: Array<Int> = arrayOf(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
         return when (month == 2 && ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)) {
             true -> daysInMonth[month - 1] + 1
@@ -104,9 +147,7 @@ enum class DaysOfWeek() {
     SATURDAY(),
     SUNDAY()
 }
-enum class DateTypes{
-    HOLIDAY, WORKDAY
-}
+
 class CalendarItem(val year: Int, private val _month: Int, private val _day: Int) {
     public val day: String
         get() {

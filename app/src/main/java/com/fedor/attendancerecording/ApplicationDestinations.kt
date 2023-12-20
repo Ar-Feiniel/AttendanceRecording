@@ -8,6 +8,9 @@ interface ApplicationDestination {
     val iconResId: Int?
     val screenNameResId: Int
 }
+interface ApplicationDestinationWithArgs {
+
+}
 
 object MainCalendarDestination : ApplicationDestination{
     override val route = "mainCalendar"

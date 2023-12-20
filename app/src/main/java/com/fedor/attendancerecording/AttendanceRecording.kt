@@ -66,7 +66,7 @@ public fun attendanceRecordingApp(){
                     ){
                         bottomBarNavScreens.forEach { value ->
                             IconButton(onClick = {  selectedScreen = { Text(text = stringResource(value.screenNameResId))  }
-                                                    navController.navigate(value.route) }) {
+                                                    navController.navigateSingleTopTo(value.route) }) {
                                 Icon(imageVector = ImageVector.vectorResource(value.iconResId!!),
                                     contentDescription = null,
                                     modifier = Modifier.height(42.dp).width(42.dp)

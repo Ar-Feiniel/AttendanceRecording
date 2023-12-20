@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface RecordDao: DataAccessObjectable<Record> {
+
     @Query("select * from record order by id_record ASC")
     override fun getAll(): Flow<List<Record>>
 

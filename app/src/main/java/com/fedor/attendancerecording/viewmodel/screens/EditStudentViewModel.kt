@@ -1,5 +1,6 @@
 package com.fedor.attendancerecording.viewmodel.screens
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,9 +8,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fedor.attendancerecording.EditStudentDestination
+import com.fedor.attendancerecording.R
 import com.fedor.attendancerecording.model.entity.Student
 import com.fedor.attendancerecording.model.repositories.interfaces.StudentRepository
-import kotlinx.coroutines.flow.filterNot
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -18,7 +19,12 @@ public final class EditStudentViewModel(
     savedStateHandle: SavedStateHandle,
     private val studentRepository: StudentRepository
 ) : ViewModel(){
-     val studentId: Int = checkNotNull(savedStateHandle[EditStudentDestination.navArgumentName])
+    val studentId: Int = checkNotNull(savedStateHandle[EditStudentDestination.navArgumentName])
+
+    val actionNameStringResId = when(studentId != 0){
+        true -> R.string.save_changes // we have a student
+        false -> R.string.add // we add a new student
+    }
     var studentUiState by mutableStateOf(StudentUiState())
         private set
 
@@ -32,12 +38,12 @@ public final class EditStudentViewModel(
     }
 
     fun updateUiState(studentDetails: StudentDetails){
-        studentUiState.copy(studentDetails = studentDetails,
-                            isInputValid = validateStudentDetails(studentDetails)
-        )
+        studentUiState = StudentUiState(studentDetails = studentDetails,
+                            isInputValid = validateStudentDetails(studentDetails))
+        Log.i("EditStudentViewModel", "Update_Ui_State")
     }
 
-    fun saveStudent(){
+    fun upsertStudent(){
         if(validateStudentDetails()){
             viewModelScope.launch {
                 studentRepository.insertItem(studentUiState.studentDetails.toStudent())
@@ -59,14 +65,14 @@ data class StudentDetails(
     val id: Int = 0,
     val name: String = "",
     val surname: String = "",
-    val patronymic: String? = ""
+    val patronymic: String = ""
 )
 
 fun Student.toStudentDetails() : StudentDetails = StudentDetails(
     idStudent,
     name,
     surname,
-    patronymic
+    if (patronymic.isNullOrEmpty()) "" else patronymic
 )
 fun Student.toStudentUiState(isInputValid: Boolean = false): StudentUiState = StudentUiState(
     studentDetails = this.toStudentDetails(),
@@ -76,6 +82,5 @@ fun StudentDetails.toStudent(): Student = Student(
     id,
     name,
     surname,
-    patronymic
+    if ( patronymic.isNullOrEmpty() ) "" else patronymic
 )
-

@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface MarkerTypeDao: DataAccessObjectable<MarkerType> {
+
     @Query("select * from marker_type order by id_marker_type ASC")
     override fun getAll(): Flow<List<MarkerType>>
 
