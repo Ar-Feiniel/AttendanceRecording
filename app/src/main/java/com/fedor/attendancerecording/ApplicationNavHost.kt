@@ -32,9 +32,9 @@ internal fun ApplicationNavHost(navController: NavHostController, startScreen: A
 
         // students action
         composable(route = StudentsDestination.route) {
-            Students(onEditStudentClick = { idStudent ->
-                navController.navigateToEditStudent(idStudent)
-            })
+            Students(
+                onAddStudentClick = { navController.navigateToEditStudent(0) },
+                onEditStudentClick = { idStudent -> navController.navigateToEditStudent(idStudent) })
         }
         composable(
             route = EditStudentDestination.routeWithArguments,
@@ -42,22 +42,23 @@ internal fun ApplicationNavHost(navController: NavHostController, startScreen: A
         ) { navBackStackEntry ->
             val studentId: Int? =
                 navBackStackEntry.arguments?.getInt(EditStudentDestination.navArgumentName)
-            EditStudent(studentId!!)
+            EditStudent(studentId = studentId!!,
+                onGoBack = { navController.navigateSingleTopToNoState(StudentsDestination.route) })
         }
 
         // marker action (no reaction)
         composable(route = MarkersDestination.route) {
-            Markers(onEditMarkerClick = { idMarker ->
-                navController.navigateToEditMarker(idMarker)
-            })
+            Markers(onAddMarkerClick = { navController.navigateToEditMarker(0) },
+                onEditMarkerClick = { idMarker -> navController.navigateToEditMarker(idMarker) })
         }
         composable(
-            route = EditMarkerDestination.route,
+            route = EditMarkerDestination.routeWithArguments,
             arguments = EditMarkerDestination.arguments
         ) { navBackStackEntry ->
             val markerId: Int? =
                 navBackStackEntry.arguments?.getInt(EditMarkerDestination.navArgumentName)
-            EditMarker(markerId!!)
+            EditMarker(markerId = markerId!!,
+                onGoBack = { navController.navigateSingleTopToNoState(MarkersDestination.route)})
         }
 
         // other action
@@ -79,6 +80,18 @@ fun NavHostController.navigateSingleTopTo(route: String){
             this@navigateSingleTopTo.graph.findStartDestination().id
         ){
             saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
+}
+
+fun NavHostController.navigateSingleTopToNoState(route: String){
+    this.navigate(route){
+        popUpTo(
+            this@navigateSingleTopToNoState.graph.findStartDestination().id
+        ){
+            saveState = false
         }
         launchSingleTop = true
         restoreState = true

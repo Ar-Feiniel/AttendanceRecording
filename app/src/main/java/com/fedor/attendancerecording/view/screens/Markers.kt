@@ -1,5 +1,6 @@
 package com.fedor.attendancerecording.view.screens
 
+import android.util.Log
 import androidx.compose.material3.Icon
 import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
 import com.fedor.attendancerecording.model.entity.Marker
@@ -17,24 +18,25 @@ import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 
 @Composable
 fun Markers(
+    onAddMarkerClick: () -> Unit,
     onEditMarkerClick: (idMarker: Int) -> Unit,
     viewModel: MarkersViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
+    Log.i("Markers_Screen", "MarkersScreenComposing...")
     val markerUiState by viewModel.markersUiState.collectAsState()
 
     ActionList<Marker>(
         actionClass = Marker::class
         , onEditClick = onEditMarkerClick
         , onDeleteClick = viewModel::deleteMarker
-        , onAddClick = {}
+        , onAddClick = onAddMarkerClick
         , addIconCompose = @Composable {modifier ->  Icon( ImageVector.vectorResource(R.drawable.marker_add), null, modifier = modifier)}
         , itemsList = markerUiState.markerList
     )
 }
 
-
 @Preview
 @Composable
 fun MarkersPreview(){
-    Markers({})
+    Markers({}, {})
 }

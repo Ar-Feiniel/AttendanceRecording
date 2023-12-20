@@ -59,7 +59,6 @@ object AppViewModelProvider {
             )
         }
 
-
         /*
         * markers action (no reaction)
         */
@@ -74,10 +73,10 @@ object AppViewModelProvider {
         initializer {
             EditMarkerViewModel(
                 this.createSavedStateHandle(),
-                attendanceRecordingApplication().container.markerRepository
+                attendanceRecordingApplication().container.markerRepository,
+                attendanceRecordingApplication().container.markerTypeRepository
             )
         }
-
     }
 }
 

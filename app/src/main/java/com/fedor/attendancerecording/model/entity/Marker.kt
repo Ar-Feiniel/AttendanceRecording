@@ -9,5 +9,5 @@ import androidx.room.PrimaryKey
 data class Marker(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = "id_marker") val idMarker: Int,
     @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "id_marker_type") val idMarkerType: Int
+    @ColumnInfo(name = "id_marker_type", defaultValue = "1") val idMarkerType: Int
 )

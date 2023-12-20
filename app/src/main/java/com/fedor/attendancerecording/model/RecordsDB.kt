@@ -4,12 +4,15 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.fedor.attendancerecording.model.dao.MarkerDao
-import com.fedor.attendancerecording.model.dao.MarkerTypeDao
-import com.fedor.attendancerecording.model.dao.NonWorkingDayDao
-import com.fedor.attendancerecording.model.dao.RecordDao
-import com.fedor.attendancerecording.model.dao.StudentDao
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.fedor.attendancerecording.model.dao.*
 import com.fedor.attendancerecording.model.entity.*
+
+import java.util.concurrent.Executors
+private val IO_EXECUTOR = Executors.newSingleThreadExecutor()
+fun ioThread(f : () -> Unit) {
+    IO_EXECUTOR.execute(f)
+}
 @Database (entities = [Student::class, Marker::class, Record::class, MarkerType::class, NonWorkingDay::class], version = 1, exportSchema = false)
 abstract class RecordsDB : RoomDatabase() {
 
@@ -24,28 +27,43 @@ abstract class RecordsDB : RoomDatabase() {
         @Volatile
         private var instance: RecordsDB? = null
 
-        public fun getDataBase(context: Context): RecordsDB{
+        public fun getDataBase(context: Context): RecordsDB {
             val tempInstance = instance
-            if (tempInstance != null){
+            if (tempInstance != null) {
                 return tempInstance
             }
-            synchronized(this){
+            synchronized(this) {
                 val newInstance = Room.databaseBuilder(
                     context.applicationContext,
                     RecordsDB::class.java,
                     "records_db"
-                ).build()
+                ).addCallback(object : RoomDatabase.Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+
+                        ioThread {
+                            val markerTypeDao = instance?.markerTypeDao()
+                            val markerDao = instance?.markerDao()
+                            markerTypeDao?.insertAll(
+                                MarkerType(0, "Уважительная", null),
+                                MarkerType(0, "Неуважительная", null)
+                            )
+                            markerDao?.insertAll(
+                                Marker(0, "2", 1),
+                                Marker(0, "2у", 1),
+                                Marker(0, "2б", 1),
+                                Marker(0, "1", 1),
+                                Marker(0, "1у", 1),
+                                Marker(0, "1б", 1)
+                            )
+                        }
+
+
+                    }
+                }).build()
                 instance = newInstance
                 return newInstance
             }
         }
-// times old verions // uncomment if not working
-//        private fun getDB(context: Context): RecordsDB {
-//            return  Room.databaseBuilder(
-//                context.applicationContext,
-//                RecordsDB::class.java,
-//                "records.db"
-//            ).build()
-//        }
     }
 }

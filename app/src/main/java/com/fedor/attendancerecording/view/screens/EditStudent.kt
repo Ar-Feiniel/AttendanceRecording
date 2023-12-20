@@ -17,6 +17,7 @@ import com.fedor.attendancerecording.viewmodel.screens.EditStudentViewModel
 @Composable
 public fun EditStudent(
     studentId: Int,
+    onGoBack: () -> Unit,
     viewModel: EditStudentViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
     Column {
@@ -45,7 +46,7 @@ public fun EditStudent(
             enabled = true,
             singleLine = true
         )
-        Button(onClick = viewModel::upsertStudent) {
+        Button(onClick =   { viewModel.upsertStudent(); onGoBack() }) {
             Text(text = stringResource(id = viewModel.actionNameStringResId))
         }
     }

@@ -1,14 +1,12 @@
 package com.fedor.attendancerecording.model.dao
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.ABORT
-import androidx.room.OnConflictStrategy.Companion.ROLLBACK
 import androidx.room.Query
 import androidx.room.Transaction
-import androidx.room.Update
+import androidx.room.Upsert
 import com.fedor.attendancerecording.model.entity.*
 import kotlinx.coroutines.flow.Flow
 
@@ -16,16 +14,20 @@ import kotlinx.coroutines.flow.Flow
 interface MarkerDao : DataAccessObjectable<Marker> {
 
     @Query("select * from marker order by id_marker ASC")
-    override fun getAll(): Flow<List<Marker>>
+    override fun getAllStream(): Flow<List<Marker>>
 
-    @Query("select * from marker where id_marker = :id")
-    fun getById(id: Int): Flow<Marker>
+    @Query("select * from marker where id_marker = :idMarker")
+    fun getByIdStream(idMarker: Int): Flow<Marker>
 
-    @Transaction
+    @Query("select * from marker where id_marker = :idMarker")
+    fun getByIdItem(idMarker: Int): Marker
+
     @Insert(onConflict  = ABORT)
-    override suspend fun insertOne(marker: Marker)
+    override fun insertAll(vararg markers: Marker)
 
-    @Transaction
+    @Upsert
+    override suspend fun upsertItem(marker: Marker)
+
     @Delete
-    override suspend fun delete(marker: Marker)
+    override suspend fun deleteItem(marker: Marker)
 }

@@ -10,7 +10,7 @@ import kotlin.math.abs
 import kotlin.math.ceil
 
 public abstract class CalendarViewModel : ViewModel() {
-    private var _currentDate: LocalDate = LocalDate.of(2023, 1, 12)
+    private var _currentDate: LocalDate = LocalDate.now()
     public var selectedDate: LocalDate = _currentDate
     public var calendarList: List<CalendarItem?> = getMonthList(selectedDate)
     public var monthList: Flow<List<CalendarItem?>> = flowOf(getMonthList())
@@ -92,7 +92,6 @@ public abstract class CalendarViewModel : ViewModel() {
         }
         // TODO: Вынести в отдельную функцию форматирвоания (и из класса с кнопками)
         return "${month}.${selectedDate.year}"
-
     }
     private fun getDaysCount(year: Int, month: Int): Int {
         Log.i("CalendarViewModel", "DaysCount = ${month}/${year}")

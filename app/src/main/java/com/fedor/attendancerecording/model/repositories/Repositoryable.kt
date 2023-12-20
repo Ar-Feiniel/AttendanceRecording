@@ -4,8 +4,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface Repositoryable<T> {
     public fun getAllDataStream(): Flow<List<T>>
-    public fun getOneItemStream(id: Int): Flow<T?>
+    public fun getAllDataList(): List<T>
+    public fun getOneItemStreamById(id: Int): Flow<T?>
+    public fun getOneItemById(id: Int): T
     suspend fun insertItem(item: T)
     suspend fun updateItem(item: T)
+    suspend fun upsertItem(item: T)
     suspend fun deleteItem(item: T)
 }

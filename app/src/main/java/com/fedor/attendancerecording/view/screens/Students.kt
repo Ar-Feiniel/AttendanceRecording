@@ -18,6 +18,7 @@ import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 
 @Composable
 public fun Students(
+    onAddStudentClick: () -> Unit,
     onEditStudentClick: (idStudent: Int) -> Unit,
     viewModel: StudentsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
@@ -28,7 +29,7 @@ public fun Students(
         actionClass = Student::class
         , onEditClick = onEditStudentClick
         , onDeleteClick = viewModel::deleteStudent
-        , onAddClick = {}
+        , onAddClick = onAddStudentClick
         , addIconCompose = @Composable {modifier ->  Icon( ImageVector.vectorResource(R.drawable.student_add), null, modifier = modifier)}
         , itemsList = studentsUiState.studentList
     )
@@ -51,5 +52,5 @@ internal fun onDeletePopUp(){
 @Preview
 @Composable
 fun StudentsPreview(){
-    Markers({})
+    Markers({}, {})
 }

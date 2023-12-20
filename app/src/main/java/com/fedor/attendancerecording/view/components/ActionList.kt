@@ -33,7 +33,7 @@ public fun <T: Any> ActionList(
     actionClass: KClass<T>,
     onEditClick: (id: Int) -> Unit,
     onDeleteClick: (item: Any) -> Unit,
-    onAddClick: (item: Any) -> Unit,
+    onAddClick: () -> Unit,
     addIconCompose: @Composable (modifier: Modifier) -> Unit,
     itemsList: List<T>) {
     Column(
@@ -44,18 +44,8 @@ public fun <T: Any> ActionList(
             contentAlignment = Alignment.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            when (actionClass) {
-                Student::class -> {
-                    IconButton(onClick = { onAddClick(Student(0, LocalDateTime.now().second.toString(), "123", "13")) }) {
-                        addIconCompose(modifier = Modifier.size(128.dp))
-                    }
-                }
-
-                Marker::class -> {
-                    IconButton(onClick = { onAddClick(Marker(0, "n", 0)) }) {
-                        addIconCompose(modifier = Modifier.size(128.dp))
-                    }
-                }
+            IconButton(onClick = onAddClick) {
+                addIconCompose(modifier = Modifier.size(128.dp))
             }
         }
 
@@ -90,7 +80,6 @@ public fun <T: Any> ActionList(
         }
     }
 }
-
 
 @Composable
 fun ListItem(

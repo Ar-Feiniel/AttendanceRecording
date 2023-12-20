@@ -7,6 +7,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
+import androidx.room.Upsert
 import com.fedor.attendancerecording.model.entity.Record
 import com.fedor.attendancerecording.model.entity.Student
 import kotlinx.coroutines.flow.Flow
@@ -15,16 +16,18 @@ import kotlinx.coroutines.flow.Flow
 interface StudentDao: DataAccessObjectable<Student> {
 
     @Query("select * from student order by id_student ASC")
-    override fun getAll(): Flow<List<Student>>
+    override fun getAllStream(): Flow<List<Student>>
 
     @Query("select * from student where id_student = :id")
     fun getById(id: Int): Flow<Student>
 
-    @Transaction
-    @Insert(onConflict  = OnConflictStrategy.ABORT)
-    override suspend fun insertOne(student: Student)
 
-    @Transaction
+    @Insert(onConflict  = OnConflictStrategy.ABORT)
+    override fun insertAll(vararg students: Student)
+
+    @Upsert
+    override suspend fun upsertItem(student: Student)
+
     @Delete
-    override suspend fun delete(student: Student)
+    override suspend fun deleteItem(student: Student)
 }
