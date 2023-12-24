@@ -18,4 +18,5 @@
     <string name="surname">Surname</string>
     <string name="patronymic">Patronymic</string>
     <string name="marker">Marker</string>
+    <string name="pair">pair</string>
 </resources>

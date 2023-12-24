@@ -28,6 +28,7 @@ import com.fedor.attendancerecording.viewmodel.screens.EditMarkerViewModel
 import com.fedor.attendancerecording.viewmodel.screens.EditStudentViewModel
 import com.fedor.attendancerecording.viewmodel.screens.MainCalendarViewModel
 import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
+import com.fedor.attendancerecording.viewmodel.screens.RecordsViewModel
 import com.fedor.attendancerecording.viewmodel.screens.StudentsViewModel
 
 /**
@@ -60,7 +61,7 @@ object AppViewModelProvider {
         }
 
         /*
-        * markers action (no reaction)
+        * markers action
         */
         // MarkersViewModel
         initializer {
@@ -73,6 +74,16 @@ object AppViewModelProvider {
         initializer {
             EditMarkerViewModel(
                 this.createSavedStateHandle(),
+                attendanceRecordingApplication().container.markerRepository,
+                attendanceRecordingApplication().container.markerTypeRepository
+            )
+        }
+
+        // Records action(no reaction)
+        initializer {
+            RecordsViewModel(
+                this.createSavedStateHandle(),
+                attendanceRecordingApplication().container.studentRepository,
                 attendanceRecordingApplication().container.markerRepository,
                 attendanceRecordingApplication().container.markerTypeRepository
             )

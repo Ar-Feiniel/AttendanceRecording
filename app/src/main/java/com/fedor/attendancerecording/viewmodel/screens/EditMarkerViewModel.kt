@@ -21,12 +21,15 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.stateIn
 
-public class EditMarkerViewModel(
+class EditMarkerViewModel(
     savedStateHandle: SavedStateHandle,
     private val markerRepository: MarkerRepository,
     private val markerTypeRepository: MarkerTypeRepository
 ) : ViewModel() {
-    val markerId: Int = checkNotNull(savedStateHandle[EditMarkerDestination.navArgumentName])
+    companion object {
+        private const val TIMEOUT_MILLIS = 5_000L
+    }
+    private val markerId: Int = checkNotNull(savedStateHandle[EditMarkerDestination.navArgumentName])
 
     val actionNameStringResId = when (markerId == 0) {
         true -> R.string.add // we add a new student
@@ -110,8 +113,4 @@ public class EditMarkerViewModel(
         idMarkerType = markersTypeUiState.value.markerTypesList.find { it.name == markerTypeName }?.idMarkerType
             ?: -1
     )
-
-    companion object {
-        private const val TIMEOUT_MILLIS = 5_000L
-    }
 }

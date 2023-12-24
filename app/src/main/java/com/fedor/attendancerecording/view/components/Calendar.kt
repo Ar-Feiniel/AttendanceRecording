@@ -27,7 +27,7 @@ import java.util.Date
 @Composable
 internal fun Calendar(
     calendar: List<CalendarItem?>,
-    onItemClick: (date: Date) -> Unit) {
+    onItemClick: (date: String) -> Unit) {
     Box(
         contentAlignment = Alignment.Center
         , modifier = Modifier.padding(start = 12.dp, end=12.dp)
@@ -50,7 +50,7 @@ internal fun Calendar(
                                 false -> null
                             },
                             contentPadding = PaddingValues(0.dp),
-                            onClick = { onItemClick(item.date) }) {
+                            onClick = { onItemClick(item.dateString) }) {
                             Text(
                                 text = "${item.day}",
                                 fontSize = 24.sp,

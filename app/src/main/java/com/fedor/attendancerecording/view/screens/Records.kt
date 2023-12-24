@@ -1,23 +1,20 @@
 package com.fedor.attendancerecording.view.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
@@ -29,19 +26,21 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.fedor.attendancerecording.R
 import com.fedor.attendancerecording.view.components.DateLabel
+import com.fedor.attendancerecording.view.components.PairButtonsRow
 
 @Composable
-public fun Records(selectedDate: String)
+fun Records(selectedDate: String)
 {
     Column {
         Spacer(modifier = Modifier.height(12.dp))
-        DateLabel("26.ноябрь.2023")
+        DateLabel(date = selectedDate)
         Row( modifier = Modifier.align(Alignment.CenterHorizontally)){
-            Text(text = "Пара")
+            Text(text = stringResource(id = R.string.pair))
         }
         Spacer(modifier = Modifier.height(12.dp))
         PairTabRow()
@@ -49,37 +48,57 @@ public fun Records(selectedDate: String)
         StudentsList()
     }
 }
+
 @Preview
 @Composable
-internal fun PairTabRow(){
-    var tabIndex by remember { mutableStateOf<Int>(0) }
-    val tabs = listOf("1", "2", "3", "4", "5")
-    Box(contentAlignment = Alignment.TopCenter,
-        modifier = Modifier.fillMaxWidth()) {
-        TabRow(selectedTabIndex = tabIndex
-            , modifier = Modifier.fillMaxWidth(0.8f)
-        ) {
-            tabs.forEachIndexed { index, title ->
-                Tab(selected = tabIndex != index,
-                    onClick = { tabIndex = index },
-                    ){
-                        Box(contentAlignment = Alignment.Center
-                            , modifier = Modifier
+internal fun PairTabRow() {
+    var tabIndex: Int by remember { mutableStateOf<Int>(0) }
+    var pairs: Int by remember { mutableStateOf<Int>(3) }
+
+    Column {
+        val tabRowAction: @Composable () -> Unit = {
+            TabRow(
+                selectedTabIndex = tabIndex,
+                modifier = Modifier.height(30.dp)
+            ) {
+                for (i in 1..pairs) {
+                    Tab(
+                        selected = tabIndex != i - 1,
+                        onClick = { tabIndex = i - 1 },
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
                                 .background((Color(102, 102, 255)))
-                                .fillMaxWidth()
-                        ){
-                            Text(text = "$index")
+                                .fillMaxSize()
+                        ) {
+                            Text(
+                                text = "$i",
+                                color = MaterialTheme.colorScheme.surface
+                            )
                         }
+                    }
                 }
             }
         }
-        when (tabIndex) {
-            0 -> Text(text = "0")
-            1 -> Text(text = "1")
-            2 -> Text(text = "2")
-            3 -> Text(text = "3")
-            4 -> Text(text = "4")
-        }
+
+        PairButtonsRow(
+            onLeftButtonClick = { if (pairNumberChangesValid(pairs, "-")) pairs-- },
+            leftButtonText = "-",
+            onRightButtonClick = { if (pairNumberChangesValid(pairs, "+")) pairs++ },
+            rightButtonText = "+",
+            buttonHeight = 40.dp,
+            buttonWidth = 60.dp,
+            centralContent = tabRowAction
+        )
+    }
+}
+
+fun pairNumberChangesValid(pairNum: Int, action: String): Boolean {
+    return when(action){
+        "+" -> pairNum+1 <= 10
+        "-" -> pairNum-1 >= 1
+        else -> false
     }
 }
 
@@ -100,8 +119,9 @@ internal fun StudentsList(){
                 Column(modifier = Modifier.fillMaxWidth(0.5f)) {
                     Text(text = string)
                 }
-                Column(modifier = Modifier.fillMaxWidth()
-                            .wrapContentSize(Alignment.Center),
+                Column(modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.Center),
                     horizontalAlignment = Alignment.Start,) {
                     MarkersComboBox(markers = markers)
                 }
@@ -111,72 +131,22 @@ internal fun StudentsList(){
 }
 
 @Composable
-internal fun MarkersComboBox(markers: List<String>){
+internal fun MarkersComboBox(markers: List<String>) {
     var expanded by remember { mutableStateOf(false) }
-    Button(shape = RoundedCornerShape(10.dp)
-        , modifier = Modifier.width(100.dp)
-                            .height(30.dp)
-        , onClick = { expanded = !expanded}) {
+    Button(shape = RoundedCornerShape(10.dp), modifier = Modifier
+        .width(100.dp)
+        .height(30.dp),
+        onClick = { expanded = !expanded }
+    ) {
         Text(text = "marker")
     }
-    DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-        markers.forEach{ string ->
-            DropdownMenuItem(text = {Text(text = string)},onClick = { /*TODO*/ })
-        }
-    }
-}
-@Composable
-internal fun drop2(){
-    var expanded by remember { mutableStateOf(false) }
-    val context = LocalContext.current
-    Row(modifier = Modifier
-        .fillMaxWidth()
-        .wrapContentSize(Alignment.Center)){
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            DropdownMenuItem(
-                text = { Text("Load") },
-                onClick = { Toast.makeText(context, "Load", Toast.LENGTH_SHORT).show() }
-            )
-            DropdownMenuItem(
-                text = { Text("Save") },
-                onClick = { Toast.makeText(context, "Save", Toast.LENGTH_SHORT).show() }
-            )
-        }
-    }
-}
-
-@Composable
-fun Demo_DropDownMenu() {
-    val context = LocalContext.current
-    var expanded by remember { mutableStateOf(false) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentSize(Alignment.TopEnd)
+    DropdownMenu(
+        expanded = expanded,
+        onDismissRequest = { expanded = false }
     ) {
-        IconButton(onClick = { expanded = !expanded }) {
-            Icon(
-                imageVector = Icons.Default.MoreVert,
-                contentDescription = "More"
-            )
-        }
-
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            DropdownMenuItem(
-                text = { Text("Load") },
-                onClick = { Toast.makeText(context, "Load", Toast.LENGTH_SHORT).show() }
-            )
-            DropdownMenuItem(
-                text = { Text("Save") },
-                onClick = { Toast.makeText(context, "Save", Toast.LENGTH_SHORT).show() }
-            )
+        markers.forEach { string ->
+            DropdownMenuItem(text = { Text(text = string) },
+                onClick = { /*TODO*/ })
         }
     }
 }

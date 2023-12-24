@@ -23,14 +23,6 @@ class OfflineRecordRepository(private val recordDao: RecordDao) : RecordReposito
         TODO("Not yet implemented")
     }
 
-    override fun getAllDataList(): List<Record> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getOneItemById(id: Int): Record {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun upsertItem(item: Record) {
         TODO("Not yet implemented")
     }

@@ -21,7 +21,6 @@ public fun EditStudent(
     viewModel: EditStudentViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
     Column {
-        Text(text = "Ид студент = ${viewModel.studentId}")
         Text_EditorComponent(
             value = viewModel.studentUiState.studentDetails.surname,
             onValueChange = { viewModel.updateUiState(viewModel.studentUiState.studentDetails.copy(surname = it)) },

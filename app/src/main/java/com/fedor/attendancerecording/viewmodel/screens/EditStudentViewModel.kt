@@ -19,7 +19,7 @@ public final class EditStudentViewModel(
     savedStateHandle: SavedStateHandle,
     private val studentRepository: StudentRepository
 ) : ViewModel(){
-    val studentId: Int = checkNotNull(savedStateHandle[EditStudentDestination.navArgumentName])
+    private val studentId: Int = checkNotNull(savedStateHandle[EditStudentDestination.navArgumentName])
 
     val actionNameStringResId = when(studentId == 0){
         true -> R.string.add // we add a new student

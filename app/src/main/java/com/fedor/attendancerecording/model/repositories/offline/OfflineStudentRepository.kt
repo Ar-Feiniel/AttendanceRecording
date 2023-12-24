@@ -14,13 +14,5 @@ class OfflineStudentRepository(private val studentDao: StudentDao) : StudentRepo
     override suspend fun deleteItem(student: Student) = studentDao.deleteItem(student)
 
     override suspend fun insertItem(student: Student) = studentDao.insertAll(student)
-    override fun getAllDataList(): List<Student> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getOneItemById(id: Int): Student {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun upsertItem(student: Student) = studentDao.upsertItem(student)
 }

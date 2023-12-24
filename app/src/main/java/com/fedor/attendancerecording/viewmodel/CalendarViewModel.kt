@@ -162,9 +162,9 @@ class CalendarItem(val year: Int, private val _month: Int, private val _day: Int
                 false -> "${_month}"
             }
         }
-    public val date: Date
+    public val dateString: String
         get(){
-            return Date(year, _month, _day)
+            return "${_day}.${_month}.${year}"
         }
     public val isWorkingDay: Boolean;
     public val isCurrent: Boolean;

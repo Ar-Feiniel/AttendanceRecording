@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fedor.attendancerecording.view.components.DateLabel
 import com.fedor.attendancerecording.view.components.Calendar
+import com.fedor.attendancerecording.view.components.PairButtonsRow
 import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 import com.fedor.attendancerecording.viewmodel.screens.MainCalendarViewModel
 
@@ -37,13 +38,22 @@ public fun MainCalendar(
     Column(modifier = Modifier.fillMaxWidth()) {
         DateLabel(date = dateLabelText)
         Spacer(modifier = Modifier.height(25.dp))
-        NextPreviousButtons(onNextButtonClick = viewModel::goToNextMonth,
-            onPreviousButtonClick = viewModel::goToPreviousMonth)
+        PairButtonsRow(
+            onLeftButtonClick = viewModel::goToPreviousMonth,
+            leftButtonText = "<<",
+            onRightButtonClick = viewModel::goToNextMonth,
+            rightButtonText = ">>",
+            buttonHeight = 50.dp,
+            buttonWidth = 80.dp
+        )
         Spacer(modifier = Modifier.height(25.dp))
-        Calendar(calendarItemsUiState, onItemClick = {})
+        Calendar(calendarItemsUiState, onItemClick = onDayClick)
         Spacer(modifier = Modifier.fillMaxHeight())
     }
 }
+
+
+
 @Composable
 private fun NextPreviousButtons(
     onNextButtonClick: () -> Unit,
