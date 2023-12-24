@@ -28,7 +28,7 @@ public fun EditStudent(
         )
         Text_EditorComponent(
             value = viewModel.studentUiState.studentDetails.name,
-            onValueChange = { viewModel.updateUiState(viewModel.studentUiState.studentDetails.copy(surname = it)) },
+            onValueChange = { viewModel.updateUiState(viewModel.studentUiState.studentDetails.copy(name = it)) },
             labelStringResId = R.string.name
         )
         Text_EditorComponent(

@@ -83,6 +83,7 @@ object AppViewModelProvider {
         initializer {
             RecordsViewModel(
                 this.createSavedStateHandle(),
+                attendanceRecordingApplication().container.recordRepository,
                 attendanceRecordingApplication().container.studentRepository,
                 attendanceRecordingApplication().container.markerRepository,
                 attendanceRecordingApplication().container.markerTypeRepository

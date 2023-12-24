@@ -19,6 +19,7 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,15 +28,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fedor.attendancerecording.R
+import com.fedor.attendancerecording.model.entity.Marker
+import com.fedor.attendancerecording.model.entity.Student
+import com.fedor.attendancerecording.view.components.ComboBoxItem
 import com.fedor.attendancerecording.view.components.DateLabel
+import com.fedor.attendancerecording.view.components.DropDownComboBox
 import com.fedor.attendancerecording.view.components.PairButtonsRow
+import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
+import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
+import com.fedor.attendancerecording.viewmodel.screens.RecordsViewModel
 
 @Composable
-fun Records(selectedDate: String)
-{
+fun Records(selectedDate: String,
+            viewModel: RecordsViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
+    val recordsUiState by viewModel.recordsUiState.collectAsState()
+    val studentsUiState by viewModel.studentUiState.collectAsState()
+    val markersUiState by viewModel.markersUiState.collectAsState()
+
     Column {
         Spacer(modifier = Modifier.height(12.dp))
         DateLabel(date = selectedDate)
@@ -45,7 +60,9 @@ fun Records(selectedDate: String)
         Spacer(modifier = Modifier.height(12.dp))
         PairTabRow()
         Spacer(modifier = Modifier.height(12.dp))
-        StudentsList()
+        StudentsList(
+            students = studentsUiState.studentsList,
+            markers = markersUiState.markersList)
     }
 }
 
@@ -103,35 +120,42 @@ fun pairNumberChangesValid(pairNum: Int, action: String): Boolean {
 }
 
 @Composable
-internal fun StudentsList(){
-    val students: List<String> = listOf("name surname partonymic1"
-        , "name surname partonymi2"
-        , "name surname partonymi3"
-        , "name surname partonymi4"
-        , "name surname partonymi5"
-        , "name surname partonymi6"
-        , "name surname partonymi7")
-    val markers: List<String> = listOf("2у", "2", "1")
+internal fun StudentsList(
+    students: List<Student>,
+    markers: List<Marker>
+){
     Column() {
-        students.forEach {string ->
+        students.forEach { item ->
+            val selectedMarker = remember { mutableStateOf("+") }
+
             Spacer(modifier = Modifier.height(10.dp))
             Row(){
                 Column(modifier = Modifier.fillMaxWidth(0.5f)) {
-                    Text(text = string)
+                    Text(text = "${item.name} ${item.surname} ${item.patronymic}", overflow = TextOverflow.Clip)
                 }
                 Column(modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center),
                     horizontalAlignment = Alignment.Start,) {
-                    MarkersComboBox(markers = markers)
+                    DropDownComboBox<Marker>(
+                        selectedItem = selectedMarker,
+                        itemsList = markers.map { it.toComboBoxItem() }
+                    )
                 }
             }
         }
     }
 }
 
+fun Marker.toComboBoxItem(): ComboBoxItem<Marker> = ComboBoxItem(
+    visibleText = this.name,
+    itemObject = this
+)
+
+fun ComboBoxItem<Marker>.toMarker(): Marker = this.itemObject
+
 @Composable
-internal fun MarkersComboBox(markers: List<String>) {
+internal fun MarkersComboBox(markers: List<Marker>) {
     var expanded by remember { mutableStateOf(false) }
     Button(shape = RoundedCornerShape(10.dp), modifier = Modifier
         .width(100.dp)
@@ -144,8 +168,8 @@ internal fun MarkersComboBox(markers: List<String>) {
         expanded = expanded,
         onDismissRequest = { expanded = false }
     ) {
-        markers.forEach { string ->
-            DropdownMenuItem(text = { Text(text = string) },
+        markers.forEach { item ->
+            DropdownMenuItem(text = { Text(text = item.name) },
                 onClick = { /*TODO*/ })
         }
     }
