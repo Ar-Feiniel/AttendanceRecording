@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.fedor.attendancerecording.R
 import java.time.LocalDate
@@ -94,7 +95,7 @@ fun ListItem(
     val iconModifier: Modifier = Modifier.size(64.dp)
     Row() {
         Box(modifier = Modifier.fillMaxWidth(0.5f)) {
-            Text(text = text)
+            Text(text = text, overflow = TextOverflow.Clip)
         }
         Row(
             modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly

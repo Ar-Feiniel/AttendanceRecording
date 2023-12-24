@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.fedor.attendancerecording.model.entity.Student
 import com.fedor.attendancerecording.model.repositories.interfaces.StudentRepository
 import com.fedor.attendancerecording.viewmodel.ActionListable
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -37,7 +36,7 @@ public final class StudentsViewModel(
     }
 
     companion object {
-        private const val TIMEOUT_MILLIS = 5_000L
+        const val TIMEOUT_MILLIS = 5_000L
     }
 }
 public data class StudentsUiState(val studentList: List<Student> = listOf())

@@ -5,20 +5,9 @@ import com.fedor.attendancerecording.model.repositories.Repositoryable
 import kotlinx.coroutines.flow.Flow
 interface MarkerTypeRepository: Repositoryable<MarkerType> {
     override fun getAllDataStream(): Flow<List<MarkerType>>
-    override fun getAllDataList(): List<MarkerType>
-
     override fun getOneItemStreamById(id: Int): Flow<MarkerType?>
-
-    override fun getOneItemById(id: Int): MarkerType
-
     override suspend fun updateItem(item: MarkerType)
-
     override suspend fun deleteItem(item: MarkerType)
-
     override suspend fun upsertItem(item: MarkerType)
-
     override suspend fun insertItem(item: MarkerType)
-
-    //Особые
-    fun getOneItemByName(name: String): MarkerType
 }

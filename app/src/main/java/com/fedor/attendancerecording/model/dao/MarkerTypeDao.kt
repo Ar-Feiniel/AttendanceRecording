@@ -16,14 +16,8 @@ interface MarkerTypeDao: DataAccessObjectable<MarkerType> {
     @Query("select * from marker_type order by id_marker_type ASC")
     override fun getAllStream(): Flow<List<MarkerType>>
 
-    @Query("select * from marker_type")
-    fun getAllList(): List<MarkerType>
-
     @Query("select * from marker_type where id_marker_type = :idMarkerType")
     fun getByIdStream(idMarkerType: Int) : Flow<MarkerType>
-
-    @Query("select * from marker_type where id_marker_type = :idMarkerType")
-    fun getByIdItem(idMarkerType: Int) : MarkerType
 
     @Query("select * from marker_type where name = :name")
     fun getByItemName(name: String) : MarkerType

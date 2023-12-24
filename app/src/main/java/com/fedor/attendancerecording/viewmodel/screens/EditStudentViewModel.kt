@@ -39,23 +39,21 @@ public final class EditStudentViewModel(
 
     fun updateUiState(studentDetails: StudentDetails){
         studentUiState = StudentUiState(studentDetails = studentDetails,
-                            isInputValid = validateStudentDetails(studentDetails))
+                            isInputValid = studentDetailsValidator(studentDetails))
         Log.i("EditStudentViewModel", "Update_Ui_State")
     }
 
     fun upsertStudent(){
-        if(validateStudentDetails()){
+        if(studentDetailsValidator()){
             viewModelScope.launch {
                 studentRepository.upsertItem(studentUiState.studentDetails.toStudent())
             }
         }
     }
 
-    private fun validateStudentDetails(studentDetails: StudentDetails = studentUiState.studentDetails): Boolean{
+    private fun studentDetailsValidator(studentDetails: StudentDetails = studentUiState.studentDetails): Boolean{
         return true
     }
-
-
 
     data class StudentUiState(
         val studentDetails: StudentDetails = StudentDetails(),

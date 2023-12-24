@@ -17,7 +17,7 @@ object MainCalendarDestination : ApplicationDestination{
     override val iconResId = R.drawable.calendar_month
     override val screenNameResId = R.string.calendar
 }
-object RecordingDestination : ApplicationDestination{
+object RecordsDestination : ApplicationDestination{
     override val route = "recording"
     override val iconResId = null
     override val screenNameResId = R.string.calendar

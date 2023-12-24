@@ -10,41 +10,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.fedor.attendancerecording.R
+import com.fedor.attendancerecording.view.components.entityeditor.Text_EditorComponent
 import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 import com.fedor.attendancerecording.viewmodel.screens.EditStudentViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 public fun EditStudent(
-    studentId: Int,
     onGoBack: () -> Unit,
     viewModel: EditStudentViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
     Column {
         Text(text = "Ид студент = ${viewModel.studentId}")
-        TextField(
-            value = viewModel.studentUiState.studentDetails.name,
-            onValueChange = { viewModel.updateUiState(viewModel.studentUiState.studentDetails.copy(name = it)) },
-            label = { Text(text = "field") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = true,
-            singleLine = true
-        )
-        TextField(
+        Text_EditorComponent(
             value = viewModel.studentUiState.studentDetails.surname,
             onValueChange = { viewModel.updateUiState(viewModel.studentUiState.studentDetails.copy(surname = it)) },
-            label = { Text(text = "field") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = true,
-            singleLine = true
+            labelStringResId = R.string.surname
         )
-        TextField(
+        Text_EditorComponent(
+            value = viewModel.studentUiState.studentDetails.name,
+            onValueChange = { viewModel.updateUiState(viewModel.studentUiState.studentDetails.copy(surname = it)) },
+            labelStringResId = R.string.name
+        )
+        Text_EditorComponent(
             value = viewModel.studentUiState.studentDetails.patronymic,
             onValueChange = { viewModel.updateUiState(viewModel.studentUiState.studentDetails.copy(patronymic = it)) },
-            label = { Text(text = "field") },
-            modifier = Modifier.fillMaxWidth(),
-            enabled = true,
-            singleLine = true
+            labelStringResId = R.string.patronymic
         )
         Button(onClick =   { viewModel.upsertStudent(); onGoBack() }) {
             Text(text = stringResource(id = viewModel.actionNameStringResId))

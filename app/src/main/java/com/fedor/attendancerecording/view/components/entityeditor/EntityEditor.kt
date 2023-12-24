@@ -1,4 +1,4 @@
-package com.fedor.attendancerecording.view.components
+package com.fedor.attendancerecording.view.components.entityeditor
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button

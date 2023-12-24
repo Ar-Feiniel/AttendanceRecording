@@ -11,7 +11,7 @@ import com.fedor.attendancerecording.view.screens.Export
 import com.fedor.attendancerecording.view.screens.MainCalendar
 import com.fedor.attendancerecording.view.screens.Markers
 import com.fedor.attendancerecording.view.screens.Schedule
-import com.fedor.attendancerecording.view.screens.Recording
+import com.fedor.attendancerecording.view.screens.Records
 import com.fedor.attendancerecording.view.screens.Settings
 import com.fedor.attendancerecording.view.screens.Students
 
@@ -24,10 +24,10 @@ internal fun ApplicationNavHost(navController: NavHostController, startScreen: A
                 navController.navigateToRecordingByDate(date)
             })
         }
-        composable(route = RecordingDestination.routeWithArguments,
-                arguments = RecordingDestination.arguments) { navBackStackEntry ->
-            val date: String? = navBackStackEntry.arguments?.getString(RecordingDestination.navArgumentName)
-            Recording(date!!)
+        composable(route = RecordsDestination.routeWithArguments,
+                arguments = RecordsDestination.arguments) { navBackStackEntry ->
+            val date: String? = navBackStackEntry.arguments?.getString(RecordsDestination.navArgumentName)
+            Records(date!!)
         }
 
         // students action
@@ -39,11 +39,9 @@ internal fun ApplicationNavHost(navController: NavHostController, startScreen: A
         composable(
             route = EditStudentDestination.routeWithArguments,
             arguments = EditStudentDestination.arguments
-        ) { navBackStackEntry ->
-            val studentId: Int? =
-                navBackStackEntry.arguments?.getInt(EditStudentDestination.navArgumentName)
-            EditStudent(studentId = studentId!!,
-                onGoBack = { navController.navigateSingleTopToNoState(StudentsDestination.route) })
+        ) {
+            // student id in states
+            EditStudent( onGoBack = { navController.navigateSingleTopToNoState(StudentsDestination.route) })
         }
 
         // marker action (no reaction)
@@ -54,11 +52,9 @@ internal fun ApplicationNavHost(navController: NavHostController, startScreen: A
         composable(
             route = EditMarkerDestination.routeWithArguments,
             arguments = EditMarkerDestination.arguments
-        ) { navBackStackEntry ->
-            val markerId: Int? =
-                navBackStackEntry.arguments?.getInt(EditMarkerDestination.navArgumentName)
-            EditMarker(markerId = markerId!!,
-                onGoBack = { navController.navigateSingleTopToNoState(MarkersDestination.route)})
+        ) {
+            // marker id in states
+            EditMarker( onGoBack = { navController.navigateSingleTopToNoState(MarkersDestination.route)})
         }
 
         // other action
@@ -105,5 +101,5 @@ private fun NavHostController.navigateToEditMarker(markerId: Int){
     this.navigateSingleTopTo("${EditMarkerDestination.route}/$markerId")
 }
 private fun NavHostController.navigateToRecordingByDate(date: String){
-    this.navigateSingleTopTo("${RecordingDestination.route}/$date")
+    this.navigateSingleTopTo("${RecordsDestination.route}/$date")
 }
