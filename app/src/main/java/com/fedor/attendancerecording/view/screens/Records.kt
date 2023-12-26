@@ -1,5 +1,6 @@
 package com.fedor.attendancerecording.view.screens
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,16 +41,13 @@ import com.fedor.attendancerecording.view.components.DateLabel
 import com.fedor.attendancerecording.view.components.DropDownComboBox
 import com.fedor.attendancerecording.view.components.PairButtonsRow
 import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
-import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
 import com.fedor.attendancerecording.viewmodel.screens.RecordsViewModel
 
 @Composable
 fun Records(selectedDate: String,
             viewModel: RecordsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val recordsUiState by viewModel.recordsUiState.collectAsState()
-    val studentsUiState by viewModel.studentUiState.collectAsState()
-    val markersUiState by viewModel.markersUiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     Column {
         Spacer(modifier = Modifier.height(12.dp))
@@ -61,8 +59,8 @@ fun Records(selectedDate: String,
         PairTabRow()
         Spacer(modifier = Modifier.height(12.dp))
         StudentsList(
-            students = studentsUiState.studentsList,
-            markers = markersUiState.markersList)
+            students = uiState.students,
+            markers = uiState.markers)
     }
 }
 
@@ -100,9 +98,9 @@ internal fun PairTabRow() {
         }
 
         PairButtonsRow(
-            onLeftButtonClick = { if (pairNumberChangesValid(pairs, "-")) pairs-- },
+            onLeftButtonClick = { if (pairNumberChangesValid(pairs, "-")) pairs-- ; Log.i("Records", "Records_paitnum_post_del = $pairs")},
             leftButtonText = "-",
-            onRightButtonClick = { if (pairNumberChangesValid(pairs, "+")) pairs++ },
+            onRightButtonClick = { if (pairNumberChangesValid(pairs, "+")) pairs++ ; Log.i("Records", "Records_paitnum_post_add = $pairs") },
             rightButtonText = "+",
             buttonHeight = 40.dp,
             buttonWidth = 60.dp,
@@ -112,6 +110,7 @@ internal fun PairTabRow() {
 }
 
 fun pairNumberChangesValid(pairNum: Int, action: String): Boolean {
+    Log.i("Records", "Records_paitnum_pre = $pairNum")
     return when(action){
         "+" -> pairNum+1 <= 10
         "-" -> pairNum-1 >= 1
@@ -124,6 +123,8 @@ internal fun StudentsList(
     students: List<Student>,
     markers: List<Marker>
 ){
+    Log.i("Records", students.toString())
+    Log.i("Records", markers.toString())
     Column() {
         students.forEach { item ->
             val selectedMarker = remember { mutableStateOf("+") }
@@ -153,24 +154,3 @@ fun Marker.toComboBoxItem(): ComboBoxItem<Marker> = ComboBoxItem(
 )
 
 fun ComboBoxItem<Marker>.toMarker(): Marker = this.itemObject
-
-@Composable
-internal fun MarkersComboBox(markers: List<Marker>) {
-    var expanded by remember { mutableStateOf(false) }
-    Button(shape = RoundedCornerShape(10.dp), modifier = Modifier
-        .width(100.dp)
-        .height(30.dp),
-        onClick = { expanded = !expanded }
-    ) {
-        Text(text = "marker")
-    }
-    DropdownMenu(
-        expanded = expanded,
-        onDismissRequest = { expanded = false }
-    ) {
-        markers.forEach { item ->
-            DropdownMenuItem(text = { Text(text = item.name) },
-                onClick = { /*TODO*/ })
-        }
-    }
-}

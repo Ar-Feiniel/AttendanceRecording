@@ -12,13 +12,18 @@ import com.fedor.attendancerecording.model.repositories.interfaces.MarkerReposit
 import com.fedor.attendancerecording.model.repositories.interfaces.MarkerTypeRepository
 import com.fedor.attendancerecording.model.repositories.interfaces.RecordRepository
 import com.fedor.attendancerecording.model.repositories.interfaces.StudentRepository
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
-public class RecordsViewModel(
+class RecordsViewModel(
     savedStateHandle: SavedStateHandle,
     private val recordRepository: RecordRepository,
     private val studentRepository: StudentRepository,
@@ -27,6 +32,8 @@ public class RecordsViewModel(
 ) : ViewModel() {
     private val _dateString: String = checkNotNull(savedStateHandle[RecordsDestination.navArgumentName])
 
+    private val _uiState: MutableStateFlow<RecordsScreenUiState> = MutableStateFlow(RecordsScreenUiState())
+    val uiState: StateFlow<RecordsScreenUiState> = _uiState.asStateFlow()
     private val selectedDate: LocalDate
         get() {
             val dateParts: Array<Int> = arrayOf()
@@ -40,43 +47,36 @@ public class RecordsViewModel(
         private const val TIMEOUT_MILLIS = 5_000L
     }
 
-    var recordsUiState: StateFlow<RecordsListUiState> =
-        recordRepository.getAllDataStream().map { it -> RecordsListUiState(it) }
+    // данные извлекаются из репозитория и сопоставляются с состоянием пользовательского интерфейса (RecordsUiState)
+    var recordsUiState: StateFlow<RecordsUiState> =
+        recordRepository.getAllDataStream().map { it -> RecordsUiState(it) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(StudentsViewModel.TIMEOUT_MILLIS),
-                initialValue = RecordsListUiState()
+                initialValue = RecordsUiState()
             )
 
-    var markersUiState: StateFlow<MarkersUiState> =
-        markerRepository.getAllDataStream().map { it -> MarkersUiState(it) }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(StudentsViewModel.TIMEOUT_MILLIS),
-                initialValue = MarkersUiState()
-            )
+    // можно хранить как обычный список (данные будут только просматриваться), переделать (готово)
+    init{
+        refreshUiState()
+    }
 
-    var markersTypeUiState: StateFlow<MarkerTypeUiState> =
-        markerTypeRepository.getAllDataStream().map { it -> MarkerTypeUiState(it) }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(StudentsViewModel.TIMEOUT_MILLIS),
-                initialValue = MarkerTypeUiState()
-            )
+    private fun refreshUiState(){
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    students = studentRepository.getAllDataList(),
+                    markers = markerRepository.getAllDataList(),
+                    markerTypes = markerTypeRepository.getAllDataList()
+                )
+            }
+        }
+    }
 
-    var studentUiState: StateFlow<StudentsUiState> =
-        studentRepository.getAllDataStream().map { it -> StudentsUiState(it) }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(StudentsViewModel.TIMEOUT_MILLIS),
-                initialValue = StudentsUiState()
-            )
-
-    data class StudentsUiState( val studentsList: List<Student> = listOf() )
-
-    data class MarkersUiState( val markersList: List<Marker> = listOf() )
-
-    data class MarkerTypeUiState(val markerTypesList: List<MarkerType> = listOf())
-
-    data class RecordsListUiState( val recordsDetailsList: List<Record> = listOf() )
+    data class RecordsUiState( val recordsDetailsList: List<Record> = listOf() )
+    data class RecordsScreenUiState(
+        var markers: List<Marker> = listOf<Marker>(),
+        var markerTypes: List<MarkerType> = listOf<MarkerType>(),
+        var students: List<Student> = listOf<Student>()
+    )
 }
