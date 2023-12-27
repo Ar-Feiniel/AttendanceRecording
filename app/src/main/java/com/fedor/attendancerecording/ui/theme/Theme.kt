@@ -1,4 +1,4 @@
-package com.fedor.attendancerecording.ui.theme
+package com.example.compose
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
@@ -74,19 +74,17 @@ private val DarkColors = darkColorScheme(
 
 @Composable
 fun AppTheme(
-    useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+  useDarkTheme: Boolean = isSystemInDarkTheme(),
+  content: @Composable() () -> Unit
 ) {
-    val colors = LightColors
+  val colors = if (!useDarkTheme) {
+    LightColors
+  } else {
+    DarkColors
+  }
 
-//        if (!useDarkTheme) {
-//        LightColors
-//    } else {
-//        DarkColors
-//    }
-
-    MaterialTheme(
-        colorScheme = colors,
-        content = content
-    )
+  MaterialTheme(
+    colorScheme = colors,
+    content = content
+  )
 }

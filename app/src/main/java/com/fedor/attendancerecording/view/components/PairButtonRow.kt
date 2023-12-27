@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,7 +39,8 @@ fun PairButtonsRow(
 
     Row(
         modifier = Modifier.fillMaxWidth()
-        .padding(start = 12.dp, end = 12.dp)
+        .padding(start = 12.dp, end = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
 
         // 0.2
@@ -91,9 +93,7 @@ private fun PairButton(
     width: Dp
 ) {
     Button(
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color(204, 204, 255), contentColor = Color(0, 75, 150)
-        ), shape = RoundedCornerShape(20f), modifier = Modifier
+        shape = RoundedCornerShape(20f), modifier = Modifier
             .width(width)
             .height(height), onClick = onClickAction,
         contentPadding = PaddingValues(0.dp)

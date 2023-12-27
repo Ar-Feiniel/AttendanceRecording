@@ -29,6 +29,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.compose.AppTheme
 
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
@@ -44,7 +45,7 @@ public fun attendanceRecordingApp(){
 
     var selectedScreen: @Composable () -> Unit by remember { mutableStateOf( { Text( text = stringResource(startScreen.screenNameResId)) }) }
 
-    MaterialTheme{
+    AppTheme{
         Surface{
             Scaffold(
                 topBar = {
@@ -69,7 +70,9 @@ public fun attendanceRecordingApp(){
                                                     navController.navigateSingleTopTo(value.route) }) {
                                 Icon(imageVector = ImageVector.vectorResource(value.iconResId!!),
                                     contentDescription = null,
-                                    modifier = Modifier.height(42.dp).width(42.dp)
+                                    modifier = Modifier
+                                        .height(42.dp)
+                                        .width(42.dp)
                                 )
                             }
                         }

@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,28 +30,21 @@ internal fun Calendar(
     calendar: List<CalendarItem?>,
     onItemClick: (date: String) -> Unit) {
     Box(
-        contentAlignment = Alignment.Center
-        , modifier = Modifier.padding(start = 12.dp, end=12.dp)
+        contentAlignment = Alignment.Center, modifier = Modifier.padding(start = 12.dp, end = 12.dp)
     ) {
-        LazyVerticalGrid(contentPadding = PaddingValues(0.dp)
-            , horizontalArrangement = Arrangement.SpaceAround
-            , verticalArrangement = Arrangement.SpaceAround
-            , columns = GridCells.Fixed(7)
-            , content = {
-                items(calendar) {item ->
+        LazyVerticalGrid(contentPadding = PaddingValues(0.dp),
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalArrangement = Arrangement.SpaceAround,
+            columns = GridCells.Fixed(7),
+            content = {
+                items(calendar) { item ->
                     if (item != null) {
                         Button(modifier = Modifier.padding(3.dp),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = Color(153, 153, 255),
-                                contentColor = Color(255, 255, 255)
-                            ),
                             shape = CircleShape,
-                            border = when (item.isCurrent) {
-                                true -> BorderStroke(2.dp, Color.Black)
-                                false -> null
-                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = if (item.isCurrent) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary),
                             contentPadding = PaddingValues(0.dp),
-                            onClick = { onItemClick(item.dateString) }) {
+                            onClick = { onItemClick(item.dateString) }
+                        ) {
                             Text(
                                 text = "${item.day}",
                                 fontSize = 24.sp,
