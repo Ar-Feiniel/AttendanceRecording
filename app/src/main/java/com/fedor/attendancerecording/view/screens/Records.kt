@@ -9,12 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -98,9 +93,9 @@ internal fun PairTabRow() {
         }
 
         PairButtonsRow(
-            onLeftButtonClick = { if (pairNumberChangesValid(pairs, "-")) pairs-- ; Log.i("Records", "Records_paitnum_post_del = $pairs")},
+            onLeftButtonClick = { if (pairNumberChangesValid(pairs, tabIndex, "-")) pairs--},
             leftButtonText = "-",
-            onRightButtonClick = { if (pairNumberChangesValid(pairs, "+")) pairs++ ; Log.i("Records", "Records_paitnum_post_add = $pairs") },
+            onRightButtonClick = { if (pairNumberChangesValid(pairs, tabIndex, "+")) pairs++},
             rightButtonText = "+",
             buttonHeight = 40.dp,
             buttonWidth = 60.dp,
@@ -109,11 +104,14 @@ internal fun PairTabRow() {
     }
 }
 
-fun pairNumberChangesValid(pairNum: Int, action: String): Boolean {
-    Log.i("Records", "Records_paitnum_pre = $pairNum")
-    return when(action){
-        "+" -> pairNum+1 <= 10
-        "-" -> pairNum-1 >= 1
+fun pairNumberChangesValid(pairNum: Int, index: Int, action: String): Boolean {
+
+    val maxPairNum = 10
+    val minPairNum = 1
+
+    return when(action) {
+        "+" -> pairNum+1 <= maxPairNum
+        "-" -> pairNum-1 >= minPairNum && index+1 <= pairNum-1
         else -> false
     }
 }
