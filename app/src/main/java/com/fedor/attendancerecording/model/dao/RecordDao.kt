@@ -18,7 +18,7 @@ interface RecordDao: DataAccessObjectable<Record> {
     @Query("select * from record order by id_record ASC")
     override fun getAllStream(): Flow<List<Record>>
     @Query("select * from record order by id_record ASC")
-    fun getAllList(): List<Record>
+    suspend fun getAllList(): List<Record>
     @Query("select * from record where date = :date order by id_record ASC")
     fun getAllStreamByDate(date: String): Flow<List<Record>>
     @Insert(onConflict  = ABORT)

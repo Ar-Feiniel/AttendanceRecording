@@ -1,5 +1,6 @@
 package com.fedor.attendancerecording.view.components
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,11 +16,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun <T> DropDownComboBox(
+    onSelectedItemChanged: () -> Unit,
     selectedItem: MutableState<String>,
     itemsList: List<ComboBoxItem<T>>
 ) {
@@ -38,11 +42,15 @@ fun <T> DropDownComboBox(
         onDismissRequest = { expanded = false }
     ) {
         itemsList.forEach { item ->
-            DropdownMenuItem(text = { Text(text = item.visibleText) },
+            DropdownMenuItem(
+                text = { Text(text = item.visibleText, overflow = TextOverflow.Ellipsis) },
                 onClick = {
                     selectedItem.value = item.visibleText
                     expanded = !expanded
-                })
+                    onSelectedItemChanged()
+                },
+                contentPadding = PaddingValues(0.dp)
+            )
         }
     }
 }

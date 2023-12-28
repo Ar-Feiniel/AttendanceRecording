@@ -1,5 +1,6 @@
 package com.fedor.attendancerecording.viewmodel.screens
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,12 +14,8 @@ import com.fedor.attendancerecording.model.repositories.interfaces.MarkerTypeRep
 import com.fedor.attendancerecording.model.repositories.interfaces.RecordRepository
 import com.fedor.attendancerecording.model.repositories.interfaces.StudentRepository
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -34,6 +31,8 @@ class RecordsViewModel(
 
     private val _uiState: MutableStateFlow<RecordsScreenUiState> = MutableStateFlow(RecordsScreenUiState())
     val uiState: StateFlow<RecordsScreenUiState> = _uiState.asStateFlow()
+
+    val dateString: String =  _dateString
     private val selectedDate: LocalDate
         get() {
             val dateParts: Array<Int> = arrayOf()
@@ -43,21 +42,7 @@ class RecordsViewModel(
             return LocalDate.of(dateParts[2], dateParts[1], dateParts[0])
         }
 
-    companion object{
-        private const val TIMEOUT_MILLIS = 5_000L
-    }
-
-    // данные извлекаются из репозитория и сопоставляются с состоянием пользовательского интерфейса (RecordsUiState)
-    var recordsUiState: StateFlow<RecordsUiState> =
-        recordRepository.getAllDataStream().map { it -> RecordsUiState(it) }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(StudentsViewModel.TIMEOUT_MILLIS),
-                initialValue = RecordsUiState()
-            )
-
-    // можно хранить как обычный список (данные будут только просматриваться), переделать (готово)
-    init{
+    init {
         refreshUiState()
     }
 
@@ -65,6 +50,7 @@ class RecordsViewModel(
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
+                    recordsDetails = recordRepository.getAllDataList().map { it.toRecordDetails() },
                     students = studentRepository.getAllDataList(),
                     markers = markerRepository.getAllDataList(),
                     markerTypes = markerTypeRepository.getAllDataList()
@@ -73,8 +59,56 @@ class RecordsViewModel(
         }
     }
 
-    data class RecordsUiState( val recordsDetailsList: List<Record> = listOf() )
+    fun refreshRecordDetails(){
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    recordsDetails = recordRepository.getAllDataList().map { it.toRecordDetails() }
+                )
+            }
+        }
+    }
+
+    fun upsertRecord(recordDetails: RecordDetails){
+        if(recordDetailsValidator(recordDetails)){
+            viewModelScope.launch {
+                recordRepository.upsertItem(recordDetails.toRecord())
+            }
+            Log.i("Records", "upsertRecordDetails ${recordDetails.toString()}, validator=${recordDetailsValidator(recordDetails)}")
+            Log.i("Records", "upsertRecord ${recordDetails.toRecord().toString()}")
+        }
+    }
+
+    private fun recordDetailsValidator(recordDetails: RecordDetails): Boolean{
+        return true
+    }
+
+    private fun Record.toRecordDetails(): RecordDetails = RecordDetails(
+        idRecord = this.idRecord,
+        idMarker = this.idMarker, // uiState.value.markers.find { idMarker == this.idMarker }?.name ?: "not found",
+        idStudent = this.idStudent,
+        pairNum = this.pairNum,
+        date = this.date
+    )
+
+    private fun RecordDetails.toRecord(): Record = Record(
+        idRecord = this.idRecord,
+        idMarker = this.idMarker,
+        idStudent = this.idStudent,
+        pairNum = this.pairNum,
+        date = this.date
+    )
+
+    data class RecordDetails(
+        val idRecord: Int = 0,
+        var idMarker: Int = 0,
+        val idStudent: Int = 0,
+        val pairNum: Int = 0,
+        val date: String = "01.01.1999"
+    )
+
     data class RecordsScreenUiState(
+        var recordsDetails: List<RecordDetails> = listOf<RecordDetails>(),
         var markers: List<Marker> = listOf<Marker>(),
         var markerTypes: List<MarkerType> = listOf<MarkerType>(),
         var students: List<Student> = listOf<Student>()

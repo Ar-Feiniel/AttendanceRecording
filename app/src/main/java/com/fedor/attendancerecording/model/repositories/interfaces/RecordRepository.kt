@@ -1,12 +1,14 @@
 package com.fedor.attendancerecording.model.repositories.interfaces
 
 import com.fedor.attendancerecording.model.entity.Marker
+import com.fedor.attendancerecording.model.entity.MarkerType
 import com.fedor.attendancerecording.model.entity.Record
 import com.fedor.attendancerecording.model.repositories.Repositoryable
 import kotlinx.coroutines.flow.Flow
 
 interface RecordRepository : Repositoryable<Record> {
     override fun getAllDataStream(): Flow<List<Record>>
+    suspend fun getAllDataList(): List<Record>
     override fun getOneItemStreamById(id: Int): Flow<Record?>
     fun getAllDataStreamByDate(date: String): Flow<List<Record>>
     override suspend fun updateItem(item: Record)

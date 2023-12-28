@@ -1,5 +1,6 @@
 package com.fedor.attendancerecording.model.entity
 
+import android.app.appsearch.GetByDocumentIdRequest
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

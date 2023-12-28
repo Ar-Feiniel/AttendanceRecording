@@ -2,13 +2,10 @@ package com.fedor.attendancerecording.view.screens
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,22 +14,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
-import androidx.compose.material3.TabRowDefaults
-import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fedor.attendancerecording.R
@@ -46,29 +41,43 @@ import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 import com.fedor.attendancerecording.viewmodel.screens.RecordsViewModel
 
 @Composable
-fun Records(selectedDate: String,
-            viewModel: RecordsViewModel = viewModel(factory = AppViewModelProvider.Factory)
+fun Records(
+    selectedDate: String,
+    viewModel: RecordsViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    var pairNumIndex: MutableState<Int> = remember { mutableStateOf<Int>(0) }
     val uiState by viewModel.uiState.collectAsState()
+
+    viewModel.refreshRecordDetails()
+    Log.i("Records", "collect markers ${uiState.markers.toString()}")
 
     Column {
         Spacer(modifier = Modifier.height(12.dp))
         DateLabel(date = selectedDate)
-        Row( modifier = Modifier.align(Alignment.CenterHorizontally)){
+        Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(text = stringResource(id = R.string.pair))
         }
         Spacer(modifier = Modifier.height(12.dp))
-        PairTabRow()
+        PairTabRow(
+            pairNumIndex = pairNumIndex
+        )
         Spacer(modifier = Modifier.height(12.dp))
         StudentsList(
             students = uiState.students,
-            markers = uiState.markers)
+            markers = uiState.markers,
+            records = uiState.recordsDetails,
+            upsertRecord = viewModel::upsertRecord,
+            date = viewModel.dateString,
+            pairNumIndex = pairNumIndex.value,
+            refreshDetails = viewModel::refreshRecordDetails
+        )
     }
 }
 
-@Preview
 @Composable
-internal fun PairTabRow() {
+internal fun PairTabRow(
+    pairNumIndex: MutableState<Int>
+) {
     var tabIndex: Int by remember { mutableStateOf<Int>(0) }
     var pairs: Int by remember { mutableStateOf<Int>(3) }
 
@@ -77,15 +86,15 @@ internal fun PairTabRow() {
                 TabRow(
                     modifier = Modifier
                         .clip(RoundedCornerShape(5.dp)),
-                    selectedTabIndex = tabIndex,
+                    selectedTabIndex = pairNumIndex.value,
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.surface,
                     indicator = {}
                 ) {
                     for (i in 1..pairs) {
                         Tab(
-                            selected = tabIndex != i - 1,
-                            onClick = { tabIndex = i - 1 },
+                            selected = pairNumIndex.value != i - 1,
+                            onClick = { pairNumIndex.value = i - 1 },
                             modifier = Modifier
                                 .padding(vertical = 4.dp, horizontal = 1.dp)
                                 .clip(RoundedCornerShape(10.dp))
@@ -95,7 +104,7 @@ internal fun PairTabRow() {
                                 contentAlignment = Alignment.Center,
                                 modifier = Modifier
                                     .background(
-                                        if (tabIndex+1 == i)
+                                        if (pairNumIndex.value + 1 == i)
                                             MaterialTheme.colorScheme.primary
                                         else
                                             MaterialTheme.colorScheme.inversePrimary
@@ -106,7 +115,7 @@ internal fun PairTabRow() {
                                     text = "$i",
                                     maxLines = 1,
                                     color =
-                                        if (tabIndex+1 == i)
+                                        if (pairNumIndex.value + 1 == i)
                                             MaterialTheme.colorScheme.inversePrimary
                                         else
                                             MaterialTheme.colorScheme.primary
@@ -145,13 +154,39 @@ fun pairNumberChangesValid(pairNum: Int, index: Int, action: String): Boolean {
 @Composable
 internal fun StudentsList(
     students: List<Student>,
-    markers: List<Marker>
+    markers: List<Marker>,
+    records: List<RecordsViewModel.RecordDetails>,
+    upsertRecord: (item: RecordsViewModel.RecordDetails) -> Unit,
+    date: String = "",
+    pairNumIndex: Int = 0,
+    refreshDetails: () -> Unit
 ){
-    Log.i("Records", students.toString())
-    Log.i("Records", markers.toString())
+    refreshDetails()
+    Log.i("Records", "students records  ${students.toString()}")
+    Log.i("Records", "Listing markers  ${markers.toString()}")
+    Log.i("Records", "Listing records  ${records.toString()}")
+
     Column() {
         students.forEach { item ->
-            val selectedMarker = remember { mutableStateOf("+") }
+            Log.i("Records", "List recomposing")
+            // create a temporary record if the student does not have an record
+            val conformityRecord: RecordsViewModel.RecordDetails =
+                records.find { it.idStudent == item.idStudent && it.date == date && it.pairNum == pairNumIndex+1 }
+                    ?: RecordsViewModel.RecordDetails(
+                        idStudent = item.idStudent,
+                        date = date,
+                        pairNum = pairNumIndex + 1
+                    )
+
+            Log.i("Records", "conformityRecord ${conformityRecord.toString()}")
+
+            val selectedMarker = rememberSaveable(conformityRecord) {
+                mutableStateOf(
+                    if (conformityRecord.idMarker == 0) "+"
+                    else markers.find { conformityRecord.idMarker == it.idMarker }?.name
+                        ?: "not found"
+                )
+            }
 
             Spacer(modifier = Modifier.height(10.dp))
             Row(){
@@ -161,8 +196,13 @@ internal fun StudentsList(
                 Column(modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentSize(Alignment.Center),
-                    horizontalAlignment = Alignment.Start,) {
+                    horizontalAlignment = Alignment.Start
+                ) {
                     DropDownComboBox<Marker>(
+                        onSelectedItemChanged = {
+                            conformityRecord.idMarker = markers.find { it.name == selectedMarker.value }?.idMarker ?: 0
+                            upsertRecord(conformityRecord)
+                        },
                         selectedItem = selectedMarker,
                         itemsList = markers.map { it.toComboBoxItem() }
                     )
