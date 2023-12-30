@@ -31,8 +31,8 @@ class RecordsViewModel(
 
     private val _uiState: MutableStateFlow<RecordsScreenUiState> = MutableStateFlow(RecordsScreenUiState())
     val uiState: StateFlow<RecordsScreenUiState> = _uiState.asStateFlow()
-
     val dateString: String =  _dateString
+
     private val selectedDate: LocalDate
         get() {
             val dateParts: Array<Int> = arrayOf()

@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.compose.seed
 import com.fedor.attendancerecording.R
 import com.fedor.attendancerecording.model.entity.Marker
 import com.fedor.attendancerecording.model.entity.Student
@@ -48,8 +49,13 @@ fun Records(
     var pairNumIndex: MutableState<Int> = remember { mutableStateOf<Int>(0) }
     val uiState by viewModel.uiState.collectAsState()
 
-    viewModel.refreshRecordDetails()
+    val defaultPairNum = when(uiState.recordsDetails.any { it.date == selectedDate }){
+        true -> uiState.recordsDetails.filter{ it.date == selectedDate}.maxOf { it.pairNum }
+        false -> 3
+    }
+
     Log.i("Records", "collect markers ${uiState.markers.toString()}")
+    Log.i("Records", "pairNum $defaultPairNum")
 
     Column {
         Spacer(modifier = Modifier.height(12.dp))
@@ -59,7 +65,8 @@ fun Records(
         }
         Spacer(modifier = Modifier.height(12.dp))
         PairTabRow(
-            pairNumIndex = pairNumIndex
+            pairNumIndex = pairNumIndex,
+            defaultPairNum = defaultPairNum
         )
         Spacer(modifier = Modifier.height(12.dp))
         StudentsList(
@@ -76,11 +83,11 @@ fun Records(
 
 @Composable
 internal fun PairTabRow(
-    pairNumIndex: MutableState<Int>
+    pairNumIndex: MutableState<Int>,
+    defaultPairNum: Int
 ) {
     var tabIndex: Int by remember { mutableStateOf<Int>(0) }
-    var pairs: Int by remember { mutableStateOf<Int>(3) }
-
+    var pairs: Int by rememberSaveable(defaultPairNum) { mutableStateOf<Int>(defaultPairNum) }
 
         val tabRowAction: @Composable () -> Unit = {
                 TabRow(
@@ -118,8 +125,7 @@ internal fun PairTabRow(
                                         if (pairNumIndex.value + 1 == i)
                                             MaterialTheme.colorScheme.inversePrimary
                                         else
-                                            MaterialTheme.colorScheme.primary
-                                            ,
+                                            MaterialTheme.colorScheme.primary,
                                     overflow = TextOverflow.Ellipsis
                                 )
                             }
@@ -140,7 +146,6 @@ internal fun PairTabRow(
 }
 
 fun pairNumberChangesValid(pairNum: Int, index: Int, action: String): Boolean {
-
     val maxPairNum = 10
     val minPairNum = 1
 
@@ -160,7 +165,7 @@ internal fun StudentsList(
     date: String = "",
     pairNumIndex: Int = 0,
     refreshDetails: () -> Unit
-){
+) {
     refreshDetails()
     Log.i("Records", "students records  ${students.toString()}")
     Log.i("Records", "Listing markers  ${markers.toString()}")
@@ -171,7 +176,7 @@ internal fun StudentsList(
             Log.i("Records", "List recomposing")
             // create a temporary record if the student does not have an record
             val conformityRecord: RecordsViewModel.RecordDetails =
-                records.find { it.idStudent == item.idStudent && it.date == date && it.pairNum == pairNumIndex+1 }
+                records.find { it.idStudent == item.idStudent && it.date == date && it.pairNum == pairNumIndex + 1 }
                     ?: RecordsViewModel.RecordDetails(
                         idStudent = item.idStudent,
                         date = date,
@@ -189,18 +194,23 @@ internal fun StudentsList(
             }
 
             Spacer(modifier = Modifier.height(10.dp))
-            Row(){
+            Row() {
                 Column(modifier = Modifier.fillMaxWidth(0.5f)) {
-                    Text(text = "${item.name} ${item.surname} ${item.patronymic}", overflow = TextOverflow.Clip)
+                    Text(
+                        text = "${item.name} ${item.surname} ${item.patronymic}",
+                        overflow = TextOverflow.Clip
+                    )
                 }
-                Column(modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.Center),
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentSize(Alignment.Center),
                     horizontalAlignment = Alignment.Start
                 ) {
                     DropDownComboBox<Marker>(
                         onSelectedItemChanged = {
-                            conformityRecord.idMarker = markers.find { it.name == selectedMarker.value }?.idMarker ?: 0
+                            conformityRecord.idMarker =
+                                markers.find { it.name == selectedMarker.value }?.idMarker ?: 0
                             upsertRecord(conformityRecord)
                         },
                         selectedItem = selectedMarker,
