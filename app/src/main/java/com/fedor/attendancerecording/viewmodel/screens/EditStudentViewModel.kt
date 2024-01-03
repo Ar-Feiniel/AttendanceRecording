@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
-public final class EditStudentViewModel(
+class EditStudentViewModel(
     savedStateHandle: SavedStateHandle,
     private val studentRepository: StudentRepository
 ) : ViewModel(){

@@ -9,7 +9,7 @@ import java.util.Date
 import kotlin.math.abs
 import kotlin.math.ceil
 
-public abstract class CalendarViewModel : ViewModel() {
+abstract class CalendarViewModel : ViewModel() {
     private var _currentDate: LocalDate = LocalDate.now()
     public var selectedDate: LocalDate = _currentDate
     public var calendarList: List<CalendarItem?> = getMonthList(selectedDate)

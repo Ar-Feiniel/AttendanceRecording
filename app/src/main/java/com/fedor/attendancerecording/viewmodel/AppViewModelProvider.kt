@@ -26,6 +26,7 @@ import com.fedor.attendancerecording.AttendanceRecordingApplication
 import com.fedor.attendancerecording.view.screens.MainCalendar
 import com.fedor.attendancerecording.viewmodel.screens.EditMarkerViewModel
 import com.fedor.attendancerecording.viewmodel.screens.EditStudentViewModel
+import com.fedor.attendancerecording.viewmodel.screens.ExportViewModel
 import com.fedor.attendancerecording.viewmodel.screens.MainCalendarViewModel
 import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
 import com.fedor.attendancerecording.viewmodel.screens.RecordsViewModel
@@ -87,6 +88,12 @@ object AppViewModelProvider {
                 attendanceRecordingApplication().container.studentRepository,
                 attendanceRecordingApplication().container.markerRepository,
                 attendanceRecordingApplication().container.markerTypeRepository
+            )
+        }
+
+        initializer {
+            ExportViewModel(
+                attendanceRecordingApplication().container.recordRepository
             )
         }
     }

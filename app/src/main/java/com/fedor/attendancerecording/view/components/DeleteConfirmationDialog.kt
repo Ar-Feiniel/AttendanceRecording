@@ -13,7 +13,7 @@ import androidx.compose.ui.res.vectorResource
 import com.fedor.attendancerecording.R
 
 @Composable
-public fun DeleteConfirmationDialog(
+fun DeleteConfirmationDialog(
     deleteObjectStringDescription: String = "",
     onDeleteConfirm: () -> Unit,
     onDeleteCancel: () -> Unit

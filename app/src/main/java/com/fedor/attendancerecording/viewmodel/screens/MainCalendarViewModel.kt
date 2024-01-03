@@ -10,7 +10,7 @@ import com.fedor.attendancerecording.viewmodel.CalendarViewModel
 import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDate
 
-public final class MainCalendarViewModel(
+class MainCalendarViewModel(
     savedStateHandle: SavedStateHandle
 ) : CalendarViewModel() {
     var monthListUiState by mutableStateOf(getMonthList())
@@ -56,40 +56,6 @@ public final class MainCalendarViewModel(
                 }
             }
         }
-
-//
-//        val yearsInOffset: Int = ceil(monthOffset.toFloat()/12).toInt()
-//
-//        val floatYears: Int = getYearsInMonthNum(monthOffset) + if (month + monthOffset <= 0) 1 else 0
-//        val floatMonths: Int = abs(monthOffset-(floatYears*12))
-//
-//        Log.i("CalendarViewModel", "floatYears/floatMonths = ${floatYears}/${floatMonths}")
-//
-//        // to previous
-//        if( monthOffset < 0 ){
-//            if(month + monthOffset <= 0){
-//                year -= floatYears
-//                month = 12 - floatMonths
-//            }
-//            else{
-//                month += monthOffset
-//            }
-//        }
-//
-//        // to next
-//        if( monthOffset > 0){
-//            if( monthOffset >= 0 ){
-//                if(month + monthOffset > 12){
-//                    year += floatYears
-//                    month = floatMonths
-//                }
-//                else{
-//                    month += monthOffset
-//                }
-//            }
-//        }
-
-        Log.i("CalendarViewModel", "computeDateByOffset = ${month}/${year}/${day}")
         return LocalDate.of(year, month, day)
     }
 }

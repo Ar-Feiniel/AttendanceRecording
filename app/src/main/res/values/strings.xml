@@ -19,4 +19,7 @@
     <string name="patronymic">Patronymic</string>
     <string name="marker">Marker</string>
     <string name="pair">pair</string>
+    <string name="export_to">Export to</string>
+    <string name="format">Format</string>
+    <string name="export_settings">Export settings</string>
 </resources>

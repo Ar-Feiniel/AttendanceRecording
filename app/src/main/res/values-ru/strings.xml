@@ -20,4 +20,7 @@
     <string name="patronymic">Отчество</string>
     <string name="marker">Маркер</string>
     <string name="pair">Пара</string>
+    <string name="export_to">"Экспорт в "</string>
+    <string name="format">Формат</string>
+    <string name="export_settings">Настройки экспорта</string>
 </resources>

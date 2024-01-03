@@ -32,14 +32,15 @@ import androidx.compose.ui.unit.dp
 fun <T> DropDownComboBox(
     onSelectedItemChanged: () -> Unit,
     selectedItem: MutableState<String>,
-    itemsList: List<ComboBoxItem<T>>
+    itemsList: List<ComboBoxItem<T>>,
+    modifier: Modifier =
+        Modifier.width(100.dp)
+        .height(30.dp)
+        .padding(PaddingValues(0.dp))
 ) {
     var expanded by remember { mutableStateOf(false) }
 
-    Button(shape = RoundedCornerShape(10.dp), modifier = Modifier
-        .width(100.dp)
-        .height(30.dp)
-        .padding(PaddingValues(0.dp)),
+    Button(shape = RoundedCornerShape(10.dp), modifier = modifier,
         onClick = { expanded = !expanded }
     ) {
         Text(text = "${selectedItem.value}")
