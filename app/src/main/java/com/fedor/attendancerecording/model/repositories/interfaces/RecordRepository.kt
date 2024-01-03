@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface RecordRepository : Repositoryable<Record> {
     override fun getAllDataStream(): Flow<List<Record>>
     suspend fun getAllDataList(): List<Record>
+    suspend fun getRecordsCountByDate(date: String) : Int
     override fun getOneItemStreamById(id: Int): Flow<Record?>
     fun getAllDataStreamByDate(date: String): Flow<List<Record>>
     override suspend fun updateItem(item: Record)

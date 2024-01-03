@@ -1,6 +1,5 @@
 package com.fedor.attendancerecording.view.screens
 
-import android.widget.Space
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,54 +23,45 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fedor.attendancerecording.R
-import com.fedor.attendancerecording.view.components.ComboBoxItem
-import com.fedor.attendancerecording.view.components.DropDownComboBox
 import com.fedor.attendancerecording.view.components.PairButtonsRow
 import com.fedor.attendancerecording.view.components.export.ExportVariantCard
 import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 import com.fedor.attendancerecording.viewmodel.screens.ExportViewModel
-import java.time.LocalDate
 
 @Composable
 fun Export(
     viewModel: ExportViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-
+    viewModel.updateRecordsCount()
     var isExportDialogOpen by remember{ mutableStateOf(false) }
     val selectedFormat = remember{ mutableStateOf("") }
-    val selectedDate = remember{ mutableStateOf(LocalDate.now().toString()) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
-        ExportVariantCard(
-            iconResId = R.drawable.export_excel,
-            exportFormat = "xlsx",
-            onCardClick = {
-                selectedFormat.value = "xlsx"
-                isExportDialogOpen = !isExportDialogOpen
-            })
-        Spacer(modifier = Modifier.height(4.dp))
-        ExportVariantCard(
-            iconResId = R.drawable.export_csv,
-            exportFormat = "csv",
-            onCardClick = {
-                selectedFormat.value = "csv"
-                isExportDialogOpen = !isExportDialogOpen
-            })
+        viewModel.exportFormats.forEach{
+            ExportVariantCard(
+                iconResId = it.value,
+                exportFormat = it.key,
+                onCardClick = {
+                    selectedFormat.value = it.key
+                    isExportDialogOpen = !isExportDialogOpen
+                })
+            Spacer(modifier = Modifier.height(4.dp))
+        }
     }
 
     if(isExportDialogOpen){
         ExportDialog(
-            selectedDate = viewModel.dateLabelText,
+            viewModel = viewModel,
+            selectedFormat = selectedFormat,
             onDeleteConfirm = {
                 isExportDialogOpen = !isExportDialogOpen
             },
             onDeleteCancel = {
                 isExportDialogOpen = !isExportDialogOpen
-            },
-            viewModel = viewModel
+            }
         )
     }
 }
@@ -79,17 +69,24 @@ fun Export(
 @Composable
 fun ExportDialog(
     viewModel: ExportViewModel,
-    selectedDate: String = LocalDate.now().toString(),
+    selectedFormat: MutableState<String>,
     onDeleteConfirm: () -> Unit,
     onDeleteCancel: () -> Unit
 ){
-    val selectedFormat: MutableState<String> = remember{ mutableStateOf(viewModel.formats.first()) }
-
     AlertDialog(
         onDismissRequest = {  },
-        title = { Text(text = stringResource(id = R.string.export_settings)) },
+        title = {
+            Row(){
+                Text(text = stringResource(id = R.string.export_to))
+                Text(text = selectedFormat.value)
+            }
+        },
         text = {
             Column {
+                Row(){
+                    Text(text = "Найдено записей: ")
+                    Text(text = viewModel.recordsCount.toString())
+                }
                 PairButtonsRow(
                     onLeftButtonClick = viewModel::goToPreviousMonth,
                     leftButtonText = "<",
@@ -97,23 +94,8 @@ fun ExportDialog(
                     rightButtonText = ">",
                     buttonHeight = 40.dp,
                     buttonWidth = 40.dp,
-                    centralContent = { Text(text = selectedDate) }
+                    centralContent = { Text(text = viewModel.dateLabelText) }
                 )
-                Spacer( modifier = Modifier.height(3.dp) )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text= stringResource(id = R.string.format),
-                        modifier = Modifier.weight(1f)
-                    )
-                    DropDownComboBox(
-                        onSelectedItemChanged = { /*TODO*/ },
-                        selectedItem = selectedFormat,
-                        itemsList = viewModel.formats.map { it -> ComboBoxItem<String>(visibleText = it, itemObject = it) },
-                        modifier = Modifier.weight(1f)
-                    )
-                }
             }
         },
         confirmButton = {

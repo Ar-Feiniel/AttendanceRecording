@@ -18,13 +18,14 @@ import kotlinx.coroutines.launch
 class EditStudentViewModel(
     savedStateHandle: SavedStateHandle,
     private val studentRepository: StudentRepository
-) : ViewModel(){
+) : ViewModel() {
     private val studentId: Int = checkNotNull(savedStateHandle[EditStudentDestination.navArgumentName])
 
     val actionNameStringResId = when(studentId == 0){
         true -> R.string.add // we add a new student
         false -> R.string.save_changes // we have a student
     }
+
     var studentUiState by mutableStateOf(StudentUiState())
         private set
 

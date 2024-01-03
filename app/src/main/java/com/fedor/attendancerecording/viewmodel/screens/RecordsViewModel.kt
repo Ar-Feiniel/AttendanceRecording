@@ -31,15 +31,25 @@ class RecordsViewModel(
 
     private val _uiState: MutableStateFlow<RecordsScreenUiState> = MutableStateFlow(RecordsScreenUiState())
     val uiState: StateFlow<RecordsScreenUiState> = _uiState.asStateFlow()
-    val dateString: String =  _dateString
-
-    private val selectedDate: LocalDate
+    val dateString: String
         get() {
-            val dateParts: Array<Int> = arrayOf()
-            for ((index, item) in _dateString.split(".").iterator().withIndex()){
-                dateParts[index] = item.toInt()
-            }
-            return LocalDate.of(dateParts[2], dateParts[1], dateParts[0])
+//            val dateParts: Array<Int> = arrayOf()
+//            for ((index, item) in _dateString.split(".").iterator().withIndex()){
+//                dateParts[index] = item.toInt()
+//            }
+            val dateParts: List<Int> = _dateString.split(".").map { it -> it.toInt() }
+            val day =
+                when (dateParts[0] in 1..9) {
+                    true -> "0${dateParts[0]}"
+                    false -> "${dateParts[0]}"
+                }
+            val month =
+                when (dateParts[1] in 1..9) {
+                    true -> "0${dateParts[1]}"
+                    false -> "${dateParts[1]}"
+                }
+            val year = dateParts[2]
+            return "${day}.${month}.${year}"
         }
 
     init {

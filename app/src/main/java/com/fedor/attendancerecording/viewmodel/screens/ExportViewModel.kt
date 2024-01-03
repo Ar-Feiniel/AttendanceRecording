@@ -4,26 +4,40 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.fedor.attendancerecording.R
 import com.fedor.attendancerecording.model.repositories.interfaces.RecordRepository
 import com.fedor.attendancerecording.viewmodel.CalendarViewModel
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class ExportViewModel(
     private val recordsRepository: RecordRepository
 ) : CalendarViewModel() {
+
+    var recordsCount by mutableStateOf(0)
+
     var dateLabelText by mutableStateOf(getGracefulDateText())
 
-    val formats: List<String> = listOf("csv", "xlsx")
+    val exportFormats: Map<String, Int> = mapOf(
+        "xlsx" to R.drawable.export_excel,
+        "csv" to R.drawable.export_csv
+    )
+
+    fun updateRecordsCount(){
+        viewModelScope.launch {
+            recordsCount = recordsRepository.getRecordsCountByDate(dateLabelText)
+        }
+    }
 
     fun goToPreviousMonth(){
         stepByDate("previous")
-        Log.i("MainCalendarViewModel", "go_to_previous")
+        updateRecordsCount()
     }
 
     fun goToNextMonth(){
         stepByDate("next")
-        Log.i("MainCalendarViewModel", "go_to_next")
+        updateRecordsCount()
     }
 
     private fun stepByDate(action: String){

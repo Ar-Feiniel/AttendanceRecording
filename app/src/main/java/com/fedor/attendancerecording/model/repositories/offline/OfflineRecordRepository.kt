@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 class OfflineRecordRepository(private val recordDao: RecordDao) : RecordRepository {
     override fun getAllDataStream(): Flow<List<Record>> = recordDao.getAllStream()
     override suspend fun getAllDataList(): List<Record> = recordDao.getAllList()
+    override suspend fun getRecordsCountByDate(date: String): Int = recordDao.getRecordsCountByDate(date)
     override fun getOneItemStreamById(id: Int): Flow<Record?> {
         TODO("Not yet implemented")
     }

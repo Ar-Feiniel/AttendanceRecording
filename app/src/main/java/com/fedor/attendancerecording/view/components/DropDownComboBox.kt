@@ -35,7 +35,7 @@ fun <T> DropDownComboBox(
     itemsList: List<ComboBoxItem<T>>,
     modifier: Modifier =
         Modifier.width(100.dp)
-        .height(30.dp)
+        .height(40.dp)
         .padding(PaddingValues(0.dp))
 ) {
     var expanded by remember { mutableStateOf(false) }
