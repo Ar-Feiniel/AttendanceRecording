@@ -13,7 +13,7 @@ private val IO_EXECUTOR = Executors.newSingleThreadExecutor()
 fun ioThread(f : () -> Unit) {
     IO_EXECUTOR.execute(f)
 }
-@Database (entities = [Student::class, Marker::class, Record::class, MarkerType::class, NonWorkingDay::class], version = 1, exportSchema = false)
+@Database (entities = [Student::class, Marker::class, Record::class, MarkerType::class, Schedule::class], version = 1, exportSchema = false)
 abstract class RecordsDB : RoomDatabase() {
 
     abstract fun studentDao(): StudentDao

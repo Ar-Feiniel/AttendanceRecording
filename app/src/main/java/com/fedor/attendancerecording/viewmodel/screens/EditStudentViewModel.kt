@@ -53,7 +53,9 @@ class EditStudentViewModel(
     }
 
     private fun studentDetailsValidator(studentDetails: StudentDetails = studentUiState.studentDetails): Boolean{
-        return true
+        return studentDetails.name.isNotEmpty()
+                && studentDetails.surname.isNotEmpty()
+                && studentDetails.patronymic.isNotEmpty()
     }
 
     data class StudentUiState(

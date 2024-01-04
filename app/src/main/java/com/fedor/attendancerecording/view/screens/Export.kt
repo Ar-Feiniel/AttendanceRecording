@@ -1,5 +1,6 @@
 package com.fedor.attendancerecording.view.screens
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -27,6 +28,7 @@ import com.fedor.attendancerecording.view.components.PairButtonsRow
 import com.fedor.attendancerecording.view.components.export.ExportVariantCard
 import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 import com.fedor.attendancerecording.viewmodel.screens.ExportViewModel
+import java.io.File
 
 @Composable
 fun Export(
@@ -56,10 +58,11 @@ fun Export(
         ExportDialog(
             viewModel = viewModel,
             selectedFormat = selectedFormat,
-            onDeleteConfirm = {
+            onConfirmClick = {
+                Log.i("create file", "${File("test.txt").createNewFile()}")
                 isExportDialogOpen = !isExportDialogOpen
             },
-            onDeleteCancel = {
+            onCancelClick = {
                 isExportDialogOpen = !isExportDialogOpen
             }
         )
@@ -70,8 +73,8 @@ fun Export(
 fun ExportDialog(
     viewModel: ExportViewModel,
     selectedFormat: MutableState<String>,
-    onDeleteConfirm: () -> Unit,
-    onDeleteCancel: () -> Unit
+    onConfirmClick: () -> Unit,
+    onCancelClick: () -> Unit
 ){
     AlertDialog(
         onDismissRequest = {  },
@@ -99,12 +102,12 @@ fun ExportDialog(
             }
         },
         confirmButton = {
-            IconButton(onClick = onDeleteConfirm) {
+            IconButton(onClick = onConfirmClick) {
                 Icon(ImageVector.vectorResource(id = R.drawable.check,), contentDescription = "enter")
             }
         },
         dismissButton = {
-            IconButton(onClick = onDeleteCancel) {
+            IconButton(onClick = onCancelClick) {
                 Icon(ImageVector.vectorResource(id = R.drawable.close,), contentDescription = "close")
             }
         },
