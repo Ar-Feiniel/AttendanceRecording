@@ -36,15 +36,15 @@ public fun MainCalendar(
     val calendarItemsUiState = viewModel.monthListUiState
     val dateLabelText = viewModel.dateLabelText
     Column(modifier = Modifier.fillMaxWidth()) {
-        DateLabel(date = dateLabelText)
-        Spacer(modifier = Modifier.height(25.dp))
+        Spacer(modifier = Modifier.height(60.dp))
         PairButtonsRow(
             onLeftButtonClick = viewModel::goToPreviousMonth,
-            leftButtonText = "<<",
+            leftButtonText = "<",
             onRightButtonClick = viewModel::goToNextMonth,
-            rightButtonText = ">>",
-            buttonHeight = 50.dp,
-            buttonWidth = 80.dp
+            rightButtonText = ">",
+            buttonHeight = 55.dp,
+            buttonWidth = 80.dp,
+            centralContent = { DateLabel(date = dateLabelText) }
         )
         Spacer(modifier = Modifier.height(25.dp))
         Calendar(calendarItemsUiState, onItemClick = onDayClick)
