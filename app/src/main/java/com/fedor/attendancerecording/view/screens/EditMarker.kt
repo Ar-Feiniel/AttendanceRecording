@@ -31,20 +31,26 @@ public fun EditMarker(
 
     Column {
         Text_EditorComponent(
-            value = viewModel.markerUiState.markerDetails.name,
-            onValueChange = { viewModel.updateUiState(viewModel.markerUiState.markerDetails.copy(name = it)) },
+            value = uiState.markerDetails.name,
+            onValueChange = { viewModel.updateUiState(uiState.markerDetails.copy(name = it)) },
             labelStringResId = R.string.marker
         )
         Box(){
             Button(onClick = { expanded = !expanded }) {
-                Text(text = viewModel.markerUiState.markerDetails.markerTypeName)
+                Text(
+                    text = uiState.markerTypesList.find {
+                        it.idMarkerType == uiState.markerDetails.idMarkerType
+                    }?.name
+                        ?: "warning! warning! pridven is coming!"
+                )
             }
             Column {
                 DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                     uiState.markerTypesList.forEach{ item ->
-                        DropdownMenuItem(text = { Text(text = item.name) },
+                        DropdownMenuItem(
+                            text = { Text(text = item.name) },
                             onClick = {
-                                viewModel.updateUiState(viewModel.markerUiState.markerDetails.copy(markerTypeName = item.name))
+                                viewModel.updateUiState(uiState.markerDetails.copy(idMarkerType = item.idMarkerType))
                                 expanded = !expanded
                             }
                         )
@@ -53,7 +59,7 @@ public fun EditMarker(
             }
         }
         Log.i("EditMarker", "idMarkerTypes= ${uiState.markerTypesList.toString()}")
-        Log.i("EditMarker", "SelectedMarkerTypeName = ${viewModel.markerUiState.markerDetails.markerTypeName}")
+        Log.i("EditMarker", "SelectedMarkerTypeName = ${uiState.markerDetails.idMarkerType}")
         Button(onClick =   { viewModel.upsertMarker(); onGoBack() }) {
             Text(text = stringResource(id = viewModel.actionNameStringResId))
         }

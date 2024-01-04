@@ -19,7 +19,8 @@ interface MarkerDao : DataAccessObjectable<Marker> {
     suspend fun getAllList(): List<Marker>
     @Query("select * from marker where id_marker = :idMarker")
     fun getByIdStream(idMarker: Int): Flow<Marker>
-
+    @Query("select * from marker where id_marker = :idMarker")
+    suspend fun getById(idMarker: Int): Marker?
     @Insert(onConflict  = ABORT)
     override fun insertAll(vararg markers: Marker)
 

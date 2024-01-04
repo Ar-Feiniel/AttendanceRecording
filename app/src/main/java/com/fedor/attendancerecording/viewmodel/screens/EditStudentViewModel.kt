@@ -41,7 +41,6 @@ class EditStudentViewModel(
     fun updateUiState(studentDetails: StudentDetails){
         studentUiState = StudentUiState(studentDetails = studentDetails,
                             isInputValid = studentDetailsValidator(studentDetails))
-        Log.i("EditStudentViewModel", "Update_Ui_State")
     }
 
     fun upsertStudent(){
