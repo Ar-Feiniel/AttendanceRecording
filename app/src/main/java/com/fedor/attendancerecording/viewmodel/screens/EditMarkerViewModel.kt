@@ -37,7 +37,7 @@ class EditMarkerViewModel(
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
-                    markerDetails = markerRepository.getOneItemById(markerId)?.toMarkerDetails() ?: MarkerDetails(),
+                    markerDetails = markerRepository.getItemById(markerId)?.toMarkerDetails() ?: MarkerDetails(),
                     isInputValid = true,
                     markerTypesList = markerTypeRepository.getAllDataList()
                 )

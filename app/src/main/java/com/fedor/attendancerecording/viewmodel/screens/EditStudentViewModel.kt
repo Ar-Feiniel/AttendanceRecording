@@ -1,6 +1,5 @@
 package com.fedor.attendancerecording.viewmodel.screens
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -31,7 +30,7 @@ class EditStudentViewModel(
 
     init{
         viewModelScope.launch {
-            studentUiState = studentRepository.getOneItemStreamById(studentId)
+            studentUiState = studentRepository.getItemStreamById(studentId)
                 .filterNotNull()
                 .first()
                 .toStudentUiState(isInputValid = true)

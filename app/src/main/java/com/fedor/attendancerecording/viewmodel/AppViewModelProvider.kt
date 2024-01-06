@@ -30,6 +30,7 @@ import com.fedor.attendancerecording.viewmodel.screens.ExportViewModel
 import com.fedor.attendancerecording.viewmodel.screens.MainCalendarViewModel
 import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
 import com.fedor.attendancerecording.viewmodel.screens.RecordsViewModel
+import com.fedor.attendancerecording.viewmodel.screens.SettingsViewModel
 import com.fedor.attendancerecording.viewmodel.screens.StudentsViewModel
 
 /**
@@ -80,7 +81,7 @@ object AppViewModelProvider {
             )
         }
 
-        // Records action(no reaction)
+        // Records
         initializer {
             RecordsViewModel(
                 this.createSavedStateHandle(),
@@ -91,9 +92,17 @@ object AppViewModelProvider {
             )
         }
 
+        //Export action(no reaction)
         initializer {
             ExportViewModel(
                 attendanceRecordingApplication().container.recordRepository
+            )
+        }
+
+        //Settings action(no reaction)
+        initializer {
+            SettingsViewModel(
+                attendanceRecordingApplication().container.settingRepository
             )
         }
     }

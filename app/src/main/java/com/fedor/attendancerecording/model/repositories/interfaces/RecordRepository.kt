@@ -7,13 +7,6 @@ import com.fedor.attendancerecording.model.repositories.Repositoryable
 import kotlinx.coroutines.flow.Flow
 
 interface RecordRepository : Repositoryable<Record> {
-    override fun getAllDataStream(): Flow<List<Record>>
-    suspend fun getAllDataList(): List<Record>
     suspend fun getRecordsCountByDate(date: String) : Int
-    override fun getOneItemStreamById(id: Int): Flow<Record?>
     fun getAllDataStreamByDate(date: String): Flow<List<Record>>
-    override suspend fun updateItem(item: Record)
-    override suspend fun deleteItem(item: Record)
-    override suspend fun upsertItem(item: Record)
-    override suspend fun insertItem(item: Record)
 }

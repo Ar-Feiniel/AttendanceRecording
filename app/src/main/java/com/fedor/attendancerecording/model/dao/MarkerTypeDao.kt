@@ -19,7 +19,6 @@ interface MarkerTypeDao: DataAccessObjectable<MarkerType> {
     suspend fun getAllList(): List<MarkerType>
     @Query("select * from marker_type where id_marker_type = :idMarkerType")
     fun getByIdStream(idMarkerType: Int) : Flow<MarkerType>
-
     @Query("select * from marker_type where name = :name")
     fun getByItemName(name: String) : MarkerType
 }
