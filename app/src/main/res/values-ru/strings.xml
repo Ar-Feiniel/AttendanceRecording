@@ -23,4 +23,8 @@
     <string name="export_to">"Экспорт в "</string>
     <string name="format">Формат</string>
     <string name="export_settings">Настройки экспорта</string>
+    <string name="cource">Курс</string>
+    <string name="your_name">Ваше имя</string>
+    <string name="group">Группа</string>
+    <string name="semester">Семестр</string>
 </resources>

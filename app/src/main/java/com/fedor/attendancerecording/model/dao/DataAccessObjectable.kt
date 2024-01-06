@@ -9,18 +9,12 @@ import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 interface DataAccessObjectable<T> {
-    @Query("")
-    fun getAllStream(): Flow<List<T>>
-
     @Insert(onConflict  = OnConflictStrategy.ABORT)
     fun insertAll(vararg items: T)
-
     @Update
     suspend fun updateItem(item: T)
-
     @Upsert
     suspend fun upsertItem(item: T)
-
     @Delete
     suspend fun deleteItem(item: T)
 }

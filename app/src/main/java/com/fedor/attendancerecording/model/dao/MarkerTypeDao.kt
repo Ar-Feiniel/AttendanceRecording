@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.Flow
 interface MarkerTypeDao: DataAccessObjectable<MarkerType> {
 
     @Query("select * from marker_type order by id_marker_type ASC")
-    override fun getAllStream(): Flow<List<MarkerType>>
+    fun getAllStream(): Flow<List<MarkerType>>
     @Query("select * from marker_type order by id_marker_type ASC")
     suspend fun getAllList(): List<MarkerType>
     @Query("select * from marker_type where id_marker_type = :idMarkerType")
@@ -22,13 +22,4 @@ interface MarkerTypeDao: DataAccessObjectable<MarkerType> {
 
     @Query("select * from marker_type where name = :name")
     fun getByItemName(name: String) : MarkerType
-
-    @Insert(onConflict  = OnConflictStrategy.ABORT)
-    override fun insertAll(vararg markerTypes: MarkerType)
-
-    @Upsert
-    override suspend fun upsertItem(markerType: MarkerType)
-
-    @Delete
-    override suspend fun deleteItem(markerType: MarkerType)
 }

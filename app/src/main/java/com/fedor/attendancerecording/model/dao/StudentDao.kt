@@ -16,15 +16,9 @@ import kotlinx.coroutines.flow.Flow
 interface StudentDao: DataAccessObjectable<Student> {
 
     @Query("select * from student order by id_student ASC")
-    override fun getAllStream(): Flow<List<Student>>
+    fun getAllStream(): Flow<List<Student>>
     @Query("select * from student order by id_student ASC")
     suspend fun getAllList(): List<Student>
     @Query("select * from student where id_student = :id")
     fun getById(id: Int): Flow<Student>
-    @Insert(onConflict  = OnConflictStrategy.ABORT)
-    override fun insertAll(vararg students: Student)
-    @Upsert
-    override suspend fun upsertItem(student: Student)
-    @Delete
-    override suspend fun deleteItem(student: Student)
 }

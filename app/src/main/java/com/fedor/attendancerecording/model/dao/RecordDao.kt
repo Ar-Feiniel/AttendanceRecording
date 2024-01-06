@@ -16,17 +16,11 @@ import kotlinx.coroutines.flow.Flow
 interface RecordDao: DataAccessObjectable<Record> {
 
     @Query("select * from record order by id_record ASC")
-    override fun getAllStream(): Flow<List<Record>>
+    fun getAllStream(): Flow<List<Record>>
     @Query("select * from record order by id_record ASC")
     suspend fun getAllList(): List<Record>
     @Query("select count(*) from record where date like '%' || :date")
     suspend fun getRecordsCountByDate(date: String): Int
     @Query("select * from record where date = :date order by id_record ASC")
     fun getAllStreamByDate(date: String): Flow<List<Record>>
-    @Insert(onConflict  = ABORT)
-    override fun insertAll(vararg records: Record)
-    @Upsert
-    override suspend fun upsertItem(record: Record)
-    @Delete
-    override suspend fun deleteItem(record: Record)
 }
