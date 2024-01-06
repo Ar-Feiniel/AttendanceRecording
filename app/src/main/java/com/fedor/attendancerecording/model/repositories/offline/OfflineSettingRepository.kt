@@ -10,9 +10,7 @@ class OfflineSettingRepository(private val settingDao: SettingDao) : SettingRepo
     override fun getAllDataStream(): Flow<List<Setting>> {
         TODO("Not yet implemented")
     }
-    override suspend fun getAllDataList(): List<Setting> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getAllDataList(): List<Setting> = settingDao.getAllList()
     override fun getItemStreamById(id: Int): Flow<Setting?> {
         TODO("Not yet implemented")
     }
@@ -22,9 +20,7 @@ class OfflineSettingRepository(private val settingDao: SettingDao) : SettingRepo
     override suspend fun insertItem(item: Setting) {
         TODO("Not yet implemented")
     }
-    override suspend fun updateItem(item: Setting) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun updateItem(item: Setting) = settingDao.updateItem(item = item)
     override suspend fun upsertItem(item: Setting) {
         TODO("Not yet implemented")
     }

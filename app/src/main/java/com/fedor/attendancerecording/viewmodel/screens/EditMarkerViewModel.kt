@@ -23,6 +23,7 @@ class EditMarkerViewModel(
     companion object {
         private const val TIMEOUT_MILLIS = 5_000L
     }
+
     private val _uiState = MutableStateFlow(MarkerScreenUiState())
     var uiState: StateFlow<MarkerScreenUiState> = _uiState.asStateFlow()
 

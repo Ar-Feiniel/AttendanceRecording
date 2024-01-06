@@ -74,19 +74,15 @@ abstract class RecordsDB : RoomDatabase() {
                             settingDao?.insertAll(
                                 Setting(
                                     idSetting = R.string.group,
-                                    value = ""
+                                    value = "Group"
                                 ),
                                 Setting(
                                     idSetting = R.string.your_name,
-                                    value = ""
+                                    value = "UserName"
                                 ),
                                 Setting(
                                     idSetting = R.string.cource,
-                                    value = ""
-                                ),
-                                Setting(
-                                    idSetting = R.string.semester,
-                                    value = ""
+                                    value = "1"
                                 )
                             )
 
