@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -28,12 +29,17 @@ import com.fedor.attendancerecording.view.components.PairButtonsRow
 import com.fedor.attendancerecording.view.components.export.ExportVariantCard
 import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 import com.fedor.attendancerecording.viewmodel.screens.ExportViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import java.io.File
-
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun Export(
     viewModel: ExportViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
+    val storagePermissionState = rememberPermissionState(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    
     viewModel.updateRecordsCount()
     var isExportDialogOpen by remember{ mutableStateOf(false) }
     val selectedFormat = remember{ mutableStateOf("") }
@@ -42,6 +48,15 @@ fun Export(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
+        if(storagePermissionState.status.isGranted){
+            Text("Storage permission Granted OK")
+        }
+        else{
+            Text("Storage permission Granted FAILED")
+            Button(onClick = {storagePermissionState.launchPermissionRequest()}){
+                Text(text = "LET ME IN!!!")
+            }
+        }
         viewModel.exportFormats.forEach{
             ExportVariantCard(
                 iconResId = it.value,
