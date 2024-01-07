@@ -27,4 +27,5 @@
     <string name="your_name">Ваше имя</string>
     <string name="group">Группа</string>
     <string name="semester">Семестр</string>
+    <string name="select_type">Выберите тип</string>
 </resources>

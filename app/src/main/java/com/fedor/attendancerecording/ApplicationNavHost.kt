@@ -19,6 +19,7 @@ import com.fedor.attendancerecording.view.screens.Students
 internal fun ApplicationNavHost(navController: NavHostController, startScreen: ApplicationDestination) {
 
     NavHost(navController = navController, startDestination = startScreen.route) {
+        //main
         composable(route = MainCalendarDestination.route) {
             MainCalendar(onDayClick = { date ->
                 navController.navigateToRecordingByDate(date)
@@ -30,7 +31,7 @@ internal fun ApplicationNavHost(navController: NavHostController, startScreen: A
             Records(date!!)
         }
 
-        // students action
+        //students
         composable(route = StudentsDestination.route) {
             Students(
                 onAddStudentClick = { navController.navigateToEditStudent(0) },
@@ -40,11 +41,10 @@ internal fun ApplicationNavHost(navController: NavHostController, startScreen: A
             route = EditStudentDestination.routeWithArguments,
             arguments = EditStudentDestination.arguments
         ) {
-            // student id in states
             EditStudent( onGoBack = { navController.navigateSingleTopToNoState(StudentsDestination.route) })
         }
 
-        // marker action (no reaction)
+        //markers
         composable(route = MarkersDestination.route) {
             Markers(onAddMarkerClick = { navController.navigateToEditMarker(0) },
                 onEditMarkerClick = { idMarker -> navController.navigateToEditMarker(idMarker) })
@@ -53,11 +53,10 @@ internal fun ApplicationNavHost(navController: NavHostController, startScreen: A
             route = EditMarkerDestination.routeWithArguments,
             arguments = EditMarkerDestination.arguments
         ) {
-            // marker id in states
             EditMarker( onGoBack = { navController.navigateSingleTopToNoState(MarkersDestination.route)})
         }
 
-        // other action
+        //other
         composable(route = ScheduleDestination.route) {
             Schedule()
         }
@@ -65,7 +64,10 @@ internal fun ApplicationNavHost(navController: NavHostController, startScreen: A
             Export()
         }
         composable(route = SettingsDestination.route) {
-            Settings()
+            val settingsNavScreens : List<ApplicationDestination> = listOf(MarkersDestination, StudentsDestination)
+            val settingsNavScreensWithNav: List<ApplicationDestinationWithNav> =
+                settingsNavScreens.map { ApplicationDestinationWithNav(it, { navController.navigateSingleTopTo(it.route) }) }
+            Settings(navScreens = settingsNavScreensWithNav)
         }
     }
 }
@@ -103,3 +105,7 @@ private fun NavHostController.navigateToEditMarker(markerId: Int){
 private fun NavHostController.navigateToRecordingByDate(date: String){
     this.navigateSingleTopTo("${RecordsDestination.route}/$date")
 }
+data class ApplicationDestinationWithNav(
+    val appDestination: ApplicationDestination,
+    val navigateToDestination: () -> Unit
+)

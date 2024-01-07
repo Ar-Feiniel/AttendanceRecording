@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -39,11 +38,14 @@ public fun attendanceRecordingApp(){
 
     val navController: NavHostController = rememberNavController()
 
-    val bottomBarNavScreens: List<ApplicationDestination> = listOf(MainCalendarDestination, ScheduleDestination,
-                                                            MarkersDestination, StudentsDestination,
-                                                            ExportDestination, SettingsDestination)
+    val bottomBarNavScreens: List<ApplicationDestination> =
+        listOf(
+            MainCalendarDestination,
+            ScheduleDestination,
+            ExportDestination,
+            SettingsDestination)
 
-    var selectedScreen: @Composable () -> Unit by remember { mutableStateOf( { Text( text = stringResource(startScreen.screenNameResId)) }) }
+    var selectedScreenNameResId: Int by remember { mutableStateOf(startScreen.screenNameResId) }
 
     AppTheme{
         Surface{
@@ -55,7 +57,7 @@ public fun attendanceRecordingApp(){
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
-                                selectedScreen()
+                            Text(text = stringResource(selectedScreenNameResId))
                             }
                     }, modifier = Modifier.padding(5.dp))
                 },
@@ -66,7 +68,7 @@ public fun attendanceRecordingApp(){
                         , verticalAlignment = Alignment.CenterVertically
                     ){
                         bottomBarNavScreens.forEach { value ->
-                            IconButton(onClick = {  selectedScreen = { Text(text = stringResource(value.screenNameResId))  }
+                            IconButton(onClick = {  selectedScreenNameResId = value.screenNameResId
                                                     navController.navigateSingleTopTo(value.route) }) {
                                 Icon(imageVector = ImageVector.vectorResource(value.iconResId!!),
                                     contentDescription = null,

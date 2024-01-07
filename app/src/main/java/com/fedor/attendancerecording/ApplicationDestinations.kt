@@ -21,7 +21,7 @@ object RecordsDestination : ApplicationDestination{
     override val route = "recording"
     override val iconResId = null
     override val screenNameResId = R.string.calendar
-    val navArgumentName: String = "selected_date"
+    const val navArgumentName: String = "selected_date"
     val routeWithArguments: String = "${route}/{${navArgumentName}}"
     val arguments = listOf(
         navArgument(navArgumentName) { type = NavType.StringType}
@@ -37,7 +37,7 @@ object EditStudentDestination : ApplicationDestination{
     override val route = "edit_student"
     override val iconResId = null
     override val screenNameResId = R.string.edit_student
-    val navArgumentName: String = "student_id"
+    const val navArgumentName: String = "student_id"
     val routeWithArguments: String = "${route}/{${navArgumentName}}"
     val arguments = listOf(
         navArgument(navArgumentName) { type = NavType.IntType}
@@ -53,7 +53,7 @@ object EditMarkerDestination : ApplicationDestination{
     override val route = "edit_marker"
     override val iconResId = null
     override val screenNameResId = R.string.edit_marker
-    val navArgumentName: String = "marker_id"
+    const val navArgumentName: String = "marker_id"
     val routeWithArguments: String = "${route}/{${navArgumentName}}"
     val arguments = listOf(
         navArgument(navArgumentName) { type = NavType.IntType}

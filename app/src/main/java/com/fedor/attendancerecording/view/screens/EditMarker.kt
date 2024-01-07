@@ -41,7 +41,7 @@ public fun EditMarker(
                     text = uiState.markerTypesList.find {
                         it.idMarkerType == uiState.markerDetails.idMarkerType
                     }?.name
-                        ?: "warning! warning! pridven is coming!"
+                        ?: stringResource(id = R.string.select_type)
                 )
             }
             Column {
