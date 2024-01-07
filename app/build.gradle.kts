@@ -53,19 +53,11 @@ android {
 dependencies {
     val room_version = "2.5.0"
 
-    //implementation("androidx.room:room-runtime:$room_version")
-    //annotationProcessor("androidx.room:room-compiler:$room_version")
-
-    //Room
-    //implementation("androidx.room:room-runtime:$room_version")
-    //implementation("androidx.core:core-ktx:1.10.1")
-    //ksp("androidx.room:room-compiler:$room_version")
-    //implementation("androidx.room:room-ktx:$room_version")
-
     implementation("androidx.room:room-runtime:$room_version")
-    //implementation("androidx.core:core-ktx:1.10.1")
     ksp("androidx.room:room-compiler:$room_version")
     implementation("androidx.room:room-ktx:$room_version")
+
+    implementation("com.google.accompanist:accompanist-permissions:0.30.1")
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")

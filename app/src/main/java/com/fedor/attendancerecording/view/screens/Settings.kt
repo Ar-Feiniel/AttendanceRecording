@@ -45,9 +45,9 @@ fun Settings(
 
             OutlinedCard(
                 onClick = {
-                    if(isOpen && !isError){
+                    if (isOpen && !isError) {
                         viewModel.updateSetting(uiState.settingsDetails[index].copy(value = settingValueDetail))
-                    }else if (isOpen && isError){
+                    } else if (isOpen && isError) {
                         settingValueDetail = it.value
                     }
                     isOpen = !isOpen
