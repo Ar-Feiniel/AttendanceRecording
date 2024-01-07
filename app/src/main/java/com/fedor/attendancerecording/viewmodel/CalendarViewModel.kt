@@ -6,15 +6,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDate
 import java.util.Date
-import kotlin.math.abs
-import kotlin.math.ceil
 
 abstract class CalendarViewModel : ViewModel() {
     private var _currentDate: LocalDate = LocalDate.now()
-    public var selectedDate: LocalDate = _currentDate
-    public var calendarList: List<CalendarItem?> = getMonthList(selectedDate)
-    public var monthList: Flow<List<CalendarItem?>> = flowOf(getMonthList())
-    public fun getMonthArray(year: Int, month: Int): Array<Array<CalendarItem?>> {
+    var selectedDate: LocalDate = _currentDate
+    var calendarList: List<CalendarItem?> = getMonthList(selectedDate)
+    var monthList: Flow<List<CalendarItem?>> = flowOf(getMonthList())
+    var holidaysDates: List<String> = listOf<String>()
+    fun getMonthArray(year: Int, month: Int): Array<Array<CalendarItem?>> {
         val calendar: Array<Array<CalendarItem?>> = Array(getWeeksCount(year, month)) { Array(7) { null } }
         var weeksCounter: Int = 0;
         var daysCounter: Int = 1;
@@ -41,11 +40,17 @@ abstract class CalendarViewModel : ViewModel() {
         }
         return calendar
     }
-    public fun getMonthList(year: Int, month: Int): List<CalendarItem?> {
+    fun getMonthList(year: Int, month: Int): List<CalendarItem?> {
         val calendar: MutableList<CalendarItem?> = MutableList(getWeeksCount(year, month)*7, { null })
         val firstDayIndex: Int = getFirstDayNum(year, month)-1
-        for (dayNum in 1..getDaysCount(year, month)){
-            calendar[dayNum-1+firstDayIndex] = CalendarItem(year, month, dayNum)
+        if(holidaysDates != null){
+            for (dayNum in 1..getDaysCount(year, month)){
+                calendar[dayNum-1+firstDayIndex] = CalendarItem(
+                    year = year,
+                    _month = month,
+                    _day = dayNum,
+                    isWorkingDay = holidaysDates.contains(getDateText(year = year, month = month, day = dayNum)))
+            }
         }
         return calendar
     }
@@ -75,25 +80,34 @@ abstract class CalendarViewModel : ViewModel() {
         }
         return yearCount
     }
-    public fun getMonthList(date: Date): List<CalendarItem?> {
+    fun getMonthList(date: Date): List<CalendarItem?> {
         return getMonthList(date.year, date.month)
     }
-    public fun getMonthList(localDate: LocalDate): List<CalendarItem?> {
+    fun getMonthList(localDate: LocalDate): List<CalendarItem?> {
         return getMonthList(localDate.year, localDate.monthValue)
     }
-    public fun getMonthList(): List<CalendarItem?> {
+    fun getMonthList(): List<CalendarItem?> {
         return getMonthList(selectedDate.year, selectedDate.month.value)
     }
-    public fun getGracefulDateText(): String {
-        //return "${_currentDate.dayOfMonth} ${_currentDate.month.name} ${_currentDate.year}"
+    fun getGracefulSelectedMonthYearText(): String {
         val month: String = when (selectedDate.month.value in 1..9) {
             true -> "0${selectedDate.month.value}"
             false -> "${selectedDate.month.value}"
         }
-        // TODO: Вынести в отдельную функцию форматирвоания (и из класса с кнопками)
         return "${month}.${selectedDate.year}"
     }
-    private fun getDaysCount(year: Int, month: Int): Int {
+    fun getDateText(year: Int, month: Int, day: Int): String {
+        val month: String = when (month in 1..9) {
+            true -> "0${month}"
+            false -> "${month}"
+        }
+        val day: String = when (day in 1..9) {
+            true -> "0${day}"
+            false -> "${day}"
+        }
+        return "${day}.${month}.${year}"
+    }
+    fun getDaysCount(year: Int, month: Int): Int {
         Log.i("CalendarViewModel", "DaysCount = ${month}/${year}")
         val daysInMonth: Array<Int> = arrayOf(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
         return when (month == 2 && ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)) {
@@ -101,7 +115,7 @@ abstract class CalendarViewModel : ViewModel() {
             false -> daysInMonth[month - 1]
         }
     }
-    private fun getWeeksCount(year: Int, month: Int): Int {
+    fun getWeeksCount(year: Int, month: Int): Int {
         val weeks: Array<Array<String>> = Array(6) { Array(2) { "" } }
         var currentWeek: Int = 0;
         var currentDayName: String = ""
@@ -127,7 +141,7 @@ abstract class CalendarViewModel : ViewModel() {
             return LocalDate.of(year, month, day).dayOfWeek.name
         }
     }
-    private fun getFirstDayNum(year: Int, month: Int): Int {
+    fun getFirstDayNum(year: Int, month: Int): Int {
         return LocalDate.of(year, month, 1).dayOfWeek.value
     }
     private fun getLastDayNum(year: Int, month: Int): Int {
@@ -147,7 +161,7 @@ enum class DaysOfWeek() {
     SUNDAY()
 }
 
-class CalendarItem(val year: Int, private val _month: Int, private val _day: Int) {
+class CalendarItem(val year: Int, private val _month: Int, private val _day: Int, var isWorkingDay: Boolean = true) {
     public val day: String
         get() {
             return when (_day in 1..9) {
@@ -164,12 +178,10 @@ class CalendarItem(val year: Int, private val _month: Int, private val _day: Int
         }
     public val dateString: String
         get(){
-            return "${_day}.${_month}.${year}"
+            return "${day}.${month}.${year}"
         }
-    public val isWorkingDay: Boolean;
-    public val isCurrent: Boolean;
-    init {
-        isCurrent = LocalDate.now().toString() == "${year}-${month}-${day}"
-        isWorkingDay = CalendarViewModel.getDayName(year, _month, _day) in arrayOf<String>("SUNDAY")
-    }
+    public val isCurrent: Boolean = LocalDate.now().toString() == "${year}-${month}-${day}";
+//    init {
+//        isWorkingDay = CalendarViewModel.getDayName(year, _month, _day) in arrayOf<String>("SUNDAY") || isWorkingDay
+//    }
 }

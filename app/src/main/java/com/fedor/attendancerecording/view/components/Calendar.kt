@@ -1,7 +1,7 @@
 package com.fedor.attendancerecording.view.components
 
 
-import androidx.compose.foundation.BorderStroke
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,18 +17,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fedor.attendancerecording.viewmodel.CalendarItem
-import kotlinx.coroutines.flow.Flow
-import java.util.Date
 
 @Composable
 internal fun Calendar(
     calendar: List<CalendarItem?>,
-    onItemClick: (date: String) -> Unit) {
+    onItemClick: (date: String) -> Unit
+) {
     Box(
         contentAlignment = Alignment.Center, modifier = Modifier.padding(start = 12.dp, end = 12.dp)
     ) {
@@ -39,9 +37,17 @@ internal fun Calendar(
             content = {
                 items(calendar) { item ->
                     if (item != null) {
+                        Log.i("a", "${item.dateString} - ${item.isWorkingDay}")
                         Button(modifier = Modifier.padding(3.dp),
                             shape = CircleShape,
-                            colors = ButtonDefaults.buttonColors(containerColor = if (item.isCurrent) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primary),
+                            colors =
+                            ButtonDefaults.buttonColors(containerColor =
+                            if (item.isCurrent)
+                                MaterialTheme.colorScheme.tertiary
+                            else if (item.isWorkingDay)
+                                MaterialTheme.colorScheme.error
+                            else
+                                MaterialTheme.colorScheme.primary),
                             contentPadding = PaddingValues(0.dp),
                             onClick = { onItemClick(item.dateString) }
                         ) {

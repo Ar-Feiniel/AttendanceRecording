@@ -1,6 +1,5 @@
 package com.fedor.attendancerecording.view.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
@@ -27,7 +26,7 @@ public fun EditMarker(
 ){
     val uiState by viewModel.uiState.collectAsState()
 
-    var expanded: Boolean by remember { mutableStateOf(false) }
+    var isDropDownExpanded: Boolean by remember { mutableStateOf(false) }
 
     Column {
         Text_EditorComponent(
@@ -36,7 +35,7 @@ public fun EditMarker(
             labelStringResId = R.string.marker
         )
         Box(){
-            Button(onClick = { expanded = !expanded }) {
+            Button(onClick = { isDropDownExpanded = !isDropDownExpanded }) {
                 Text(
                     text = uiState.markerTypesList.find {
                         it.idMarkerType == uiState.markerDetails.idMarkerType
@@ -45,21 +44,19 @@ public fun EditMarker(
                 )
             }
             Column {
-                DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                DropdownMenu(expanded = isDropDownExpanded, onDismissRequest = { isDropDownExpanded = false }) {
                     uiState.markerTypesList.forEach{ item ->
                         DropdownMenuItem(
                             text = { Text(text = item.name) },
                             onClick = {
                                 viewModel.updateUiState(uiState.markerDetails.copy(idMarkerType = item.idMarkerType))
-                                expanded = !expanded
+                                isDropDownExpanded = !isDropDownExpanded
                             }
                         )
                     }
                 }
             }
         }
-        Log.i("EditMarker", "idMarkerTypes= ${uiState.markerTypesList.toString()}")
-        Log.i("EditMarker", "SelectedMarkerTypeName = ${uiState.markerDetails.idMarkerType}")
         Button(onClick =   { viewModel.upsertMarker(); onGoBack() }) {
             Text(text = stringResource(id = viewModel.actionNameStringResId))
         }

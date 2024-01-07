@@ -28,4 +28,8 @@
     <string name="group">Группа</string>
     <string name="semester">Семестр</string>
     <string name="select_type">Выберите тип</string>
+    <string name="holiday_status_change">Изменение типа дня</string>
+    <string name="select_day_type">Выберите тип дня</string>
+    <string name="holiday">Выходной</string>
+    <string name="weekday">Рабочий</string>
 </resources>

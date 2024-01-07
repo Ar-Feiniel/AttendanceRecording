@@ -27,4 +27,8 @@
     <string name="group">Group</string>
     <string name="semester">Semester</string>
     <string name="select_type">Select type</string>
+    <string name="holiday_status_change">Holiday status change</string>
+    <string name="select_day_type">Select day type</string>
+    <string name="holiday">Holiday</string>
+    <string name="weekday">Weekday</string>
 </resources>

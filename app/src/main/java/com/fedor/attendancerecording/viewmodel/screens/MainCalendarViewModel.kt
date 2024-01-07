@@ -5,16 +5,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import com.fedor.attendancerecording.viewmodel.CalendarViewModel
-import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDate
 
 class MainCalendarViewModel(
     savedStateHandle: SavedStateHandle
 ) : CalendarViewModel() {
     var monthListUiState by mutableStateOf(getMonthList())
-    var dateLabelText by mutableStateOf(getGracefulDateText())
+    var dateLabelText by mutableStateOf(getGracefulSelectedMonthYearText())
 
     fun goToPreviousMonth(){
         stepByDate("previous")
@@ -29,7 +27,7 @@ class MainCalendarViewModel(
     private fun stepByDate(action: String){
         selectedDate = computeDateByOffset(action)
         monthListUiState = getMonthList()
-        dateLabelText = getGracefulDateText()
+        dateLabelText = getGracefulSelectedMonthYearText()
     }
 
     private fun computeDateByOffset(action: String): LocalDate {

@@ -1,6 +1,5 @@
 package com.fedor.attendancerecording.view.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -163,13 +162,9 @@ internal fun StudentsList(
     refreshDetails: () -> Unit
 ) {
     refreshDetails()
-    Log.i("Records", "students records  ${students.toString()}")
-    Log.i("Records", "Listing markers  ${markers.toString()}")
-    Log.i("Records", "Listing records  ${records.toString()}")
 
     Column() {
         students.forEach { item ->
-            Log.i("Records", "List recomposing")
             // create a temporary record if the student does not have an record
             val conformityRecord: RecordsViewModel.RecordDetails =
                 records.find { it.idStudent == item.idStudent && it.date == date && it.pairNum == pairNumIndex + 1 }
@@ -178,8 +173,6 @@ internal fun StudentsList(
                         date = date,
                         pairNum = pairNumIndex + 1
                     )
-
-            Log.i("Records", "conformityRecord ${conformityRecord.toString()}")
 
             val selectedMarker = rememberSaveable(conformityRecord) {
                 mutableStateOf(

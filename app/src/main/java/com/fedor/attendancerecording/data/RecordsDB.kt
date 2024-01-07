@@ -20,7 +20,7 @@ fun ioThread(f : () -> Unit) {
         Marker::class,
         Record::class,
         MarkerType::class,
-        Schedule::class,
+        ScheduleDay::class,
         Setting::class],
     version = 1,
     exportSchema = false)
@@ -30,7 +30,7 @@ abstract class RecordsDB : RoomDatabase() {
     abstract fun markerDao(): MarkerDao
     abstract fun recordDao(): RecordDao
     abstract fun markerTypeDao(): MarkerTypeDao
-    abstract fun scheduleDao(): ScheduleDao
+    abstract fun scheduleDao(): ScheduleDayDao
     abstract fun settingDao(): SettingDao
 
     companion object {

@@ -17,7 +17,7 @@ class ExportViewModel(
 
     var recordsCount by mutableStateOf(0)
 
-    var dateLabelText by mutableStateOf(getGracefulDateText())
+    var dateLabelText by mutableStateOf(getGracefulSelectedMonthYearText())
 
     val exportFormats: Map<String, Int> = mapOf(
         "xlsx" to R.drawable.export_excel,
@@ -42,7 +42,7 @@ class ExportViewModel(
 
     private fun stepByDate(action: String){
         selectedDate = computeDateByOffset(action)
-        dateLabelText = getGracefulDateText()
+        dateLabelText = getGracefulSelectedMonthYearText()
     }
 
     private fun computeDateByOffset(action: String): LocalDate {
