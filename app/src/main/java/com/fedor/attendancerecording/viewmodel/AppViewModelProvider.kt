@@ -30,6 +30,7 @@ import com.fedor.attendancerecording.viewmodel.screens.ExportViewModel
 import com.fedor.attendancerecording.viewmodel.screens.MainCalendarViewModel
 import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
 import com.fedor.attendancerecording.viewmodel.screens.RecordsViewModel
+import com.fedor.attendancerecording.viewmodel.screens.ScheduleViewModel
 import com.fedor.attendancerecording.viewmodel.screens.SettingsViewModel
 import com.fedor.attendancerecording.viewmodel.screens.StudentsViewModel
 
@@ -38,23 +39,21 @@ import com.fedor.attendancerecording.viewmodel.screens.StudentsViewModel
  */
 object AppViewModelProvider {
     val Factory = viewModelFactory {
+        // main
         initializer {
             MainCalendarViewModel(
                 this.createSavedStateHandle()
             )
         }
 
-        /*
-        * students action
-        */
-        // Initializer for StudentsViewModel
+        // students
         initializer {
             StudentsViewModel(
                 this.createSavedStateHandle(),
                 attendanceRecordingApplication().container.studentRepository
             )
         }
-        // Initializer for EditStudentViewModel
+        // EditStudent
         initializer {
             EditStudentViewModel(
                 this.createSavedStateHandle(),
@@ -62,17 +61,15 @@ object AppViewModelProvider {
             )
         }
 
-        /*
-        * markers action
-        */
-        // MarkersViewModel
+        // markers
         initializer {
             MarkersViewModel(
                 this.createSavedStateHandle(),
                 attendanceRecordingApplication().container.markerRepository
             )
         }
-        // EditMarkerViewModel
+
+        // EditMarker
         initializer {
             EditMarkerViewModel(
                 this.createSavedStateHandle(),
@@ -92,17 +89,24 @@ object AppViewModelProvider {
             )
         }
 
-        //Export action(no reaction)
+        //Export
         initializer {
             ExportViewModel(
                 attendanceRecordingApplication().container.recordRepository
             )
         }
 
-        //Settings action(no reaction)
+        //Settings
         initializer {
             SettingsViewModel(
                 attendanceRecordingApplication().container.settingRepository
+            )
+        }
+
+        // schedule
+        initializer {
+            ScheduleViewModel(
+                attendanceRecordingApplication().container.scheduleRepository
             )
         }
     }

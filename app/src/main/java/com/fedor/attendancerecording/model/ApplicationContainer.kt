@@ -5,11 +5,13 @@ import com.fedor.attendancerecording.model.entity.MarkerType
 import com.fedor.attendancerecording.model.repositories.interfaces.MarkerRepository
 import com.fedor.attendancerecording.model.repositories.interfaces.MarkerTypeRepository
 import com.fedor.attendancerecording.model.repositories.interfaces.RecordRepository
+import com.fedor.attendancerecording.model.repositories.interfaces.ScheduleRepository
 import com.fedor.attendancerecording.model.repositories.interfaces.SettingRepository
 import com.fedor.attendancerecording.model.repositories.interfaces.StudentRepository
 import com.fedor.attendancerecording.model.repositories.offline.OfflineMarkerRepository
 import com.fedor.attendancerecording.model.repositories.offline.OfflineMarkerTypeRepository
 import com.fedor.attendancerecording.model.repositories.offline.OfflineRecordRepository
+import com.fedor.attendancerecording.model.repositories.offline.OfflineScheduleRepository
 import com.fedor.attendancerecording.model.repositories.offline.OfflineSettingRepository
 import com.fedor.attendancerecording.model.repositories.offline.OfflineStudentRepository
 
@@ -20,6 +22,7 @@ interface ApplicationContainer{
     val recordRepository: RecordRepository
     val studentRepository: StudentRepository
     val settingRepository: SettingRepository
+    val scheduleRepository: ScheduleRepository
 }
 
 // предстваляет экземпляры репозиториев
@@ -39,5 +42,8 @@ class ApplicationDataContainer(private val context: Context) : ApplicationContai
     }
     override val settingRepository: SettingRepository by lazy{
         OfflineSettingRepository(RecordsDB.getDataBase(context).settingDao())
+    }
+    override val scheduleRepository: ScheduleRepository by lazy{
+        OfflineScheduleRepository(RecordsDB.getDataBase(context).scheduleDao())
     }
 }

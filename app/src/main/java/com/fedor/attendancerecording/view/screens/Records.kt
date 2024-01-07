@@ -54,12 +54,9 @@ fun Records(
         false -> 3
     }
 
-    Log.i("Records", "collect markers ${uiState.markers.toString()}")
-    Log.i("Records", "pairNum $defaultPairNum")
-
     Column {
         Spacer(modifier = Modifier.height(12.dp))
-        DateLabel(date = selectedDate)
+        DateLabel(date = viewModel.dateString)
         Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
             Text(text = stringResource(id = R.string.pair))
         }

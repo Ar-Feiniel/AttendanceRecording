@@ -8,6 +8,7 @@ import com.fedor.attendancerecording.RecordsDestination
 import com.fedor.attendancerecording.model.entity.Marker
 import com.fedor.attendancerecording.model.entity.MarkerType
 import com.fedor.attendancerecording.model.entity.Record
+import com.fedor.attendancerecording.model.entity.Schedule
 import com.fedor.attendancerecording.model.entity.Student
 import com.fedor.attendancerecording.model.repositories.interfaces.MarkerRepository
 import com.fedor.attendancerecording.model.repositories.interfaces.MarkerTypeRepository
@@ -26,6 +27,7 @@ class RecordsViewModel(
     private val studentRepository: StudentRepository,
     private val markerRepository: MarkerRepository,
     private val markerTypeRepository: MarkerTypeRepository
+    //private val scheduleRepository: ScheduleRepository
 ) : ViewModel() {
     private val _dateString: String = checkNotNull(savedStateHandle[RecordsDestination.navArgumentName])
 
