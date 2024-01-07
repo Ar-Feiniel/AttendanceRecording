@@ -3,8 +3,8 @@ package com.fedor.attendancerecording.view.components
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import com.fedor.attendancerecording.model.entity.Marker
-import com.fedor.attendancerecording.model.entity.Student
+import com.fedor.attendancerecording.data.entity.Marker
+import com.fedor.attendancerecording.data.entity.Student
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,8 +25,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.fedor.attendancerecording.R
-import java.time.LocalDate
-import java.time.LocalDateTime
 import kotlin.reflect.KClass
 
 @Composable

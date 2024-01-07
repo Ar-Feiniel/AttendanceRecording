@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fedor.attendancerecording.EditMarkerDestination
 import com.fedor.attendancerecording.R
-import com.fedor.attendancerecording.model.entity.Marker
-import com.fedor.attendancerecording.model.entity.MarkerType
-import com.fedor.attendancerecording.model.repositories.interfaces.MarkerRepository
-import com.fedor.attendancerecording.model.repositories.interfaces.MarkerTypeRepository
+import com.fedor.attendancerecording.data.entity.Marker
+import com.fedor.attendancerecording.data.entity.MarkerType
+import com.fedor.attendancerecording.data.repositories.interfaces.MarkerRepository
+import com.fedor.attendancerecording.data.repositories.interfaces.MarkerTypeRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

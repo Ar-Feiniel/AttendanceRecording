@@ -1,12 +1,12 @@
 package com.fedor.attendancerecording.viewmodel.screens
 
-import android.util.Log
+import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.fedor.attendancerecording.R
-import com.fedor.attendancerecording.model.repositories.interfaces.RecordRepository
+import com.fedor.attendancerecording.data.repositories.interfaces.RecordRepository
 import com.fedor.attendancerecording.viewmodel.CalendarViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -71,4 +71,13 @@ class ExportViewModel(
         }
         return LocalDate.of(year, month, day)
     }
+}
+class FileManager(context: Context){
+    val appDataDirName = context.applicationContext.filesDir
+}
+internal class xlsxGenerator(){
+
+}
+internal class csvGenerator(){
+
 }

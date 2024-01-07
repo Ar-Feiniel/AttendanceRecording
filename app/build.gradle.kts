@@ -51,13 +51,18 @@ android {
     buildToolsVersion = "33.0.1"
 }
 dependencies {
-    val room_version = "2.5.0"
+    // kotlin room
+    val roomVersion = "2.5.0"
+    implementation("androidx.room:room-runtime:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
 
-    implementation("androidx.room:room-runtime:$room_version")
-    ksp("androidx.room:room-compiler:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
-
+    // compose permissions
     implementation("com.google.accompanist:accompanist-permissions:0.30.1")
+
+    // xlsx action
+    implementation("org.apache.poi:poi:5.2.3")
+    implementation("org.apache.poi:poi-ooxml:5.2.3")
 
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")

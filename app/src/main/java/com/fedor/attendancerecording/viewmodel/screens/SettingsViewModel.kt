@@ -2,8 +2,8 @@ package com.fedor.attendancerecording.viewmodel.screens
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fedor.attendancerecording.model.entity.Setting
-import com.fedor.attendancerecording.model.repositories.interfaces.SettingRepository
+import com.fedor.attendancerecording.data.entity.Setting
+import com.fedor.attendancerecording.data.repositories.interfaces.SettingRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

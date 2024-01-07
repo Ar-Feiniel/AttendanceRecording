@@ -1,20 +1,17 @@
 package com.fedor.attendancerecording.view.screens
 
-import android.util.Log
 import androidx.compose.material3.Icon
-import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
-import com.fedor.attendancerecording.model.entity.Marker
-
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fedor.attendancerecording.R
+import com.fedor.attendancerecording.data.entity.Marker
 import com.fedor.attendancerecording.view.components.ActionList
 import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
+import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
 
 @Composable
 fun Markers(
@@ -22,7 +19,6 @@ fun Markers(
     onEditMarkerClick: (idMarker: Int) -> Unit,
     viewModel: MarkersViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
-    Log.i("Markers_Screen", "MarkersScreenComposing...")
     val markerUiState by viewModel.markersUiState.collectAsState()
 
     ActionList<Marker>(
@@ -33,10 +29,4 @@ fun Markers(
         , addIconCompose = @Composable {modifier ->  Icon( ImageVector.vectorResource(R.drawable.marker_add), null, modifier = modifier)}
         , itemsList = markerUiState.markerList
     )
-}
-
-@Preview
-@Composable
-fun MarkersPreview(){
-    Markers({}, {})
 }

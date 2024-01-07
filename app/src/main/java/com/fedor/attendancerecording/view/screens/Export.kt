@@ -20,6 +20,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import com.fedor.attendancerecording.view.components.PairButtonsRow
 import com.fedor.attendancerecording.view.components.export.ExportVariantCard
 import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
 import com.fedor.attendancerecording.viewmodel.screens.ExportViewModel
+import com.fedor.attendancerecording.viewmodel.screens.FileManager
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
@@ -39,15 +41,16 @@ fun Export(
     viewModel: ExportViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val storagePermissionState = rememberPermissionState(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    
     viewModel.updateRecordsCount()
     var isExportDialogOpen by remember{ mutableStateOf(false) }
     val selectedFormat = remember{ mutableStateOf("") }
+    val fileManager: FileManager = FileManager(context = LocalContext.current)
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.fillMaxWidth()
     ) {
+
         if(storagePermissionState.status.isGranted){
             Text("Storage permission Granted OK")
         }
@@ -57,6 +60,7 @@ fun Export(
                 Text(text = "LET ME IN!!!")
             }
         }
+
         viewModel.exportFormats.forEach{
             ExportVariantCard(
                 iconResId = it.value,
@@ -74,7 +78,7 @@ fun Export(
             viewModel = viewModel,
             selectedFormat = selectedFormat,
             onConfirmClick = {
-                Log.i("create file", "${File("test.txt").createNewFile()}")
+                Log.i("create file", "${File("${fileManager.appDataDirName}/test.txt").createNewFile()}")
                 isExportDialogOpen = !isExportDialogOpen
             },
             onCancelClick = {

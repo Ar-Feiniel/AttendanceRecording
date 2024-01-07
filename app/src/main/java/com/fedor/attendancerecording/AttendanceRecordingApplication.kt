@@ -17,8 +17,8 @@
 package com.fedor.attendancerecording
 
 import android.app.Application
-import com.fedor.attendancerecording.model.ApplicationContainer
-import com.fedor.attendancerecording.model.ApplicationDataContainer
+import com.fedor.attendancerecording.data.ApplicationContainer
+import com.fedor.attendancerecording.data.ApplicationDataContainer
 
 class AttendanceRecordingApplication : Application() {
     //appContainer instance used by the rest of classes to obtain dependencies

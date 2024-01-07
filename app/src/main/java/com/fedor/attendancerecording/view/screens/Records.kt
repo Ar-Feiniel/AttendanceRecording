@@ -30,10 +30,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.compose.seed
 import com.fedor.attendancerecording.R
-import com.fedor.attendancerecording.model.entity.Marker
-import com.fedor.attendancerecording.model.entity.Student
+import com.fedor.attendancerecording.data.entity.Marker
+import com.fedor.attendancerecording.data.entity.Student
 import com.fedor.attendancerecording.view.components.ComboBoxItem
 import com.fedor.attendancerecording.view.components.DateLabel
 import com.fedor.attendancerecording.view.components.DropDownComboBox

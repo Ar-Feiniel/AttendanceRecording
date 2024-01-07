@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fedor.attendancerecording.EditStudentDestination
 import com.fedor.attendancerecording.R
-import com.fedor.attendancerecording.model.entity.Student
-import com.fedor.attendancerecording.model.repositories.interfaces.StudentRepository
+import com.fedor.attendancerecording.data.entity.Student
+import com.fedor.attendancerecording.data.repositories.interfaces.StudentRepository
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
