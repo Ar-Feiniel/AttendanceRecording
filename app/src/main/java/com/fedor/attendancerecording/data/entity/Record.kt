@@ -3,7 +3,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.Companion.CASCADE
-import androidx.room.ForeignKey.Companion.RESTRICT
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
@@ -15,13 +14,13 @@ import androidx.room.PrimaryKey
             entity = Marker::class,
             parentColumns = ["id_marker"],
             childColumns = ["id_marker"],
-            onDelete = RESTRICT,
+            onDelete = CASCADE,
             onUpdate = CASCADE),
         ForeignKey(
             entity = Student::class,
             parentColumns = ["id_student"],
             childColumns = ["id_student"],
-            onDelete = RESTRICT,
+            onDelete = CASCADE,
             onUpdate = CASCADE)
     )
 )

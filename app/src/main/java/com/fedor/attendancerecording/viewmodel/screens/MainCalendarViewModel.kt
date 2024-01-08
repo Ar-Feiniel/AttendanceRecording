@@ -23,6 +23,7 @@ class MainCalendarViewModel(
         val scheduleRecordsList: List<ScheduleDay> = listOf<ScheduleDay>()
     )
     init {
+        refreshMonthList()
         refreshUiState()
     }
     fun refreshUiState(){

@@ -90,7 +90,11 @@ object AppViewModelProvider {
         //Export
         initializer {
             ExportViewModel(
-                attendanceRecordingApplication().container.recordRepository
+                attendanceRecordingApplication().container.recordRepository,
+                attendanceRecordingApplication().container.studentRepository,
+                attendanceRecordingApplication().container.markerRepository,
+                attendanceRecordingApplication().container.markerTypeRepository,
+                attendanceRecordingApplication().container.scheduleRepository
             )
         }
 

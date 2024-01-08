@@ -5,11 +5,11 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.fedor.attendancerecording.R
 
 @Composable
@@ -37,5 +37,15 @@ fun DeleteConfirmationDialog(
                 Icon(ImageVector.vectorResource(id = R.drawable.close,), contentDescription = "close")
             }
         },
+    )
+}
+
+@Preview
+@Composable
+private fun Preview() {
+    DeleteConfirmationDialog(
+        deleteObjectStringDescription = "",
+        onDeleteConfirm = {},
+        onDeleteCancel = {}
     )
 }

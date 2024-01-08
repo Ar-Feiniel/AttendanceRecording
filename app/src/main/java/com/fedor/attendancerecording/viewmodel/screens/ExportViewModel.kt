@@ -6,13 +6,26 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.fedor.attendancerecording.R
+import com.fedor.attendancerecording.data.entity.Marker
+import com.fedor.attendancerecording.data.entity.MarkerType
+import com.fedor.attendancerecording.data.entity.Record
+import com.fedor.attendancerecording.data.entity.ScheduleDay
+import com.fedor.attendancerecording.data.entity.Student
+import com.fedor.attendancerecording.data.repositories.interfaces.MarkerRepository
+import com.fedor.attendancerecording.data.repositories.interfaces.MarkerTypeRepository
 import com.fedor.attendancerecording.data.repositories.interfaces.RecordRepository
+import com.fedor.attendancerecording.data.repositories.interfaces.ScheduleRepository
+import com.fedor.attendancerecording.data.repositories.interfaces.StudentRepository
 import com.fedor.attendancerecording.viewmodel.CalendarViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class ExportViewModel(
-    private val recordsRepository: RecordRepository
+    private val recordsRepository: RecordRepository,
+    private val studentRepository: StudentRepository,
+    private val markerRepository: MarkerRepository,
+    private val markerTypeRepository: MarkerTypeRepository,
+    private val scheduleRepository: ScheduleRepository
 ) : CalendarViewModel() {
 
     var recordsCount by mutableStateOf(0)
@@ -75,9 +88,16 @@ class ExportViewModel(
 class FileManager(context: Context){
     val appDataDirName = context.applicationContext.filesDir
 }
-internal class xlsxGenerator(){
+internal class csvGenerator(
+    private val studentsList: List<Student>,
+    private val markersList: List<Marker>,
+    private val markerTypes: List<MarkerType>,
+    private val recordsList: List<Record>,
+    private val scheduleDays: List<ScheduleDay>
+){
+    fun generate(){
+        var fileText: String = ";"
 
-}
-internal class csvGenerator(){
 
+    }
 }

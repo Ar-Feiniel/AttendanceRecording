@@ -51,6 +51,7 @@ android {
     buildToolsVersion = "33.0.1"
 }
 dependencies {
+    testImplementation("junit:junit:4.12")
     // kotlin room
     val roomVersion = "2.5.0"
     implementation("androidx.room:room-runtime:$roomVersion")

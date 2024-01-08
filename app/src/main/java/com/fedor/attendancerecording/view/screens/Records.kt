@@ -69,6 +69,7 @@ fun Records(
             records = uiState.recordsDetails,
             upsertRecord = viewModel::upsertRecord,
             date = viewModel.dateString,
+            refreshRecordDetails = viewModel::refreshRecordDetails,
             pairNumIndex = pairNumIndex.value,
             refreshDetails = viewModel::refreshRecordDetails
         )
@@ -170,6 +171,7 @@ internal fun StudentsList(
     markers: List<Marker>,
     records: List<RecordsViewModel.RecordDetails>,
     upsertRecord: (item: RecordsViewModel.RecordDetails) -> Unit,
+    refreshRecordDetails: () -> Unit,
     date: String = "",
     pairNumIndex: Int = 0,
     refreshDetails: () -> Unit
@@ -214,6 +216,7 @@ internal fun StudentsList(
                             conformityRecord.idMarker =
                                 markers.find { it.name == selectedMarker.value }?.idMarker ?: 0
                             upsertRecord(conformityRecord)
+                            refreshRecordDetails()
                         },
                         selectedItem = selectedMarker,
                         itemsList = markers.map { it.toComboBoxItem() }
