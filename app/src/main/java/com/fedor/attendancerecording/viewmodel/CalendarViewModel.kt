@@ -7,12 +7,12 @@ import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDate
 import java.util.Date
 
-abstract class CalendarViewModel : ViewModel() {
+abstract class CalendarViewModel() : ViewModel() {
     private var _currentDate: LocalDate = LocalDate.now()
     var selectedDate: LocalDate = _currentDate
     var calendarList: List<CalendarItem?> = getMonthList(selectedDate)
     var monthList: Flow<List<CalendarItem?>> = flowOf(getMonthList())
-    var holidaysDates: List<String> = listOf<String>()
+    var holidaysDates: List<String> = listOf<String>("")
     fun getMonthArray(year: Int, month: Int): Array<Array<CalendarItem?>> {
         val calendar: Array<Array<CalendarItem?>> = Array(getWeeksCount(year, month)) { Array(7) { null } }
         var weeksCounter: Int = 0;

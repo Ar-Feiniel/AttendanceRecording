@@ -1,6 +1,5 @@
 package com.fedor.attendancerecording.viewmodel.screens
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fedor.attendancerecording.data.entity.Marker
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class MarkersViewModel(
-    savedStateHandle: SavedStateHandle,
     private val markerRepository: MarkerRepository
 ) : ViewModel(), ActionListable {
     val markersUiState: StateFlow<MarkersUiState> =

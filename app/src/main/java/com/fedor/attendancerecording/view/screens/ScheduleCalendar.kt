@@ -1,6 +1,5 @@
 package com.fedor.attendancerecording.view.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,16 +30,18 @@ import com.fedor.attendancerecording.data.entity.ScheduleDay
 import com.fedor.attendancerecording.view.components.Calendar
 import com.fedor.attendancerecording.view.components.DateLabel
 import com.fedor.attendancerecording.viewmodel.AppViewModelProvider
-import com.fedor.attendancerecording.viewmodel.screens.ScheduleViewModel
+import com.fedor.attendancerecording.viewmodel.screens.ScheduleCalendarViewModel
 
 @Composable
 fun Schedule(
-    viewModel: ScheduleViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    viewModel: ScheduleCalendarViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
     val uiState by viewModel.uiState.collectAsState()
-    viewModel.holidaysDates = uiState.scheduleRecordsList.filter{ !it.isWorkingDay }.map { it -> it.date }
+    val holidays = uiState.scheduleRecordsList.filter{ !it.isWorkingDay }.map { it -> it.date }
+    if(holidays.isNotEmpty()){
+        viewModel.holidaysDates = holidays
+    }
 
-    Log.i("", uiState.scheduleRecordsList.filter{ !it.isWorkingDay }.map { it -> it.date }.toString())
 
     var isScheduleDialogOpen by remember{ mutableStateOf(false) }
     val selectedDate = remember{ mutableStateOf("") }
@@ -48,11 +49,12 @@ fun Schedule(
     Column(modifier = Modifier.fillMaxWidth()) {
         DateLabel(viewModel.getGracefulSelectedMonthYearText())
         Spacer(modifier = Modifier.height(25.dp))
-        if(viewModel.holidaysDates.isNotEmpty()){
+        if(holidays.isNotEmpty()){
             Calendar(
-                viewModel.getMonthList(),
+                calendar = viewModel.getMonthList(),
                 onItemClick = {
                         date -> selectedDate.value = date
+                    viewModel.refreshUiState()
                     isScheduleDialogOpen = !isScheduleDialogOpen
                 }
             )
@@ -79,7 +81,7 @@ fun Schedule(
 
 @Composable
 fun ScheduleDialog(
-    viewModel: ScheduleViewModel,
+    viewModel: ScheduleCalendarViewModel,
     selectedDate: MutableState<String>,
     onConfirmClick: (value: Boolean) -> Unit,
     onCancelClick: () -> Unit

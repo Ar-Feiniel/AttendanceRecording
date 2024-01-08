@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -20,7 +22,12 @@ public fun MainCalendar(
     onDayClick: (date: String) -> Unit,
     viewModel: MainCalendarViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
-    val calendarItemsUiState = viewModel.monthListUiState
+    val uiState by viewModel.uiState.collectAsState()
+    val holidays = uiState.scheduleRecordsList.filter{ !it.isWorkingDay }.map { it -> it.date }
+    if(holidays.isNotEmpty()){
+        viewModel.holidaysDates = holidays
+    }
+
     val dateLabelText = viewModel.dateLabelText
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.height(60.dp))
@@ -34,7 +41,9 @@ public fun MainCalendar(
             centralContent = { DateLabel(date = dateLabelText) }
         )
         Spacer(modifier = Modifier.height(25.dp))
-        Calendar(calendarItemsUiState, onItemClick = onDayClick)
+        if(holidays.isNotEmpty()){
+            Calendar(viewModel.getMonthList(), onItemClick = onDayClick)
+        }
         Spacer(modifier = Modifier.fillMaxHeight())
     }
 }

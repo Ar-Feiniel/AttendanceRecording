@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class ScheduleViewModel(
+class ScheduleCalendarViewModel(
     private val scheduleRepository: ScheduleRepository
 ) : CalendarViewModel() {
     val scheduleDayTypes: Map<Boolean, Int> =
@@ -38,7 +38,7 @@ class ScheduleViewModel(
         refreshUiState()
     }
 
-    private fun refreshUiState(){
+    fun refreshUiState(){
         viewModelScope.launch {
             _uiState.update {
                 it.copy(

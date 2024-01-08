@@ -23,14 +23,13 @@ import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.fedor.attendancerecording.AttendanceRecordingApplication
-import com.fedor.attendancerecording.view.screens.MainCalendar
 import com.fedor.attendancerecording.viewmodel.screens.EditMarkerViewModel
 import com.fedor.attendancerecording.viewmodel.screens.EditStudentViewModel
 import com.fedor.attendancerecording.viewmodel.screens.ExportViewModel
 import com.fedor.attendancerecording.viewmodel.screens.MainCalendarViewModel
 import com.fedor.attendancerecording.viewmodel.screens.MarkersViewModel
 import com.fedor.attendancerecording.viewmodel.screens.RecordsViewModel
-import com.fedor.attendancerecording.viewmodel.screens.ScheduleViewModel
+import com.fedor.attendancerecording.viewmodel.screens.ScheduleCalendarViewModel
 import com.fedor.attendancerecording.viewmodel.screens.SettingsViewModel
 import com.fedor.attendancerecording.viewmodel.screens.StudentsViewModel
 
@@ -42,14 +41,13 @@ object AppViewModelProvider {
         // main
         initializer {
             MainCalendarViewModel(
-                this.createSavedStateHandle()
+                attendanceRecordingApplication().container.scheduleRepository
             )
         }
 
         // students
         initializer {
             StudentsViewModel(
-                this.createSavedStateHandle(),
                 attendanceRecordingApplication().container.studentRepository
             )
         }
@@ -64,7 +62,6 @@ object AppViewModelProvider {
         // markers
         initializer {
             MarkersViewModel(
-                this.createSavedStateHandle(),
                 attendanceRecordingApplication().container.markerRepository
             )
         }
@@ -105,13 +102,12 @@ object AppViewModelProvider {
 
         // schedule
         initializer {
-            ScheduleViewModel(
+            ScheduleCalendarViewModel(
                 attendanceRecordingApplication().container.scheduleRepository
             )
         }
     }
 }
-
 /**
  * Extension function to queries for [Application] object and returns an instance of
  * [AttendanceRecordingApplication].

@@ -1,32 +1,52 @@
 package com.fedor.attendancerecording.viewmodel.screens
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
+import com.fedor.attendancerecording.data.entity.ScheduleDay
+import com.fedor.attendancerecording.data.repositories.interfaces.ScheduleRepository
 import com.fedor.attendancerecording.viewmodel.CalendarViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class MainCalendarViewModel(
-    savedStateHandle: SavedStateHandle
+    private val scheduleRepository: ScheduleRepository
 ) : CalendarViewModel() {
-    var monthListUiState by mutableStateOf(getMonthList())
+    private val _uiState: MutableStateFlow<MainCalendarScreenUiState> = MutableStateFlow(MainCalendarScreenUiState())
+    val uiState: StateFlow<MainCalendarScreenUiState> = _uiState.asStateFlow()
+    data class MainCalendarScreenUiState(
+        val scheduleRecordsList: List<ScheduleDay> = listOf<ScheduleDay>()
+    )
+    init {
+        refreshUiState()
+    }
+    private fun refreshUiState(){
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    scheduleRecordsList = scheduleRepository.getListByMonth(selectedDate.monthValue, selectedDate.year)
+                )
+            }
+        }
+    }
+
     var dateLabelText by mutableStateOf(getGracefulSelectedMonthYearText())
 
     fun goToPreviousMonth(){
         stepByDate("previous")
-        Log.i("MainCalendarViewModel", "go_to_previous")
     }
 
     fun goToNextMonth(){
         stepByDate("next")
-        Log.i("MainCalendarViewModel", "go_to_next")
     }
 
     private fun stepByDate(action: String){
         selectedDate = computeDateByOffset(action)
-        monthListUiState = getMonthList()
         dateLabelText = getGracefulSelectedMonthYearText()
     }
 

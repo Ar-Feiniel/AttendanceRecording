@@ -1,7 +1,6 @@
 package com.fedor.attendancerecording.viewmodel.screens
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fedor.attendancerecording.data.entity.Student
@@ -14,7 +13,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class StudentsViewModel(
-    savedStateHandle: SavedStateHandle,
     private val studentRepository: StudentRepository
 ) : ViewModel(), ActionListable {
 
