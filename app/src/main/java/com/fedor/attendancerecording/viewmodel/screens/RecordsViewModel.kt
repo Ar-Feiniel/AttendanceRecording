@@ -1,6 +1,5 @@
 package com.fedor.attendancerecording.viewmodel.screens
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,10 +7,12 @@ import com.fedor.attendancerecording.RecordsDestination
 import com.fedor.attendancerecording.data.entity.Marker
 import com.fedor.attendancerecording.data.entity.MarkerType
 import com.fedor.attendancerecording.data.entity.Record
+import com.fedor.attendancerecording.data.entity.ScheduleDay
 import com.fedor.attendancerecording.data.entity.Student
 import com.fedor.attendancerecording.data.repositories.interfaces.MarkerRepository
 import com.fedor.attendancerecording.data.repositories.interfaces.MarkerTypeRepository
 import com.fedor.attendancerecording.data.repositories.interfaces.RecordRepository
+import com.fedor.attendancerecording.data.repositories.interfaces.ScheduleRepository
 import com.fedor.attendancerecording.data.repositories.interfaces.StudentRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,8 +25,8 @@ class RecordsViewModel(
     private val recordRepository: RecordRepository,
     private val studentRepository: StudentRepository,
     private val markerRepository: MarkerRepository,
-    private val markerTypeRepository: MarkerTypeRepository
-    //private val scheduleRepository: ScheduleRepository
+    private val markerTypeRepository: MarkerTypeRepository,
+    private val scheduleRepository: ScheduleRepository
 ) : ViewModel() {
     private val _dateString: String = checkNotNull(savedStateHandle[RecordsDestination.navArgumentName])
 
@@ -63,7 +64,8 @@ class RecordsViewModel(
                     recordsDetails = recordRepository.getAllDataList().map { it.toRecordDetails() },
                     students = studentRepository.getAllDataList(),
                     markers = markerRepository.getAllDataList(),
-                    markerTypes = markerTypeRepository.getAllDataList()
+                    markerTypes = markerTypeRepository.getAllDataList(),
+                    daySchedule = scheduleRepository.getItemByDate(dateString)?.toScheduleDayDetails() ?: ScheduleDayDetails(date = dateString)
                 )
             }
         }
@@ -78,14 +80,21 @@ class RecordsViewModel(
             }
         }
     }
+    fun refreshScheduleDay(){
+        viewModelScope.launch {
+            _uiState.update {
+                it.copy(
+                    daySchedule = scheduleRepository.getItemByDate(dateString)?.toScheduleDayDetails() ?: ScheduleDayDetails(date = dateString)
+                )
+            }
+        }
+    }
 
     fun upsertRecord(recordDetails: RecordDetails){
         if(recordDetailsValidator(recordDetails)){
             viewModelScope.launch {
                 recordRepository.upsertItem(recordDetails.toRecord())
             }
-            Log.i("Records", "upsertRecordDetails ${recordDetails.toString()}, validator=${recordDetailsValidator(recordDetails)}")
-            Log.i("Records", "upsertRecord ${recordDetails.toRecord().toString()}")
         }
     }
 
@@ -93,9 +102,15 @@ class RecordsViewModel(
         return true
     }
 
+    fun upsertScheduleDay(scheduleDayDetails: ScheduleDayDetails){
+        viewModelScope.launch {
+            scheduleRepository.upsertItem(scheduleDayDetails.toScheduleDay())
+        }
+    }
+
     private fun Record.toRecordDetails(): RecordDetails = RecordDetails(
         idRecord = this.idRecord,
-        idMarker = this.idMarker, // uiState.value.markers.find { idMarker == this.idMarker }?.name ?: "not found",
+        idMarker = this.idMarker,
         idStudent = this.idStudent,
         pairNum = this.pairNum,
         date = this.date
@@ -117,8 +132,27 @@ class RecordsViewModel(
         val date: String = "01.01.1999"
     )
 
+    private fun ScheduleDay.toScheduleDayDetails() = ScheduleDayDetails(
+        idScheduleDay = this.idDay,
+        date = date,
+        pairs = pairs,
+        isWorking = isWorkingDay
+    )
+    private fun ScheduleDayDetails.toScheduleDay(): ScheduleDay = ScheduleDay(
+        idDay = idScheduleDay,
+        date = date,
+        pairs = pairs,
+        isWorkingDay = isWorking
+    )
+    data class ScheduleDayDetails(
+        var idScheduleDay: Int = 0,
+        var date: String = "",
+        var pairs: Int = 3,
+        var isWorking: Boolean = true
+    )
     data class RecordsScreenUiState(
         var recordsDetails: List<RecordDetails> = listOf<RecordDetails>(),
+        var daySchedule: ScheduleDayDetails = ScheduleDayDetails(),
         var markers: List<Marker> = listOf<Marker>(),
         var markerTypes: List<MarkerType> = listOf<MarkerType>(),
         var students: List<Student> = listOf<Student>()

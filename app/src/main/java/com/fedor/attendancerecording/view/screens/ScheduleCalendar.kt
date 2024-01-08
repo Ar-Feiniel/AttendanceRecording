@@ -41,7 +41,7 @@ fun Schedule(
     if(holidays.isNotEmpty()){
         viewModel.holidaysDates = holidays
     }
-
+    viewModel.refreshMonthList()
 
     var isScheduleDialogOpen by remember{ mutableStateOf(false) }
     val selectedDate = remember{ mutableStateOf("") }
@@ -49,16 +49,14 @@ fun Schedule(
     Column(modifier = Modifier.fillMaxWidth()) {
         DateLabel(viewModel.getGracefulSelectedMonthYearText())
         Spacer(modifier = Modifier.height(25.dp))
-        if(holidays.isNotEmpty()){
             Calendar(
-                calendar = viewModel.getMonthList(),
+                calendar = viewModel.monthList.value,
                 onItemClick = {
                         date -> selectedDate.value = date
                     viewModel.refreshUiState()
                     isScheduleDialogOpen = !isScheduleDialogOpen
                 }
             )
-        }
     }
     if(isScheduleDialogOpen) {
         ScheduleDialog(
@@ -69,6 +67,7 @@ fun Schedule(
                     ScheduleDay(
                         idDay = uiState.scheduleRecordsList.find { it.date == selectedDate.value }?.idDay ?: 0,
                         date = selectedDate.value,
+                        pairs = uiState.scheduleRecordsList.find { it.date == selectedDate.value }?.pairs ?: 3,
                         isWorkingDay = value
                     )
                 )

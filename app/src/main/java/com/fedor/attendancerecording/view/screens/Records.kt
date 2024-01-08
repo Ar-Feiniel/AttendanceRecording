@@ -47,10 +47,7 @@ fun Records(
     var pairNumIndex: MutableState<Int> = remember { mutableStateOf<Int>(0) }
     val uiState by viewModel.uiState.collectAsState()
 
-    val defaultPairNum = when(uiState.recordsDetails.any { it.date == selectedDate }){
-        true -> uiState.recordsDetails.filter{ it.date == selectedDate}.maxOf { it.pairNum }
-        false -> 3
-    }
+    val defaultPairNum = uiState.daySchedule.pairs
 
     Column {
         Spacer(modifier = Modifier.height(12.dp))
@@ -60,6 +57,8 @@ fun Records(
         }
         Spacer(modifier = Modifier.height(12.dp))
         PairTabRow(
+            viewModel = viewModel,
+            scheduleDayDetails = uiState.daySchedule,
             pairNumIndex = pairNumIndex,
             defaultPairNum = defaultPairNum
         )
@@ -78,66 +77,80 @@ fun Records(
 
 @Composable
 internal fun PairTabRow(
+    viewModel: RecordsViewModel,
+    scheduleDayDetails: RecordsViewModel.ScheduleDayDetails,
     pairNumIndex: MutableState<Int>,
     defaultPairNum: Int
 ) {
     var tabIndex: Int by remember { mutableStateOf<Int>(0) }
     var pairs: Int by rememberSaveable(defaultPairNum) { mutableStateOf<Int>(defaultPairNum) }
 
-        val tabRowAction: @Composable () -> Unit = {
-                TabRow(
+    val tabRowAction: @Composable () -> Unit = {
+        TabRow(
+            modifier = Modifier
+                .clip(RoundedCornerShape(5.dp)),
+            selectedTabIndex = pairNumIndex.value,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.surface,
+            indicator = {}
+        ) {
+            for (i in 1..pairs) {
+                Tab(
+                    selected = pairNumIndex.value != i - 1,
+                    onClick = { pairNumIndex.value = i - 1 },
                     modifier = Modifier
-                        .clip(RoundedCornerShape(5.dp)),
-                    selectedTabIndex = pairNumIndex.value,
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.surface,
-                    indicator = {}
+                        .padding(vertical = 4.dp, horizontal = 1.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .padding(1.dp)
                 ) {
-                    for (i in 1..pairs) {
-                        Tab(
-                            selected = pairNumIndex.value != i - 1,
-                            onClick = { pairNumIndex.value = i - 1 },
-                            modifier = Modifier
-                                .padding(vertical = 4.dp, horizontal = 1.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .padding(1.dp)
-                        ) {
-                            Box(
-                                contentAlignment = Alignment.Center,
-                                modifier = Modifier
-                                    .background(
-                                        if (pairNumIndex.value + 1 == i)
-                                            MaterialTheme.colorScheme.primary
-                                        else
-                                            MaterialTheme.colorScheme.inversePrimary
-                                    )
-                                    .fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = "$i",
-                                    maxLines = 1,
-                                    color =
-                                        if (pairNumIndex.value + 1 == i)
-                                            MaterialTheme.colorScheme.inversePrimary
-                                        else
-                                            MaterialTheme.colorScheme.primary,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        }
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .background(
+                                if (pairNumIndex.value + 1 == i)
+                                    MaterialTheme.colorScheme.primary
+                                else
+                                    MaterialTheme.colorScheme.inversePrimary
+                            )
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = "$i",
+                            maxLines = 1,
+                            color =
+                            if (pairNumIndex.value + 1 == i)
+                                MaterialTheme.colorScheme.inversePrimary
+                            else
+                                MaterialTheme.colorScheme.primary,
+                            overflow = TextOverflow.Ellipsis
+                        )
                     }
+                }
             }
         }
+    }
 
-        PairButtonsRow(
-            onLeftButtonClick = { if (pairNumberChangesValid(pairs, tabIndex, "-")) pairs--},
-            leftButtonText = "-",
-            onRightButtonClick = { if (pairNumberChangesValid(pairs, tabIndex, "+")) pairs++},
-            rightButtonText = "+",
-            buttonHeight = 40.dp,
-            buttonWidth = 60.dp,
-            centralContent = tabRowAction
-        )
+    PairButtonsRow(
+        onLeftButtonClick = {
+            if (pairNumberChangesValid(pairs, tabIndex, "-")) {
+                pairs--
+                viewModel.upsertScheduleDay(scheduleDayDetails.copy(pairs = pairs))
+                viewModel.refreshScheduleDay()
+            }
+        },
+        leftButtonText = "-",
+        onRightButtonClick = {
+            if (pairNumberChangesValid(pairs, tabIndex, "+")) {
+                pairs++
+                viewModel.upsertScheduleDay(scheduleDayDetails.copy(pairs = pairs))
+                viewModel.refreshScheduleDay()
+            }
+        },
+        rightButtonText = "+",
+        buttonHeight = 40.dp,
+        buttonWidth = 60.dp,
+        centralContent = tabRowAction
+    )
 }
 
 fun pairNumberChangesValid(pairNum: Int, index: Int, action: String): Boolean {

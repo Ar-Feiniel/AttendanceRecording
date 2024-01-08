@@ -1,18 +1,20 @@
 package com.fedor.attendancerecording.viewmodel
 
 import android.util.Log
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDate
 import java.util.Date
 
 abstract class CalendarViewModel() : ViewModel() {
     private var _currentDate: LocalDate = LocalDate.now()
     var selectedDate: LocalDate = _currentDate
-    var calendarList: List<CalendarItem?> = getMonthList(selectedDate)
-    var monthList: Flow<List<CalendarItem?>> = flowOf(getMonthList())
+    var monthList: MutableState<List<CalendarItem?>> = mutableStateOf(getMonthList())
     var holidaysDates: List<String> = listOf<String>("")
+    fun refreshMonthList(){
+        monthList.value = getMonthList()
+    }
     fun getMonthArray(year: Int, month: Int): Array<Array<CalendarItem?>> {
         val calendar: Array<Array<CalendarItem?>> = Array(getWeeksCount(year, month)) { Array(7) { null } }
         var weeksCounter: Int = 0;
@@ -52,6 +54,7 @@ abstract class CalendarViewModel() : ViewModel() {
                     isWorkingDay = holidaysDates.contains(getDateText(year = year, month = month, day = dayNum)))
             }
         }
+        if (monthList != null) monthList.value = calendar
         return calendar
     }
     private fun getYearsInMonthNum(monthNum: Int) : Int{

@@ -25,7 +25,7 @@ class MainCalendarViewModel(
     init {
         refreshUiState()
     }
-    private fun refreshUiState(){
+    fun refreshUiState(){
         viewModelScope.launch {
             _uiState.update {
                 it.copy(
@@ -56,7 +56,7 @@ class MainCalendarViewModel(
         var year: Int = selectedDate.year
         when(action){
             "previous" -> {
-                if(month -1 <=0){
+                if(month -1 <= 0){
                     year--
                     month = 12
                 }
@@ -65,7 +65,7 @@ class MainCalendarViewModel(
                 }
             }
             "next" -> {
-                if(month +1 > 12){
+                if(month + 1 > 12){
                     year++
                     month = 1
                 }

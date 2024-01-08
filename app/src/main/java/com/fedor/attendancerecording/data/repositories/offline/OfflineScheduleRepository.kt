@@ -6,7 +6,7 @@ import com.fedor.attendancerecording.data.repositories.interfaces.ScheduleReposi
 import kotlinx.coroutines.flow.Flow
 
 class OfflineScheduleRepository(private val scheduleDao: ScheduleDayDao) : ScheduleRepository {
-    override suspend fun getItemByDate(date: String): ScheduleDay = scheduleDao.getScheduleByDate(date = date)
+    override suspend fun getItemByDate(date: String): ScheduleDay? = scheduleDao.getScheduleByDate(date = date)
     override suspend fun getListByMonth(month: Int, year: Int): List<ScheduleDay> =
         scheduleDao.getScheduleListByMonthYear(month = month, year = year)
 

@@ -27,6 +27,8 @@ public fun MainCalendar(
     if(holidays.isNotEmpty()){
         viewModel.holidaysDates = holidays
     }
+    viewModel.refreshMonthList()
+    viewModel.refreshUiState()
 
     val dateLabelText = viewModel.dateLabelText
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -42,7 +44,10 @@ public fun MainCalendar(
         )
         Spacer(modifier = Modifier.height(25.dp))
         if(holidays.isNotEmpty()){
-            Calendar(viewModel.getMonthList(), onItemClick = onDayClick)
+            Calendar(
+                viewModel.monthList.value,
+                onItemClick = onDayClick
+            )
         }
         Spacer(modifier = Modifier.fillMaxHeight())
     }

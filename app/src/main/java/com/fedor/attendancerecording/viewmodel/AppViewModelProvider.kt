@@ -82,7 +82,8 @@ object AppViewModelProvider {
                 attendanceRecordingApplication().container.recordRepository,
                 attendanceRecordingApplication().container.studentRepository,
                 attendanceRecordingApplication().container.markerRepository,
-                attendanceRecordingApplication().container.markerTypeRepository
+                attendanceRecordingApplication().container.markerTypeRepository,
+                attendanceRecordingApplication().container.scheduleRepository
             )
         }
 
