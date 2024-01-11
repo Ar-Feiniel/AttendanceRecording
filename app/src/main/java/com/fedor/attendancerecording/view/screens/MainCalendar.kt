@@ -27,8 +27,8 @@ public fun MainCalendar(
     if(holidays.isNotEmpty()){
         viewModel.holidaysDates = holidays
     }
-    viewModel.refreshMonthList()
-    viewModel.refreshUiState()
+    //viewModel.refreshMonthList()
+    //viewModel.refreshUiState()
 
     val dateLabelText = viewModel.dateLabelText
     Column(modifier = Modifier.fillMaxWidth()) {

@@ -1,6 +1,5 @@
 package com.fedor.attendancerecording.viewmodel
 
-import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -49,9 +48,9 @@ abstract class CalendarViewModel() : ViewModel() {
             for (dayNum in 1..getDaysCount(year, month)){
                 calendar[dayNum-1+firstDayIndex] = CalendarItem(
                     year = year,
-                    _month = month,
-                    _day = dayNum,
-                    isWorkingDay = holidaysDates.contains(getDateText(year = year, month = month, day = dayNum)))
+                    month = month,
+                    day = dayNum,
+                    isWorkingDay = !holidaysDates.contains(getDateText(year = year, month = month, day = dayNum)))
             }
         }
         if (monthList != null) monthList.value = calendar
@@ -111,7 +110,6 @@ abstract class CalendarViewModel() : ViewModel() {
         return "${day}.${month}.${year}"
     }
     fun getDaysCount(year: Int, month: Int): Int {
-        Log.i("CalendarViewModel", "DaysCount = ${month}/${year}")
         val daysInMonth: Array<Int> = arrayOf(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
         return when (month == 2 && ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0)) {
             true -> daysInMonth[month - 1] + 1
@@ -164,27 +162,30 @@ enum class DaysOfWeek() {
     SUNDAY()
 }
 
-class CalendarItem(val year: Int, private val _month: Int, private val _day: Int, var isWorkingDay: Boolean = true) {
-    public val day: String
+class CalendarItem(val year: Int, val month: Int, val day: Int, var isWorkingDay: Boolean = true) {
+    val dayString: String
         get() {
-            return when (_day in 1..9) {
-                true -> "0${_day}"
-                false -> "${_day}"
+            return when (day in 1..9) {
+                true -> "0${day}"
+                false -> "${day}"
             }
         }
-    public val month: String
+    val monthString: String
         get() {
-            return when (_month in 1..9) {
-                true -> "0${_month}"
-                false -> "${_month}"
+            return when (month in 1..9) {
+                true -> "0${month}"
+                false -> "${month}"
             }
         }
-    public val dateString: String
+    val dateString: String
         get(){
-            return "${day}.${month}.${year}"
+            return "${dayString}.${monthString}.${year}"
         }
-    public val isCurrent: Boolean = LocalDate.now().toString() == "${year}-${month}-${day}";
-//    init {
-//        isWorkingDay = CalendarViewModel.getDayName(year, _month, _day) in arrayOf<String>("SUNDAY") || isWorkingDay
-//    }
+    val isCurrent: Boolean = LocalDate.now().toString() == "${year}-${monthString}-${dayString}"
+}
+fun CalendarItem?.toConstructorString(): String {
+    return when(this == null){
+        true -> "null"
+        false -> "CalendarItem(year = ${this.year}, month = ${this.month}, day = ${this.day}, isWorkingDay = ${this.isCurrent})"
+    }
 }
