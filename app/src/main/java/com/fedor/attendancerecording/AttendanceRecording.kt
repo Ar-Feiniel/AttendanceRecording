@@ -15,37 +15,29 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.compose.AppTheme
 
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-public fun attendanceRecordingApp(){
+fun attendanceRecordingApp(){
     val startScreen: ApplicationDestination = MainCalendarDestination
-
     val navController: NavHostController = rememberNavController()
+    //var selectedScreenNameResId: MutableState<Int> = remember { mutableStateOf(startScreen.screenNameResId) }
 
-    val bottomBarNavScreens: List<ApplicationDestination> =
-        listOf(
-            MainCalendarDestination,
-            ScheduleDestination,
-            ExportDestination,
-            SettingsDestination)
-
-    var selectedScreenNameResId: Int by remember { mutableStateOf(startScreen.screenNameResId) }
+    val currentScreen: MutableState<ApplicationDestination> = remember{ mutableStateOf(startScreen) }
 
     AppTheme{
         Surface{
@@ -57,7 +49,7 @@ public fun attendanceRecordingApp(){
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center
                         ) {
-                            Text(text = stringResource(selectedScreenNameResId))
+                            Text(text = stringResource(currentScreen.value.screenNameResId))
                             }
                     }, modifier = Modifier.padding(5.dp))
                 },
@@ -67,8 +59,8 @@ public fun attendanceRecordingApp(){
                         , horizontalArrangement = Arrangement.SpaceEvenly
                         , verticalAlignment = Alignment.CenterVertically
                     ){
-                        bottomBarNavScreens.forEach { value ->
-                            IconButton(onClick = {  selectedScreenNameResId = value.screenNameResId
+                        appBottomBarScreens.forEach { value ->
+                            IconButton(onClick = {  currentScreen.value = value
                                                     navController.navigateSingleTopTo(value.route) }) {
                                 Icon(imageVector = ImageVector.vectorResource(value.iconResId!!),
                                     contentDescription = null,
@@ -83,7 +75,11 @@ public fun attendanceRecordingApp(){
             ){ paddingValues ->
                 Column(modifier = Modifier.padding(paddingValues),
                     verticalArrangement = Arrangement.Center) {
-                    ApplicationNavHost(navController = navController, startScreen = startScreen)
+                    ApplicationNavHost(
+                        navController = navController,
+                        startScreen = startScreen,
+                        currentScreen = currentScreen
+                    )
                 }
             }
         }

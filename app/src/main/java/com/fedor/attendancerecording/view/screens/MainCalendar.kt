@@ -19,7 +19,7 @@ import com.fedor.attendancerecording.viewmodel.screens.MainCalendarViewModel
 
 @Composable
 public fun MainCalendar(
-    onDayClick: (date: String) -> Unit,
+    onItemClick: (date: String) -> Unit,
     viewModel: MainCalendarViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -46,7 +46,7 @@ public fun MainCalendar(
         if(holidays.isNotEmpty()){
             Calendar(
                 viewModel.monthList.value,
-                onItemClick = onDayClick
+                onItemClick = onItemClick
             )
         }
         Spacer(modifier = Modifier.fillMaxHeight())
