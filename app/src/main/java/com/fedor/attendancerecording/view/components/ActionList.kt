@@ -3,9 +3,6 @@ package com.fedor.attendancerecording.view.components
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import com.fedor.attendancerecording.data.entity.Marker
-import com.fedor.attendancerecording.data.entity.Student
-
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,10 +22,12 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.fedor.attendancerecording.R
+import com.fedor.attendancerecording.data.entity.Marker
+import com.fedor.attendancerecording.data.entity.Student
 import kotlin.reflect.KClass
 
 @Composable
-public fun <T: Any> ActionList(
+fun <T: Any> ActionList(
     actionClass: KClass<T>,
     onEditClick: (id: Int) -> Unit,
     onDeleteClick: (item: Any) -> Unit,
