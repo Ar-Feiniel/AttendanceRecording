@@ -31,4 +31,5 @@
     <string name="select_day_type">Select day type</string>
     <string name="holiday">Holiday</string>
     <string name="weekday">Weekday</string>
+    <string name="attendance">Attendance</string>
 </resources>

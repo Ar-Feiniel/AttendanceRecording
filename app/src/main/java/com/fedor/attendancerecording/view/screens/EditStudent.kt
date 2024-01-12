@@ -1,14 +1,14 @@
 package com.fedor.attendancerecording.view.screens
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fedor.attendancerecording.R
 import com.fedor.attendancerecording.view.components.entityeditor.Text_EditorComponent
@@ -20,7 +20,10 @@ public fun EditStudent(
     onGoBack: () -> Unit,
     viewModel: EditStudentViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ){
-    Column {
+    Column(
+        modifier = Modifier.padding(start=4.dp, end=4.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text_EditorComponent(
             value = viewModel.studentUiState.studentDetails.surname,
             onValueChange = { viewModel.updateUiState(viewModel.studentUiState.studentDetails.copy(surname = it)) },
@@ -36,7 +39,9 @@ public fun EditStudent(
             onValueChange = { viewModel.updateUiState(viewModel.studentUiState.studentDetails.copy(patronymic = it)) },
             labelStringResId = R.string.patronymic
         )
-        Button(onClick =   { viewModel.upsertStudent(); onGoBack() }) {
+        Button(
+            onClick = { viewModel.upsertStudent(); onGoBack() }
+        ) {
             Text(text = stringResource(id = viewModel.actionNameStringResId))
         }
     }

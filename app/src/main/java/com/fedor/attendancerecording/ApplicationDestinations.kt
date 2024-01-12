@@ -20,7 +20,7 @@ object MainCalendarDestination : ApplicationDestination{
 object RecordsDestination : ApplicationDestination{
     override val route = "recording"
     override val iconResId = null
-    override val screenNameResId = R.string.calendar
+    override val screenNameResId = R.string.attendance
     const val navArgumentName: String = "selected_date"
     val routeWithArguments: String = "${route}/{${navArgumentName}}"
     val arguments = listOf(

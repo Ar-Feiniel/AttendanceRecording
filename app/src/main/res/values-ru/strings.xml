@@ -32,4 +32,5 @@
     <string name="select_day_type">Выберите тип дня</string>
     <string name="holiday">Выходной</string>
     <string name="weekday">Рабочий</string>
+    <string name="attendance">Посещаемость</string>
 </resources>

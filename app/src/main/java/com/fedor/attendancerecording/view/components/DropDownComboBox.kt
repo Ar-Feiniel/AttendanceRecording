@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun <T> DropDownComboBox(
-    onSelectedItemChanged: () -> Unit,
+    onSelectedItemChanged: (selectedItem: ComboBoxItem<T>) -> Unit,
     selectedItem: MutableState<String>,
     itemsList: List<ComboBoxItem<T>>,
     modifier: Modifier =
@@ -91,7 +91,7 @@ fun <T> DropDownComboBox(
                     onClick = {
                         selectedItem.value = item.visibleText
                         expanded = !expanded
-                        onSelectedItemChanged()
+                        onSelectedItemChanged(item)
                     },
                     contentPadding = PaddingValues(0.dp),
                     colors =
